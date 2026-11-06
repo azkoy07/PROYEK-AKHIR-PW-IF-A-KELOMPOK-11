@@ -45,15 +45,19 @@ class HomeController extends Controller
                     ->orderBy('id')
                     ->limit(1);
             }, 'file_name')
-            // Menghitung seluruh stok varian produk
-            ->selectSub(function ($subquery) {
-                $subquery->from('product_variants')
-                    ->selectRaw('COALESCE(SUM(stok), 0)')
-                    ->whereColumn(
-                        'product_variants.product_id',
-                        'products.id'
-                    );
-            }, 'total_stok')
+            
+            // Menghitung stok berdasarkan jenis produk
+            ->selectRaw("
+                CASE
+                    WHEN products.jenis_produk = 'biasa'
+                    THEN products.stok
+                    ELSE (
+                        SELECT COALESCE(SUM(product_variants.stok), 0)
+                        FROM product_variants
+                        WHERE product_variants.product_id = products.id
+                    )
+                END AS total_stok
+            ")
             ->where('products.status', 'aktif');
 
         // 3. Pencarian berdasarkan nama atau merek

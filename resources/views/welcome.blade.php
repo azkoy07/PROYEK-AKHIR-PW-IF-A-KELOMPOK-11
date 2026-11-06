@@ -280,55 +280,60 @@
                         
                         @foreach($products as $product)
 
-                            <article class="product-card">
+                            <a href="{{ route('products.show', $product->id) }}"
+                            class="text-decoration-none text-reset">
 
-                                <div class="product-image">
+                                <article class="product-card">
 
-                                    @if($product->total_stok <= 0)
-                                        <span class="product-badge sold-out">Stok Habis</span>
-                                    @else
-                                        <span class="product-badge">Tersedia</span>
-                                    @endif
+                                    <div class="product-image">
 
-                                    @if($product->file_name)
-                                        <img
-                                            src="{{ asset('storage/' . $product->file_name) }}"
-                                            alt="{{ $product->nama }}"
-                                        >
-                                    @else
-                                        <i class="bi bi-image text-secondary fs-1"></i>
-                                    @endif
+                                        @if($product->total_stok <= 0)
+                                            <span class="product-badge sold-out">Stok Habis</span>
+                                        @else
+                                            <span class="product-badge">Tersedia</span>
+                                        @endif
 
-                                </div>
-
-                                <div class="product-info">
-
-                                    <span class="product-category">
-                                        {{ $product->nama_kategori }}
-                                    </span>
-
-                                    <h3>{{ $product->nama }}</h3>
-
-                                    <div class="product-rating">
-                                        <i class="bi bi-star-fill"></i>
-                                        <span>{{ $product->terjual }} terjual</span>
-                                    </div>
-
-                                    <div class="product-bottom">
-
-                                        <strong>
-                                            Rp{{ number_format($product->harga_dasar, 0, ',', '.') }}
-                                        </strong>
-
-                                        <button type="button" class="add-button" disabled>
-                                            <i class="bi bi-cart-plus"></i>
-                                        </button>
+                                        @if($product->file_name)
+                                            <img
+                                                src="{{ asset('storage/' . $product->file_name) }}"
+                                                alt="{{ $product->nama }}"
+                                            >
+                                        @else
+                                            <i class="bi bi-image text-secondary fs-1"></i>
+                                        @endif
 
                                     </div>
 
-                                </div>
+                                    <div class="product-info">
 
-                            </article>
+                                        <span class="product-category">
+                                            {{ $product->nama_kategori }}
+                                        </span>
+
+                                        <h3>{{ $product->nama }}</h3>
+
+                                        <div class="product-rating">
+                                            <i class="bi bi-star-fill"></i>
+                                            <span>{{ $product->terjual }} terjual</span>
+                                        </div>
+
+                                        <div class="product-bottom">
+
+                                            <strong>
+                                                Rp{{ number_format($product->harga_dasar, 0, ',', '.') }}
+                                            </strong>
+
+                                            <span class="add-button">
+                                                <i class="bi bi-arrow-right"></i>
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+
+                                </article>
+
+                            </a>
 
                         @endforeach
 

@@ -36,9 +36,9 @@
                 <i class="bi bi-box-seam me-2"></i>
                 Produk
             </a>
-
-            <a href="#" class="d-block text-white text-decoration-none mb-3">
-                <i class="bi bi-tags me-2"></i>
+            
+            <a href="{{ route('admin.categories.index') }}">
+                <i class="bi bi-tags"></i>
                 Kategori
             </a>
 
