@@ -72,6 +72,10 @@
                         {{ $product->nama }}
                     </h2>
 
+                    @include('products.reviews.summary', [
+                    'product' => $product
+                    ])
+
                     <p class="text-secondary mb-2">
                         Merek: {{ $product->merek }}
                     </p>

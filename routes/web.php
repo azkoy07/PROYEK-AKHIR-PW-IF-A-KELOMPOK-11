@@ -12,6 +12,7 @@ use App\Http\Controllers\AddressController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\AdminOrderController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\ProductReviewController;
 
 
 // Halaman utama
@@ -32,8 +33,15 @@ Route::post('/register', [AuthController::class, 'register'])
 Route::get('/login', [AuthController::class, 'showLogin'])
     ->name('login');
 
+// Menampilkan ulasan produk
+Route::get(
+    '/produk/{productId}/ulasan',
+    [ProductReviewController::class, 'index']
+)->name('products.reviews.index');
+
 Route::post('/login', [AuthController::class, 'login'])
     ->name('login.process');
+
 
 // Logout
 Route::post('/logout', [AuthController::class, 'logout'])
@@ -170,5 +178,18 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
     // Upload bukti pembayaran
     Route::post('/customer/orders/{id}/payment', [PaymentController::class, 'upload'])
         ->name('customer.orders.payment.upload');
+
+    // Konfirmasi pesanan telah diterima
+    Route::patch(
+        '/customer/orders/{id}/received',
+        [PaymentController::class, 'confirmReceived']
+    )->name('customer.orders.received');
+
+    // Menyimpan ulasan produk
+    Route::post(
+        '/customer/orders/{orderId}/reviews/{productId}',
+        [ProductReviewController::class, 'store']
+    )->name('customer.orders.reviews.store');
+
 
 });

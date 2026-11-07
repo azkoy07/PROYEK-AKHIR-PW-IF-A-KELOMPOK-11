@@ -4,29 +4,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Detail Pesanan - SportZone</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
 </head>
+
 <body class="bg-light">
 
-<div class="container py-4">
+<div class="container py-5">
 
+    {{-- Header --}}
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h3 class="mb-1">Detail Pesanan</h3>
-            <p class="text-secondary mb-0">
-                {{ $order->kode_order }}
-            </p>
-        </div>
+        <h3>Detail Pesanan</h3>
 
         <a href="{{ route('customer.orders.index') }}"
            class="btn btn-outline-secondary">
-            <i class="bi bi-arrow-left"></i> Kembali
+            Kembali
         </a>
     </div>
 
+    {{-- Notifikasi --}}
     @if(session('success'))
         <div class="alert alert-success">
             {{ session('success') }}
@@ -41,226 +39,209 @@
 
     @if($errors->any())
         <div class="alert alert-danger">
-            <strong>Upload gagal:</strong>
-            <ul class="mb-0 mt-2">
-                @foreach($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
+            @foreach($errors->all() as $error)
+                <div>{{ $error }}</div>
+            @endforeach
         </div>
     @endif
 
-    <div class="row g-4">
+    {{-- Informasi Pesanan --}}
+    <div class="card shadow-sm mb-4">
 
-        <div class="col-lg-6">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-header bg-white">
-                    <strong>Informasi Pesanan</strong>
-                </div>
-
-                <div class="card-body">
-
-                    <p class="text-secondary mb-1">Kode pesanan</p>
-                    <p class="fw-semibold">{{ $order->kode_order }}</p>
-
-                    <p class="text-secondary mb-1">Tanggal pesanan</p>
-                    <p class="fw-semibold">
-                        {{ \Carbon\Carbon::parse($order->created_at)->format('d-m-Y H:i') }}
-                    </p>
-
-                    <p class="text-secondary mb-1">Metode pembayaran</p>
-                    <p class="fw-semibold">
-                        {{ strtoupper($order->metode_bayar) }}
-                    </p>
-
-                    <p class="text-secondary mb-1">Status pesanan</p>
-
-                    @if($order->status === 'menunggu_bayar')
-                        <span class="badge bg-warning text-dark">
-                            Menunggu Pembayaran
-                        </span>
-                    @elseif($order->status === 'dikemas')
-                        <span class="badge bg-info text-dark">
-                            Dikemas
-                        </span>
-                    @elseif($order->status === 'dikirim')
-                        <span class="badge bg-primary">
-                            Dikirim
-                        </span>
-                    @elseif($order->status === 'selesai')
-                        <span class="badge bg-success">
-                            Selesai
-                        </span>
-                    @elseif($order->status === 'ditolak')
-                        <span class="badge bg-danger">
-                            Ditolak
-                        </span>
-                    @else
-                        <span class="badge bg-secondary">
-                            {{ $order->status }}
-                        </span>
-                    @endif
-
-                    <hr>
-
-                    <p class="text-secondary mb-1">Subtotal</p>
-                    <p>
-                        Rp{{ number_format($order->subtotal, 0, ',', '.') }}
-                    </p>
-
-                    <p class="text-secondary mb-1">Ongkir</p>
-                    <p>
-                        Rp{{ number_format($order->ongkir, 0, ',', '.') }}
-                    </p>
-
-                    <p class="text-secondary mb-1">Diskon</p>
-                    <p>
-                        Rp{{ number_format($order->diskon, 0, ',', '.') }}
-                    </p>
-
-                    <hr>
-
-                    <h5>
-                        Total Pembayaran:
-                        Rp{{ number_format($order->total, 0, ',', '.') }}
-                    </h5>
-
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-6">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-header bg-white">
-                    <strong>Rincian Produk</strong>
-                </div>
-
-                <div class="card-body">
-
-                    @foreach($items as $item)
-                        <div class="d-flex justify-content-between gap-3 mb-3">
-                            <div>
-                                <strong>{{ $item->nama_produk }}</strong>
-
-                                @if($item->varian)
-                                    <div class="text-secondary small">
-                                        Variasi: {{ $item->varian }}
-                                    </div>
-                                @endif
-
-                                <div class="text-secondary small">
-                                    {{ $item->qty }} x
-                                    Rp{{ number_format($item->harga_satuan, 0, ',', '.') }}
-                                </div>
-                            </div>
-
-                            <div class="text-end fw-semibold">
-                                Rp{{ number_format($item->qty * $item->harga_satuan, 0, ',', '.') }}
-                            </div>
-                        </div>
-
-                        <hr>
-                    @endforeach
-
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-    {{-- Bagian upload bukti pembayaran --}}
-    <div class="card border-0 shadow-sm mt-4">
-        <div class="card-header bg-white">
-            <strong>Bukti Pembayaran</strong>
+        <div class="card-header">
+            <h5 class="mb-0">Informasi Pesanan</h5>
         </div>
 
         <div class="card-body">
 
-            @if($order->status === 'ditolak')
+            <p>
+                <strong>Kode Pesanan:</strong>
+                {{ $order->kode_order }}
+            </p>
 
-                <div class="alert alert-danger mb-0">
-                    <h6 class="alert-heading">
-                        <i class="bi bi-x-circle"></i>
-                        Pesanan Ditolak
-                    </h6>
+            <p>
+                <strong>Tanggal Pesanan:</strong>
+                {{ $order->created_at }}
+            </p>
 
-                    Pesanan ini tidak lolos verifikasi admin.
-                    Silakan buat pesanan baru jika masih ingin membeli produk.
-                </div>
+            <p>
+                <strong>Metode Pembayaran:</strong>
+                {{ strtoupper($order->metode_bayar) }}
+            </p>
 
-                <a href="{{ route('home') }}" class="btn btn-primary mt-3">
-                    <i class="bi bi-cart"></i> Belanja Kembali
-                </a>
+            <p>
+                <strong>Status Pesanan:</strong>
 
-            @elseif($order->status !== 'menunggu_bayar')
+                @if($order->status == 'menunggu_bayar')
+                    <span class="badge bg-warning text-dark">
+                        Menunggu Pembayaran
+                    </span>
 
-                <div class="alert alert-success mb-0">
-                    Pesanan sudah diproses dengan status
-                    <strong>{{ $order->status }}</strong>.
-                    Upload bukti pembayaran sudah ditutup.
-                </div>
+                @elseif($order->status == 'dikemas')
+                    <span class="badge bg-info text-dark">
+                        Dikemas
+                    </span>
 
-                @if($order->bukti_bayar)
-                    <div class="mt-3">
-                        <p class="fw-semibold">Bukti pembayaran yang diunggah:</p>
+                @elseif($order->status == 'dikirim')
+                    <span class="badge bg-primary">
+                        Dikirim
+                    </span>
 
-                        <a href="{{ asset('storage/' . $order->bukti_bayar) }}"
-                           target="_blank">
-                            <img
-                                src="{{ asset('storage/' . $order->bukti_bayar) }}"
-                                alt="Bukti pembayaran"
-                                class="img-fluid rounded border"
-                                style="max-width: 350px;"
-                            >
-                        </a>
-                    </div>
-                @endif
+                @elseif($order->status == 'selesai')
+                    <span class="badge bg-success">
+                        Selesai
+                    </span>
 
-            @elseif($order->metode_bayar === 'cod')
+                @elseif($order->status == 'ditolak')
+                    <span class="badge bg-danger">
+                        Ditolak
+                    </span>
 
-                <div class="alert alert-info mb-0">
-                    Pesanan menggunakan metode COD.
-                    Anda tidak perlu mengunggah bukti pembayaran.
-                </div>
-
-            @else
-
-                @if($order->bukti_bayar)
-                    <div class="alert alert-success">
-                        Bukti pembayaran sudah diunggah.
-                        Silakan menunggu pemeriksaan admin.
-                    </div>
-
-                    <p class="fw-semibold">Bukti pembayaran saat ini:</p>
-
-                    <a href="{{ asset('storage/' . $order->bukti_bayar) }}"
-                       target="_blank">
-                        <img
-                            src="{{ asset('storage/' . $order->bukti_bayar) }}"
-                            alt="Bukti pembayaran"
-                            class="img-fluid rounded border mb-3"
-                            style="max-width: 350px;"
-                        >
-                    </a>
-
-                    <p class="text-secondary small">
-                        Jika ingin mengganti bukti sebelum diverifikasi,
-                        pilih file baru di bawah ini.
-                    </p>
                 @else
-                    <div class="alert alert-warning">
-                        Silakan unggah bukti pembayaran agar admin dapat
-                        memeriksa pesanan Anda.
-                    </div>
+                    <span class="badge bg-secondary">
+                        {{ $order->status }}
+                    </span>
                 @endif
 
-                <form action="{{ route('customer.orders.payment.upload', $order->id) }}"
-                      method="POST"
-                      enctype="multipart/form-data">
+            </p>
+
+        </div>
+
+    </div>
+
+    {{-- Daftar Produk --}}
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-header">
+            <h5 class="mb-0">Produk yang Dipesan</h5>
+        </div>
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table table-bordered align-middle">
+
+                    <thead class="table-light">
+                        <tr>
+                            <th>Nama Produk</th>
+                            <th>Variasi</th>
+                            <th>Harga</th>
+                            <th>Jumlah</th>
+                            <th>Subtotal</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @foreach($items as $item)
+
+                            <tr>
+
+                                <td>{{ $item->nama_produk }}</td>
+
+                                <td>{{ $item->varian ?? '-' }}</td>
+
+                                <td>
+                                    Rp {{ number_format($item->harga_satuan, 0, ',', '.') }}
+                                </td>
+
+                                <td>{{ $item->qty }}</td>
+
+                                <td>
+                                    Rp {{ number_format($item->harga_satuan * $item->qty, 0, ',', '.') }}
+                                </td>
+
+                            </tr>
+
+                        @endforeach
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <div class="text-end">
+
+                <p>
+                    Subtotal:
+                    Rp {{ number_format($order->subtotal, 0, ',', '.') }}
+                </p>
+
+                <p>
+                    Diskon:
+                    Rp {{ number_format($order->diskon ?? 0, 0, ',', '.') }}
+                </p>
+
+                <p>
+                    Ongkir:
+                    Rp {{ number_format($order->ongkir ?? 0, 0, ',', '.') }}
+                </p>
+
+                <h5>
+                    Total:
+                    Rp {{ number_format($order->total, 0, ',', '.') }}
+                </h5>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {{-- Bukti Pembayaran --}}
+    @if($order->bukti_bayar)
+
+        <div class="card shadow-sm mb-4">
+
+            <div class="card-header">
+                <h5 class="mb-0">Bukti Pembayaran</h5>
+            </div>
+
+            <div class="card-body">
+
+                <img
+                    src="{{ asset('storage/' . $order->bukti_bayar) }}"
+                    alt="Bukti Pembayaran"
+                    class="img-fluid rounded"
+                    style="max-width: 400px;"
+                >
+
+            </div>
+
+        </div>
+
+    @endif
+
+    {{-- Upload Bukti Pembayaran --}}
+    @if(
+        $order->status == 'menunggu_bayar'
+        && in_array($order->metode_bayar, ['transfer', 'ewallet'])
+    )
+
+        <div class="card shadow-sm mb-4">
+
+            <div class="card-header">
+                <h5 class="mb-0">Upload Bukti Pembayaran</h5>
+            </div>
+
+            <div class="card-body">
+
+                <p class="text-muted">
+                    Format JPG, JPEG, atau PNG dengan ukuran maksimal 2 MB.
+                </p>
+
+                <form
+                    action="{{ route('customer.orders.payment.upload', $order->id) }}"
+                    method="POST"
+                    enctype="multipart/form-data"
+                >
 
                     @csrf
 
                     <div class="mb-3">
+
                         <label for="bukti_bayar" class="form-label">
                             Pilih Bukti Pembayaran
                         </label>
@@ -274,22 +255,242 @@
                             required
                         >
 
-                        <div class="form-text">
-                            Format JPG, JPEG, atau PNG. Maksimal 2 MB.
-                        </div>
                     </div>
 
                     <button type="submit" class="btn btn-primary">
-                        <i class="bi bi-upload"></i>
-                        {{ $order->bukti_bayar ? 'Ganti Bukti Pembayaran' : 'Upload Bukti Pembayaran' }}
+                        Upload Bukti Pembayaran
                     </button>
 
                 </form>
 
-            @endif
+            </div>
 
         </div>
-    </div>
+
+    @endif
+
+    {{-- Informasi COD --}}
+    @if(
+        $order->status == 'menunggu_bayar'
+        && $order->metode_bayar == 'cod'
+    )
+
+        <div class="alert alert-info">
+            Pesanan menggunakan metode COD. Silakan menunggu proses verifikasi dari admin.
+        </div>
+
+    @endif
+
+    {{-- Informasi Pengemasan --}}
+    @if($order->status == 'dikemas')
+
+        <div class="alert alert-info">
+            Pembayaran telah diverifikasi. Pesanan sedang disiapkan oleh admin sebelum dikirim.
+        </div>
+
+    @endif
+
+    {{-- Informasi Pengiriman --}}
+    @if(in_array($order->status, ['dikirim', 'selesai']))
+
+        <div class="card shadow-sm mb-4">
+
+            <div class="card-header">
+                <h5 class="mb-0">Informasi Pengiriman</h5>
+            </div>
+
+            <div class="card-body">
+
+                <p>
+                    <strong>Status Pengiriman:</strong>
+                    {{ ucfirst($order->status) }}
+                </p>
+
+                <p>
+                    <strong>Nomor Resi:</strong>
+                    {{ $order->resi ?? 'Belum tersedia' }}
+                </p>
+
+                @if($order->status == 'dikirim')
+
+                    <p class="text-muted mb-0">
+                        Pesanan sedang dalam proses pengiriman.
+                    </p>
+
+                @else
+
+                    <div class="alert alert-success mb-0">
+                        Pesanan telah dikonfirmasi diterima.
+                    </div>
+
+                @endif
+
+            </div>
+
+        </div>
+
+    @endif
+
+    {{-- Konfirmasi Pesanan Diterima --}}
+    @if($order->status == 'dikirim')
+
+        <div class="card shadow-sm mb-4">
+
+            <div class="card-body">
+
+                <h5>Konfirmasi Penerimaan Pesanan</h5>
+
+                <p class="text-muted">
+                    Pastikan barang sudah benar-benar diterima sebelum melakukan konfirmasi.
+                </p>
+
+                <form
+                    action="{{ route('customer.orders.received', $order->id) }}"
+                    method="POST"
+                    onsubmit="return confirm('Apakah kamu yakin pesanan sudah diterima?')"
+                >
+
+                    @csrf
+                    @method('PATCH')
+
+                    <button type="submit" class="btn btn-success">
+                        Pesanan Diterima
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    @endif
+
+    {{-- Rating dan Ulasan Produk --}}
+    @if($order->status == 'selesai')
+
+        <div class="card shadow-sm mb-4">
+
+            <div class="card-header">
+                <h5 class="mb-0">Ulasan dan Rating Produk</h5>
+            </div>
+
+            <div class="card-body">
+
+                <p class="text-muted">
+                    Berikan penilaian terhadap produk yang sudah kamu terima.
+                </p>
+
+                @foreach($items->unique('product_id') as $item)
+
+                    <div class="border rounded p-3 mb-3">
+
+                        <h6>{{ $item->nama_produk }}</h6>
+
+                        <div class="mb-3">
+
+                            <a
+                                href="{{ route('products.reviews.index', $item->product_id) }}"
+                                class="text-decoration-none"
+                            >
+                                Lihat ulasan produk
+                            </a>
+
+                        </div>
+
+                        @if(in_array($item->product_id, $reviewedProductIds))
+
+                            <span class="badge bg-success">
+                                Sudah Diulas
+                            </span>
+
+                            <p class="text-muted mt-2 mb-0">
+                                Terima kasih sudah memberikan ulasan.
+                            </p>
+
+                        @else
+
+                            <form
+                                action="{{ route('customer.orders.reviews.store', [
+                                    'orderId' => $order->id,
+                                    'productId' => $item->product_id
+                                ]) }}"
+                                method="POST"
+                            >
+
+                                @csrf
+
+                                <div class="mb-3">
+
+                                    <label class="form-label">
+                                        Rating Produk
+                                    </label>
+
+                                    <select
+                                        name="rating"
+                                        class="form-select"
+                                        required
+                                    >
+                                        <option value="">
+                                            Pilih Rating
+                                        </option>
+
+                                        <option value="5">5 - Sangat Baik</option>
+                                        <option value="4">4 - Baik</option>
+                                        <option value="3">3 - Cukup</option>
+                                        <option value="2">2 - Kurang</option>
+                                        <option value="1">1 - Sangat Kurang</option>
+
+                                    </select>
+
+                                </div>
+
+                                <div class="mb-3">
+
+                                    <label class="form-label">
+                                        Komentar
+                                    </label>
+
+                                    <textarea
+                                        name="komentar"
+                                        class="form-control"
+                                        rows="3"
+                                        maxlength="1000"
+                                        placeholder="Tuliskan pendapatmu tentang produk ini..."
+                                    >{{ old('komentar') }}</textarea>
+
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">
+                                    Kirim Ulasan
+                                </button>
+
+                            </form>
+
+                        @endif
+
+                    </div>
+
+                @endforeach
+
+            </div>
+
+        </div>
+
+    @endif
+
+    {{-- Informasi Pesanan Ditolak --}}
+    @if($order->status == 'ditolak')
+
+        <div class="alert alert-danger">
+            Pesanan ini telah ditolak oleh admin.
+            Silakan kembali ke halaman belanja apabila ingin membuat pesanan baru.
+        </div>
+
+        <a href="/" class="btn btn-primary">
+            Belanja Kembali
+        </a>
+
+    @endif
 
 </div>
 
