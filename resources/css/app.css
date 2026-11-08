@@ -907,3 +907,252 @@ button {
         display: none;
     }
 }
+
+
+/* ==========================================
+   LAYOUT SPORTZONE TANPA PANEL AKUN KANAN
+========================================== */
+
+@media (min-width: 992px) {
+    .store-container {
+        grid-template-columns: 296px minmax(0, 1fr) !important;
+    }
+
+    .main-content {
+        grid-column: 2;
+        min-width: 0;
+    }
+
+    .detail-panel {
+        display: none !important;
+    }
+}
+
+/* ==========================================
+   DROPDOWN INFORMASI AKUN
+========================================== */
+
+.account-dropdown {
+    position: relative;
+}
+
+.account-area.dropdown-toggle {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border: none;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+    text-align: left;
+    padding: 8px 10px;
+    border-radius: 12px;
+}
+
+.account-area.dropdown-toggle::after {
+    display: none;
+}
+
+.account-area.dropdown-toggle:hover {
+    background: #f5f7fb;
+}
+
+.account-dropdown-menu {
+    min-width: 290px;
+    padding: 8px;
+    margin-top: 12px !important;
+    border: 1px solid #e9edf3;
+    border-radius: 14px;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+    z-index: 1100;
+}
+
+.account-dropdown-header {
+    padding: 12px;
+}
+
+.account-dropdown-header h6 {
+    font-weight: 700;
+    margin-top: 5px;
+}
+
+.account-dropdown-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 14px;
+}
+
+.account-dropdown-profile strong {
+    display: block;
+    font-size: 14px;
+    color: #171a21;
+}
+
+.account-dropdown-profile small {
+    display: block;
+    font-size: 12px;
+    color: #8b95a5;
+    overflow-wrap: anywhere;
+}
+
+.account-dropdown-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: #eaf2ff;
+    color: #1769e8;
+    font-size: 21px;
+}
+
+.account-dropdown-menu .dropdown-item {
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.account-dropdown-menu .dropdown-item:hover {
+    background: #f3f6fb;
+}
+
+.account-dropdown-menu form {
+    margin: 0;
+}
+
+@media (max-width: 991.98px) {
+    .account-dropdown-menu {
+        min-width: 260px;
+    }
+}
+
+
+
+/* ========================================
+   SPORTZONE - LAYOUT TANPA PANEL KANAN
+======================================== */
+
+@media (min-width: 992px) {
+    .store-container {
+        grid-template-columns: 296px minmax(0, 1fr) !important;
+    }
+
+    .main-content {
+        grid-column: 2;
+        min-width: 0;
+    }
+
+    .detail-panel {
+        display: none !important;
+    }
+}
+
+/* ========================================
+   DROPDOWN INFORMASI AKUN
+======================================== */
+
+.account-dropdown {
+    position: relative;
+}
+
+.account-area.dropdown-toggle {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 10px;
+    border: none;
+    border-radius: 12px;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.account-area.dropdown-toggle::after {
+    display: none;
+}
+
+.account-area.dropdown-toggle:hover {
+    background: #f5f7fb;
+}
+
+.account-dropdown-menu {
+    min-width: 290px;
+    padding: 8px;
+    margin-top: 12px !important;
+    border: 1px solid #e9edf3;
+    border-radius: 14px;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+    z-index: 1100;
+}
+
+.account-dropdown-header {
+    padding: 12px;
+}
+
+.account-dropdown-header h6 {
+    margin-top: 5px;
+    font-weight: 700;
+}
+
+.account-dropdown-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 14px;
+}
+
+.account-dropdown-profile strong {
+    display: block;
+    color: #171a21;
+    font-size: 14px;
+}
+
+.account-dropdown-identity {
+    min-width: 0;
+}
+
+.account-dropdown-profile small {
+    display: block;
+    color: #8b95a5;
+    font-size: 12px;
+    overflow-wrap: anywhere;
+}
+
+.account-dropdown-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: #eaf2ff;
+    color: #1769e8;
+    font-size: 21px;
+}
+
+.account-dropdown-menu .dropdown-item {
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.account-dropdown-menu .dropdown-item:hover {
+    background: #f3f6fb;
+}
+
+.account-dropdown-menu form {
+    margin: 0;
+}
+
+@media (max-width: 991.98px) {
+    .account-dropdown-menu {
+        min-width: 260px;
+    }
+}

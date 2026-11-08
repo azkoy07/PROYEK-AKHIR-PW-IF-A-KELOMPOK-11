@@ -45,29 +45,54 @@ class AuthController extends Controller
     }
 
     // Memproses login
-    public function login(Request $request)
-    {
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
+   
+public function login(Request $request)
+{
+    $request->validate([
+        'email' => 'required|email',
+        'password' => 'required',
+    ]);
 
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
+    $credentials = $request->only('email', 'password');
 
-            if (Auth::user()->role === 'admin') {
-                return redirect()->route('admin.dashboard');
-            }
-
-            return redirect()->route('customer.dashboard');
-        }
-
+    if (!Auth::attempt($credentials)) {
         return back()
             ->withErrors([
-                'email' => 'Email atau password tidak sesuai.',
+                'email' => 'Email atau password salah.',
             ])
             ->onlyInput('email');
     }
+
+    $request->session()->regenerate();
+
+    $user = Auth::user();
+
+    // ADMIN MASUK KE HALAMAN UTAMA TOKO
+    if ($user->role === 'admin') {
+        return redirect()
+            ->route('home')
+            ->with('success', 'Selamat datang di SportZone.');
+    }
+
+    // CUSTOMER MASUK KE DASHBOARD CUSTOMER
+    if ($user->role === 'customer') {
+        return redirect()
+            ->route('customer.dashboard')
+            ->with('success', 'Selamat datang di SportZone.');
+    }
+
+    Auth::logout();
+
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+
+    return redirect()
+        ->route('login')
+        ->withErrors([
+            'email' => 'Role akun tidak dikenali.',
+        ]);
+}
+
 
     // Memproses logout
     public function logout(Request $request)

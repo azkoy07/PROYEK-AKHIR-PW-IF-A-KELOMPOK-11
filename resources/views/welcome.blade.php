@@ -19,9 +19,20 @@
 
 <body>
 
+@php
+    // Menghitung jumlah produk di keranjang customer
+    $jumlahKeranjang = 0;
+
+    if (auth()->check() && auth()->user()->role == 'customer') {
+        $jumlahKeranjang = \Illuminate\Support\Facades\DB::table('cart_items')
+            ->where('user_id', auth()->id())
+            ->sum('qty');
+    }
+@endphp
+
 <div class="store-container">
 
-    <!-- SIDEBAR -->
+    <!-- SIDEBAR KIRI -->
     <aside class="sidebar" id="sidebar">
 
         <div class="brand">
@@ -36,31 +47,53 @@
 
         <nav class="sidebar-navigation">
 
+            <!-- Dashboard -->
             <a href="{{ route('home') }}" class="side-link active">
                 <i class="bi bi-house-door"></i>
                 Dashboard
             </a>
 
+            <!-- Semua Produk -->
             <a href="#catalog" class="side-link">
                 <i class="bi bi-grid"></i>
                 Semua Produk
             </a>
 
-            <a href="#" class="side-link">
-                <i class="bi bi-cart3"></i>
-                Keranjang
-                <span class="nav-count">0</span>
-            </a>
+            <!-- Keranjang -->
+            @if(!auth()->check() || auth()->user()->role == 'customer')
 
-            <a href="#" class="side-link">
-                <i class="bi bi-heart"></i>
-                Wishlist
-            </a>
+                <a
+                    href="{{ auth()->check() ? route('cart.index') : route('login') }}"
+                    class="side-link"
+                >
+                    <i class="bi bi-cart3"></i>
+                    Keranjang
 
-            <a href="#" class="side-link">
-                <i class="bi bi-receipt"></i>
-                Pesanan Saya
-            </a>
+                    <span class="nav-count">
+                        {{ $jumlahKeranjang }}
+                    </span>
+                </a>
+
+                <!-- Wishlist -->
+                <a href="#" class="side-link">
+                    <i class="bi bi-heart"></i>
+                    Wishlist
+                </a>
+
+                <!-- Pesanan Saya -->
+                @auth
+                    <a href="{{ route('customer.orders.index') }}" class="side-link">
+                        <i class="bi bi-receipt"></i>
+                        Pesanan Saya
+                    </a>
+                @else
+                    <a href="{{ route('login') }}" class="side-link">
+                        <i class="bi bi-receipt"></i>
+                        Pesanan Saya
+                    </a>
+                @endauth
+
+            @endif
 
         </nav>
 
@@ -70,23 +103,31 @@
 
         <div class="sidebar-navigation">
 
-            <a href="{{ route('home') }}"
-               class="category-link {{ request('category') ? '' : 'active' }}">
+            <a
+                href="{{ route('home') }}"
+                class="category-link {{ request('category') ? '' : 'active' }}"
+            >
                 Semua Kategori
             </a>
 
             @foreach($categories as $category)
+
                 <a
-                    href="{{ route('home', array_merge(request()->query(), ['category' => $category->slug, 'page' => 1])) }}"
+                    href="{{ route('home', array_merge(request()->query(), [
+                        'category' => $category->slug,
+                        'page' => 1
+                    ])) }}"
                     class="category-link {{ request('category') == $category->slug ? 'active' : '' }}"
                 >
                     {{ $category->nama_kategori }}
                 </a>
+
             @endforeach
 
         </div>
 
         <div class="sidebar-bottom">
+
             <div class="help-card">
                 <i class="bi bi-headset"></i>
 
@@ -95,6 +136,7 @@
                     <small>Hubungi layanan pelanggan</small>
                 </div>
             </div>
+
         </div>
 
     </aside>
@@ -106,7 +148,7 @@
         <!-- TOPBAR -->
         <header class="topbar">
 
-            <button class="mobile-menu" id="menuButton">
+            <button type="button" class="mobile-menu" id="menuButton">
                 <i class="bi bi-list"></i>
             </button>
 
@@ -114,14 +156,23 @@
                 <strong>SPORT<span>ZONE</span></strong>
             </div>
 
+            <!-- PENCARIAN -->
             <form action="{{ route('home') }}" method="GET" class="search-box">
 
                 @if(request('category'))
-                    <input type="hidden" name="category" value="{{ request('category') }}">
+                    <input
+                        type="hidden"
+                        name="category"
+                        value="{{ request('category') }}"
+                    >
                 @endif
 
                 @if(request('sort'))
-                    <input type="hidden" name="sort" value="{{ request('sort') }}">
+                    <input
+                        type="hidden"
+                        name="sort"
+                        value="{{ request('sort') }}"
+                    >
                 @endif
 
                 <i class="bi bi-search"></i>
@@ -139,30 +190,229 @@
 
             </form>
 
+
+            <!-- AKSI TOPBAR -->
             <div class="topbar-actions">
 
-                <button class="icon-button">
+                <!-- Notifikasi -->
+                <button type="button" class="icon-button" title="Notifikasi">
                     <i class="bi bi-bell"></i>
                     <span class="notification-dot"></span>
                 </button>
 
-                <button class="icon-button">
-                    <i class="bi bi-bag"></i>
-                    <span class="cart-dot">0</span>
-                </button>
+                <!-- Ikon Keranjang -->
+                @if(!auth()->check() || auth()->user()->role == 'customer')
 
-                <div class="account-area">
+                    <a
+                        href="{{ auth()->check() ? route('cart.index') : route('login') }}"
+                        class="icon-button text-decoration-none"
+                        title="Keranjang Belanja"
+                    >
+                        <i class="bi bi-bag"></i>
 
-                    <div class="account-avatar">
-                        <i class="bi bi-person"></i>
-                    </div>
+                        <span class="cart-dot">
+                            {{ $jumlahKeranjang }}
+                        </span>
+                    </a>
 
-                    <div class="account-info">
-                        <strong>Pengunjung</strong>
-                        <small>Belum login</small>
-                    </div>
+                @endif
 
-                    <i class="bi bi-chevron-down account-arrow"></i>
+
+                <!-- DROPDOWN INFORMASI AKUN -->
+                <div class="dropdown account-dropdown">
+
+                    <button
+                        type="button"
+                        class="account-area dropdown-toggle"
+                        id="accountDropdown"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                    >
+
+                        <div class="account-avatar">
+                            <i class="bi bi-person"></i>
+                        </div>
+
+                        <div class="account-info">
+
+                            @auth
+
+                                <strong>
+                                    {{ auth()->user()->nama }}
+                                </strong>
+
+                                <small>
+                                    {{ auth()->user()->email }}
+                                </small>
+
+                            @else
+
+                                <strong>Pengunjung</strong>
+
+                                <small>Belum login</small>
+
+                            @endauth
+
+                        </div>
+
+                        <i class="bi bi-chevron-down account-arrow"></i>
+
+                    </button>
+
+
+                    <!-- ISI DROPDOWN -->
+                    <ul
+                        class="dropdown-menu dropdown-menu-end account-dropdown-menu"
+                        aria-labelledby="accountDropdown"
+                    >
+
+                        @auth
+
+                            <!-- INFORMASI AKUN -->
+                            <li>
+
+                                <div class="account-dropdown-header">
+
+                                    <span class="section-subtitle">
+                                        YOUR ACCOUNT
+                                    </span>
+
+                                    <h6>Informasi Akun</h6>
+
+                                    <div class="account-dropdown-profile">
+
+                                        <div class="account-dropdown-avatar">
+                                            <i class="bi bi-person"></i>
+                                        </div>
+
+                                        <div class="account-dropdown-identity">
+
+                                            <strong>
+                                                {{ auth()->user()->nama }}
+                                            </strong>
+
+                                            <small>
+                                                {{ auth()->user()->email }}
+                                            </small>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="mt-3">
+                                        <span class="badge bg-primary">
+                                            {{ ucfirst(auth()->user()->role) }}
+                                        </span>
+                                    </div>
+
+                                </div>
+
+                            </li>
+
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+
+
+                            <!-- LINK DASHBOARD ADMIN -->
+                            
+                            @if(auth()->user()->role == 'admin')
+
+                                <li class="px-2">
+
+                                    <a
+                                        href="{{ route('admin.dashboard') }}"
+                                        class="dropdown-item"
+                                    >
+                                        <i class="bi bi-shop me-2"></i>
+                                        Toko Saya
+                                    </a>
+
+                                </li>
+
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+
+                            @endif
+
+
+
+                            <!-- LOGOUT -->
+                            <li class="px-2 pb-2">
+
+                                <form
+                                    action="{{ route('logout') }}"
+                                    method="POST"
+                                >
+
+                                    @csrf
+
+                                    <button
+                                        type="submit"
+                                        class="dropdown-item text-danger"
+                                    >
+                                        <i class="bi bi-box-arrow-right me-2"></i>
+                                        Logout
+                                    </button>
+
+                                </form>
+
+                            </li>
+
+
+                        @else
+
+                            <!-- PENGUNJUNG BELUM LOGIN -->
+                            <li>
+
+                                <div class="account-dropdown-header">
+
+                                    <span class="section-subtitle">
+                                        YOUR ACCOUNT
+                                    </span>
+
+                                    <h6>Selamat Datang!</h6>
+
+                                    <p class="text-secondary small mb-0">
+                                        Login atau buat akun untuk menikmati seluruh fitur belanja SportZone.
+                                    </p>
+
+                                </div>
+
+                            </li>
+
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+
+                            <li class="px-2">
+
+                                <a
+                                    href="{{ route('login') }}"
+                                    class="dropdown-item"
+                                >
+                                    <i class="bi bi-box-arrow-in-right me-2"></i>
+                                    Login
+                                </a>
+
+                            </li>
+
+                            <li class="px-2 pb-2">
+
+                                <a
+                                    href="{{ route('register') }}"
+                                    class="dropdown-item"
+                                >
+                                    <i class="bi bi-person-plus me-2"></i>
+                                    Buat Akun
+                                </a>
+
+                            </li>
+
+                        @endauth
+
+                    </ul>
 
                 </div>
 
@@ -179,7 +429,9 @@
 
                 <div class="banner-content">
 
-                    <span class="banner-tag">SPORTZONE OFFICIAL STORE</span>
+                    <span class="banner-tag">
+                        SPORTZONE OFFICIAL STORE
+                    </span>
 
                     <h1>
                         Find Your Best<br>
@@ -211,42 +463,76 @@
                 <div class="catalog-header">
 
                     <div>
-                        <span class="section-subtitle">OUR COLLECTION</span>
+
+                        <span class="section-subtitle">
+                            OUR COLLECTION
+                        </span>
 
                         <h2>Temukan Produk</h2>
 
                         <p>
                             Pilihan perlengkapan olahraga untuk kebutuhanmu.
                         </p>
+
                     </div>
 
-                    <form action="{{ route('home') }}" method="GET" class="sort-container">
+
+                    <!-- SORTING -->
+                    <form
+                        action="{{ route('home') }}"
+                        method="GET"
+                        class="sort-container"
+                    >
 
                         @if(request('search'))
-                            <input type="hidden" name="search" value="{{ request('search') }}">
+                            <input
+                                type="hidden"
+                                name="search"
+                                value="{{ request('search') }}"
+                            >
                         @endif
 
                         @if(request('category'))
-                            <input type="hidden" name="category" value="{{ request('category') }}">
+                            <input
+                                type="hidden"
+                                name="category"
+                                value="{{ request('category') }}"
+                            >
                         @endif
 
                         <span>Urutkan:</span>
 
-                        <select name="sort" class="sort-select" onchange="this.form.submit()">
+                        <select
+                            name="sort"
+                            class="sort-select"
+                            onchange="this.form.submit()"
+                        >
 
-                            <option value="newest" {{ request('sort', 'newest') == 'newest' ? 'selected' : '' }}>
+                            <option
+                                value="newest"
+                                {{ request('sort', 'newest') == 'newest' ? 'selected' : '' }}
+                            >
                                 Terbaru
                             </option>
 
-                            <option value="popular" {{ request('sort') == 'popular' ? 'selected' : '' }}>
+                            <option
+                                value="popular"
+                                {{ request('sort') == 'popular' ? 'selected' : '' }}
+                            >
                                 Terpopuler
                             </option>
 
-                            <option value="price_low" {{ request('sort') == 'price_low' ? 'selected' : '' }}>
+                            <option
+                                value="price_low"
+                                {{ request('sort') == 'price_low' ? 'selected' : '' }}
+                            >
                                 Harga Terendah
                             </option>
 
-                            <option value="price_high" {{ request('sort') == 'price_high' ? 'selected' : '' }}>
+                            <option
+                                value="price_high"
+                                {{ request('sort') == 'price_high' ? 'selected' : '' }}
+                            >
                                 Harga Tertinggi
                             </option>
 
@@ -257,6 +543,7 @@
                 </div>
 
 
+                <!-- JUMLAH PRODUK -->
                 <div class="product-count">
 
                     <span>
@@ -277,32 +564,48 @@
                 @if($products->count() > 0)
 
                     <div class="product-grid">
-                        
+
                         @foreach($products as $product)
 
-                            <a href="{{ route('products.show', $product->id) }}"
-                            class="text-decoration-none text-reset">
+                            <a
+                                href="{{ route('products.show', $product->id) }}"
+                                class="text-decoration-none text-reset"
+                            >
 
                                 <article class="product-card">
 
                                     <div class="product-image">
 
                                         @if($product->total_stok <= 0)
-                                            <span class="product-badge sold-out">Stok Habis</span>
+
+                                            <span class="product-badge sold-out">
+                                                Stok Habis
+                                            </span>
+
                                         @else
-                                            <span class="product-badge">Tersedia</span>
+
+                                            <span class="product-badge">
+                                                Tersedia
+                                            </span>
+
                                         @endif
 
+
                                         @if($product->file_name)
+
                                             <img
                                                 src="{{ asset('storage/' . $product->file_name) }}"
                                                 alt="{{ $product->nama }}"
                                             >
+
                                         @else
+
                                             <i class="bi bi-image text-secondary fs-1"></i>
+
                                         @endif
 
                                     </div>
+
 
                                     <div class="product-info">
 
@@ -313,8 +616,13 @@
                                         <h3>{{ $product->nama }}</h3>
 
                                         <div class="product-rating">
+
                                             <i class="bi bi-star-fill"></i>
-                                            <span>{{ $product->terjual }} terjual</span>
+
+                                            <span>
+                                                {{ $product->terjual }} terjual
+                                            </span>
+
                                         </div>
 
                                         <div class="product-bottom">
@@ -337,13 +645,16 @@
 
                         @endforeach
 
-
                     </div>
+
 
                     <!-- PAGINATION -->
                     <div class="mt-4">
+
                         {{ $products->links('pagination::bootstrap-5') }}
+
                     </div>
+
 
                 @else
 
@@ -353,9 +664,14 @@
 
                         <h4>Produk tidak ditemukan</h4>
 
-                        <p>Coba gunakan kata kunci atau kategori lainnya.</p>
+                        <p>
+                            Coba gunakan kata kunci atau kategori lainnya.
+                        </p>
 
-                        <a href="{{ route('home') }}" class="btn btn-primary btn-sm mt-2">
+                        <a
+                            href="{{ route('home') }}"
+                            class="btn btn-primary btn-sm mt-2"
+                        >
                             Tampilkan Semua Produk
                         </a>
 
@@ -369,63 +685,12 @@
 
     </main>
 
-
-    <!-- PANEL KANAN -->
-    <aside class="detail-panel">
-
-        <div class="detail-heading">
-            <div>
-                <span class="section-subtitle">YOUR ACCOUNT</span>
-                <h3>Informasi Akun</h3>
-            </div>
-        </div>
-
-        <div class="detail-image">
-            <i class="bi bi-person-circle text-secondary" style="font-size: 90px;"></i>
-        </div>
-
-        <div class="detail-product-heading">
-            <h2>Selamat Datang!</h2>
-        </div>
-
-        <p class="text-secondary small mt-2">
-            Masuk ke akunmu untuk menikmati seluruh fitur SportZone.
-        </p>
-
-        <div class="detail-divider"></div>
-
-        <a href="#" class="detail-cart-button d-block text-center text-decoration-none">
-            <i class="bi bi-box-arrow-in-right me-2"></i>
-            Login
-        </a>
-
-        <a href="#" class="detail-wishlist-button d-block text-center text-decoration-none">
-            Buat Akun
-        </a>
-
-        <div class="detail-footer">
-
-            <span>
-                <i class="bi bi-shield-check"></i>
-                Belanja dengan nyaman
-            </span>
-
-            <span>
-                <i class="bi bi-truck"></i>
-                Informasi pengiriman
-            </span>
-
-            <span>
-                <i class="bi bi-headset"></i>
-                Layanan pelanggan
-            </span>
-
-        </div>
-
-    </aside>
+    <!-- PANEL KANAN DIHILANGKAN -->
 
 </div>
 
+
+<!-- BOOTSTRAP JAVASCRIPT -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
