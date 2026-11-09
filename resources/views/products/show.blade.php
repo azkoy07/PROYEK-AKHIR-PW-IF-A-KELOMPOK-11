@@ -120,6 +120,37 @@
                         Rp{{ number_format($product->harga_dasar, 0, ',', '.') }}
                     </h3>
 
+                    <!-- TOMBOL WISHLIST -->
+                    @if(auth()->check() && auth()->user()->role === 'customer')
+
+                        <form
+                            action="{{ route('customer.wishlist.store', $product->id) }}"
+                            method="POST"
+                            class="mb-3"
+                        >
+                            @csrf
+
+                            <button
+                                type="submit"
+                                class="btn btn-outline-danger"
+                            >
+                                <i class="bi bi-heart me-1"></i>
+                                Tambahkan ke Wishlist
+                            </button>
+                        </form>
+
+                    @elseif(!auth()->check())
+
+                        <a
+                            href="{{ route('login') }}"
+                            class="btn btn-outline-danger mb-3"
+                        >
+                            <i class="bi bi-heart me-1"></i>
+                            Login untuk Menambahkan Wishlist
+                        </a>
+
+                    @endif
+
 
                     <!-- Jumlah Terjual -->
                     <p>

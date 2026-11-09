@@ -8,6 +8,41 @@
     <title>Detail Pesanan - SportZone</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-bottom: 25px;
+            border-left: 2px solid #dee2e6;
+            padding-left: 25px;
+        }
+
+        .timeline-item:last-child {
+            border-left-color: transparent;
+            padding-bottom: 0;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: -9px;
+            top: 0;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #0d6efd;
+            border: 3px solid #cfe2ff;
+        }
+
+        .timeline-item:last-child .timeline-dot {
+            background: #198754;
+            border-color: #d1e7dd;
+        }
+    </style>
 </head>
 
 <body class="bg-light">
@@ -102,11 +137,72 @@
                         {{ $order->status }}
                     </span>
                 @endif
-
             </p>
 
         </div>
+    </div>
 
+    {{-- Riwayat Status Pesanan --}}
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-header">
+            <h5 class="mb-0">Riwayat Status Pesanan</h5>
+        </div>
+
+        <div class="card-body">
+
+            @if($riwayatStatus->count() > 0)
+
+                <div class="timeline">
+
+                    @foreach($riwayatStatus as $riwayat)
+
+                        <div class="timeline-item">
+
+                            <div class="timeline-dot"></div>
+
+                            <h6 class="fw-bold mb-1">
+
+                                @if($riwayat->status == 'menunggu_bayar')
+                                    Menunggu Pembayaran
+
+                                @elseif($riwayat->status == 'dikemas')
+                                    Pesanan Dikemas
+
+                                @elseif($riwayat->status == 'dikirim')
+                                    Pesanan Dikirim
+
+                                @elseif($riwayat->status == 'selesai')
+                                    Pesanan Selesai
+
+                                @elseif($riwayat->status == 'ditolak')
+                                    Pesanan Ditolak
+
+                                @else
+                                    {{ ucfirst(str_replace('_', ' ', $riwayat->status)) }}
+                                @endif
+
+                            </h6>
+
+                            <small class="text-muted">
+                                {{ \Carbon\Carbon::parse($riwayat->created_at)->format('d-m-Y H:i') }}
+                            </small>
+
+                        </div>
+
+                    @endforeach
+
+                </div>
+
+            @else
+
+                <p class="text-muted mb-0">
+                    Belum ada riwayat perubahan status pesanan.
+                </p>
+
+            @endif
+
+        </div>
     </div>
 
     {{-- Daftar Produk --}}
@@ -137,7 +233,6 @@
                         @foreach($items as $item)
 
                             <tr>
-
                                 <td>{{ $item->nama_produk }}</td>
 
                                 <td>{{ $item->varian ?? '-' }}</td>
@@ -151,7 +246,6 @@
                                 <td>
                                     Rp {{ number_format($item->harga_satuan * $item->qty, 0, ',', '.') }}
                                 </td>
-
                             </tr>
 
                         @endforeach
@@ -187,7 +281,6 @@
             </div>
 
         </div>
-
     </div>
 
     {{-- Bukti Pembayaran --}}

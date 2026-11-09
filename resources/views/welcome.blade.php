@@ -75,11 +75,13 @@
                 </a>
 
                 <!-- Wishlist -->
-                <a href="#" class="side-link">
+                <a
+                    href="{{ auth()->check() ? route('customer.wishlist.index') : route('login') }}"
+                    class="side-link"
+                >
                     <i class="bi bi-heart"></i>
                     Wishlist
                 </a>
-
                 <!-- Pesanan Saya -->
                 @auth
                     <a href="{{ route('customer.orders.index') }}" class="side-link">

@@ -13,7 +13,10 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\AdminOrderController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductReviewController;
-
+use App\Http\Controllers\StoreSettingController;
+use App\Http\Controllers\AdminStockLogController;
+use App\Http\Controllers\WishlistController;
+use App\Http\Controllers\AdminVoucherController;
 
 // Halaman utama
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -111,6 +114,36 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     Route::patch('/admin/orders/{id}/ship', [AdminOrderController::class, 'ship'])
         ->name('admin.orders.ship');
+    
+    // PENGATURAN TOKO
+    Route::get('/admin/settings', [StoreSettingController::class, 'edit'])
+        ->name('admin.settings.edit');
+
+    Route::put('/admin/settings', [StoreSettingController::class, 'update'])
+        ->name('admin.settings.update');
+
+    // Riwayat perubahan stok
+    Route::get('/admin/stock-logs', [AdminStockLogController::class, 'index'])
+        ->name('admin.stock-logs.index');
+
+    // CRUD Voucher
+    Route::get('/admin/vouchers', [AdminVoucherController::class, 'index'])
+        ->name('admin.vouchers.index');
+
+    Route::get('/admin/vouchers/create', [AdminVoucherController::class, 'create'])
+        ->name('admin.vouchers.create');
+
+    Route::post('/admin/vouchers', [AdminVoucherController::class, 'store'])
+        ->name('admin.vouchers.store');
+
+    Route::get('/admin/vouchers/{id}/edit', [AdminVoucherController::class, 'edit'])
+        ->name('admin.vouchers.edit');
+
+    Route::put('/admin/vouchers/{id}', [AdminVoucherController::class, 'update'])
+        ->name('admin.vouchers.update');
+
+    Route::delete('/admin/vouchers/{id}', [AdminVoucherController::class, 'destroy'])
+        ->name('admin.vouchers.destroy');
 
 });
 
@@ -190,6 +223,23 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
         '/customer/orders/{orderId}/reviews/{productId}',
         [ProductReviewController::class, 'store']
     )->name('customer.orders.reviews.store');
+
+    // WISHLIST
+    Route::get('/customer/wishlist', [WishlistController::class, 'index'])
+        ->name('customer.wishlist.index');
+
+    Route::post('/customer/wishlist/{productId}', [WishlistController::class, 'store'])
+        ->name('customer.wishlist.store');
+
+    Route::delete('/customer/wishlist/{productId}', [WishlistController::class, 'destroy'])
+        ->name('customer.wishlist.destroy');
+
+    // Penggunaan Voucher saat Checkout
+    Route::post('/checkout/voucher', [CheckoutController::class, 'applyVoucher'])
+        ->name('checkout.voucher.apply');
+
+    Route::delete('/checkout/voucher', [CheckoutController::class, 'removeVoucher'])
+        ->name('checkout.voucher.remove');
 
 
 });

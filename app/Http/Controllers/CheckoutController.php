@@ -8,12 +8,9 @@ use Illuminate\Support\Facades\DB;
 
 class CheckoutController extends Controller
 {
-    // Menampilkan halaman checkout
-    public function index()
+    // Menghitung subtotal berdasarkan barang yang sedang akan dibeli
+    private function getCheckoutSubtotal($userId)
     {
-        $userId = Auth::id();
-
-        // Mengambil data pembelian langsung jika ada
         $direct = session('checkout_direct');
 
         if ($direct) {
@@ -23,7 +20,74 @@ class CheckoutController extends Controller
                 ->first();
 
             if (!$product) {
-                session()->forget('checkout_direct');
+                return null;
+            }
+
+            if ($direct['variant_id']) {
+                $variant = DB::table('product_variants')
+                    ->where('id', $direct['variant_id'])
+                    ->where('product_id', $product->id)
+                    ->first();
+
+                if (!$variant) {
+                    return null;
+                }
+
+                return $variant->harga * $direct['qty'];
+            }
+
+            return $product->harga_dasar * $direct['qty'];
+        }
+
+        $items = DB::table('cart_items')
+            ->join('products', 'cart_items.product_id', '=', 'products.id')
+            ->leftJoin(
+                'product_variants',
+                'cart_items.variant_id',
+                '=',
+                'product_variants.id'
+            )
+            ->where('cart_items.user_id', $userId)
+            ->where('products.status', 'aktif')
+            ->select(
+                'cart_items.qty',
+                'cart_items.variant_id',
+                'products.harga_dasar',
+                'product_variants.harga'
+            )
+            ->get();
+
+        if ($items->isEmpty()) {
+            return null;
+        }
+
+        return $items->sum(function ($item) {
+            $harga = $item->variant_id
+                ? $item->harga
+                : $item->harga_dasar;
+
+            return $harga * $item->qty;
+        });
+    }
+
+    // Menampilkan halaman checkout
+    public function index()
+    {
+        $userId = Auth::id();
+
+        $direct = session('checkout_direct');
+
+        if ($direct) {
+            $product = DB::table('products')
+                ->where('id', $direct['product_id'])
+                ->where('status', 'aktif')
+                ->first();
+
+            if (!$product) {
+                session()->forget([
+                    'checkout_direct',
+                    'checkout_voucher'
+                ]);
 
                 return redirect()
                     ->route('home')
@@ -39,7 +103,10 @@ class CheckoutController extends Controller
                     ->first();
 
                 if (!$variant) {
-                    session()->forget('checkout_direct');
+                    session()->forget([
+                        'checkout_direct',
+                        'checkout_voucher'
+                    ]);
 
                     return redirect()
                         ->route('products.show', $product->id)
@@ -70,7 +137,6 @@ class CheckoutController extends Controller
             ]);
 
         } else {
-            // Mengambil seluruh isi keranjang
             $items = DB::table('cart_items')
                 ->join(
                     'products',
@@ -117,29 +183,127 @@ class CheckoutController extends Controller
                 ->get();
 
             if ($items->isEmpty()) {
+                session()->forget('checkout_voucher');
+
                 return redirect()
                     ->route('cart.index')
                     ->with('error', 'Keranjang masih kosong.');
             }
         }
 
-        // Mengambil alamat milik customer
         $addresses = DB::table('addresses')
             ->where('user_id', $userId)
             ->orderByDesc('is_utama')
             ->orderByDesc('id')
             ->get();
 
+        // Menghitung subtotal
         $total = $items->sum(function ($item) {
             return $item->harga_satuan * $item->qty;
         });
+
+        // Mengambil voucher yang sedang diterapkan
+        $voucher = null;
+        $diskon = 0;
+
+        $voucherSession = session('checkout_voucher');
+
+        if ($voucherSession) {
+            $voucher = DB::table('vouchers')
+                ->where('id', $voucherSession['id'])
+                ->first();
+
+            if (
+                $voucher &&
+                $voucher->kuota > 0 &&
+                $voucher->expired >= now()->toDateString() &&
+                $total >= $voucher->min_belanja
+            ) {
+                $diskon = min($voucher->potongan, $total);
+            } else {
+                session()->forget('checkout_voucher');
+                $voucher = null;
+            }
+        }
+
+        $totalBayar = $total - $diskon;
 
         return view('customer.checkout.index', compact(
             'items',
             'addresses',
             'total',
-            'direct'
+            'direct',
+            'voucher',
+            'diskon',
+            'totalBayar'
         ));
+    }
+
+    // Menerapkan voucher
+    public function applyVoucher(Request $request)
+    {
+        $validated = $request->validate([
+            'kode' => 'required|string|max:30',
+        ], [
+            'kode.required' => 'Masukkan kode voucher terlebih dahulu.',
+        ]);
+
+        $userId = Auth::id();
+
+        $subtotal = $this->getCheckoutSubtotal($userId);
+
+        if ($subtotal === null || $subtotal <= 0) {
+            return redirect()
+                ->route('checkout.index')
+                ->with('error', 'Barang checkout tidak tersedia.');
+        }
+
+        $kode = strtoupper(trim($validated['kode']));
+
+        $voucher = DB::table('vouchers')
+            ->where('kode', $kode)
+            ->first();
+
+        if (!$voucher) {
+            return back()->with('error', 'Kode voucher tidak ditemukan.');
+        }
+
+        if ($voucher->expired < now()->toDateString()) {
+            return back()->with('error', 'Voucher sudah kedaluwarsa.');
+        }
+
+        if ($voucher->kuota <= 0) {
+            return back()->with('error', 'Kuota voucher sudah habis.');
+        }
+
+        if ($subtotal < $voucher->min_belanja) {
+            return back()->with(
+                'error',
+                'Minimal belanja untuk voucher ini adalah Rp' .
+                number_format($voucher->min_belanja, 0, ',', '.')
+            );
+        }
+
+        session([
+            'checkout_voucher' => [
+                'id' => $voucher->id,
+                'kode' => $voucher->kode,
+            ]
+        ]);
+
+        return redirect()
+            ->route('checkout.index')
+            ->with('success', 'Voucher berhasil digunakan.');
+    }
+
+    // Menghapus voucher dari checkout
+    public function removeVoucher()
+    {
+        session()->forget('checkout_voucher');
+
+        return redirect()
+            ->route('checkout.index')
+            ->with('success', 'Voucher berhasil dilepas.');
     }
 
     // Proses Beli Sekarang dari detail produk
@@ -202,7 +366,9 @@ class CheckoutController extends Controller
             );
         }
 
-        // Menyimpan pilihan pembelian langsung ke session
+        // Pembelian langsung dimulai sebagai checkout baru
+        session()->forget('checkout_voucher');
+
         session([
             'checkout_direct' => [
                 'product_id' => $product->id,
@@ -224,7 +390,6 @@ class CheckoutController extends Controller
 
         $userId = Auth::id();
 
-        // Memastikan alamat merupakan milik customer
         $address = DB::table('addresses')
             ->where('id', $validated['address_id'])
             ->where('user_id', $userId)
@@ -237,13 +402,14 @@ class CheckoutController extends Controller
         }
 
         $direct = session('checkout_direct');
+        $voucherSession = session('checkout_voucher');
 
         $orderId = DB::transaction(function () use (
             $validated,
             $userId,
-            $direct
+            $direct,
+            $voucherSession
         ) {
-            // Mengambil barang yang akan dipesan
             if ($direct) {
                 $cartItems = collect([
                     (object) [
@@ -271,7 +437,6 @@ class CheckoutController extends Controller
             $subtotal = 0;
             $orderDetails = [];
 
-            // Memeriksa produk dan stok satu per satu
             foreach ($cartItems as $item) {
                 $product = DB::table('products')
                     ->where('id', $item->product_id)
@@ -332,7 +497,7 @@ class CheckoutController extends Controller
                     'harga_satuan' => $harga,
                 ];
 
-                // Mengurangi stok
+                // Mengurangi stok produk
                 if ($variant) {
                     DB::table('product_variants')
                         ->where('id', $variant->id)
@@ -344,20 +509,56 @@ class CheckoutController extends Controller
                 }
             }
 
-            // Untuk tahap awal, ongkir dan diskon masih 0
+            // Validasi ulang voucher di dalam transaksi
+            $voucherId = null;
             $diskon = 0;
+
+            if ($voucherSession) {
+                $voucher = DB::table('vouchers')
+                    ->where('id', $voucherSession['id'])
+                    ->lockForUpdate()
+                    ->first();
+
+                if (!$voucher) {
+                    abort(422, 'Voucher tidak ditemukan.');
+                }
+
+                if ($voucher->expired < now()->toDateString()) {
+                    abort(422, 'Voucher sudah kedaluwarsa.');
+                }
+
+                if ($voucher->kuota <= 0) {
+                    abort(422, 'Kuota voucher sudah habis.');
+                }
+
+                if ($subtotal < $voucher->min_belanja) {
+                    abort(422, 'Subtotal tidak memenuhi minimal belanja voucher.');
+                }
+
+                $voucherId = $voucher->id;
+                $diskon = min($voucher->potongan, $subtotal);
+
+                // Mengurangi kuota voucher
+                $berhasilKurangiKuota = DB::table('vouchers')
+                    ->where('id', $voucher->id)
+                    ->where('kuota', '>', 0)
+                    ->decrement('kuota');
+
+                if (!$berhasilKurangiKuota) {
+                    abort(422, 'Kuota voucher sudah habis.');
+                }
+            }
+
             $ongkir = 0;
             $total = $subtotal + $ongkir - $diskon;
 
-            // Membuat kode pesanan
             $kodeOrder = 'ORD-' . date('YmdHis') . random_int(100, 999);
 
-            // Menyimpan data pesanan
             $orderId = DB::table('orders')->insertGetId([
                 'kode_order' => $kodeOrder,
                 'user_id' => $userId,
                 'address_id' => $validated['address_id'],
-                'voucher_id' => null,
+                'voucher_id' => $voucherId,
                 'subtotal' => $subtotal,
                 'diskon' => $diskon,
                 'ongkir' => $ongkir,
@@ -366,14 +567,18 @@ class CheckoutController extends Controller
                 'status' => 'menunggu_bayar',
             ]);
 
-            // Menyimpan rincian produk pesanan
+            DB::table('order_status_history')->insert([
+                'order_id' => $orderId,
+                'status' => 'menunggu_bayar',
+                'created_at' => now(),
+            ]);
+
             foreach ($orderDetails as $detail) {
                 $detail['order_id'] = $orderId;
 
                 DB::table('order_items')->insert($detail);
             }
 
-            // Jika checkout dari keranjang, kosongkan keranjang
             if (!$direct) {
                 DB::table('cart_items')
                     ->where('user_id', $userId)
@@ -383,8 +588,10 @@ class CheckoutController extends Controller
             return $orderId;
         });
 
-        // Hapus session pembelian langsung setelah pesanan berhasil
-        session()->forget('checkout_direct');
+        session()->forget([
+            'checkout_direct',
+            'checkout_voucher'
+        ]);
 
         return redirect()
             ->route('checkout.success', $orderId)

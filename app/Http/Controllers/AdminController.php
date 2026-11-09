@@ -2,28 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
     public function index()
     {
-        // Menghitung jumlah produk
+        // Menghitung total produk
         $totalProduk = DB::table('products')->count();
 
-        // Menghitung jumlah kategori
+        // Menghitung total kategori
         $totalKategori = DB::table('categories')->count();
 
-        // Menghitung jumlah pelanggan
+        // Menghitung total customer
         $totalCustomer = DB::table('users')
             ->where('role', 'customer')
             ->count();
 
-        // Menghitung jumlah pesanan
+        // Menghitung total pesanan
         $totalPesanan = DB::table('orders')->count();
 
-        // Mengambil 5 produk terbaru
+        // Mengambil lima produk terbaru
         $produkTerbaru = DB::table('products')
             ->leftJoin(
                 'categories',
@@ -44,13 +43,18 @@ class AdminController extends Controller
             ->limit(5)
             ->get();
 
+        // Mengambil logo dan informasi toko
+        $settings = DB::table('store_settings')
+            ->where('id', 1)
+            ->first();
+
         return view('admin.dashboard', compact(
             'totalProduk',
             'totalKategori',
             'totalCustomer',
             'totalPesanan',
-            'produkTerbaru'
+            'produkTerbaru',
+            'settings'
         ));
     }
 }
-

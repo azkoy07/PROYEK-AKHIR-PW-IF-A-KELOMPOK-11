@@ -36,6 +36,7 @@ class PaymentController extends Controller
             abort(404);
         }
 
+        // Mengambil detail produk dalam pesanan
         $items = DB::table('order_items')
             ->where('order_id', $id)
             ->get();
@@ -47,10 +48,17 @@ class PaymentController extends Controller
             ->pluck('product_id')
             ->toArray();
 
+        // Mengambil riwayat perubahan status pesanan
+        $riwayatStatus = DB::table('order_status_history')
+            ->where('order_id', $id)
+            ->orderBy('created_at', 'asc')
+            ->get();
+
         return view('customer.orders.show', compact(
             'order',
             'items',
-            'reviewedProductIds'
+            'reviewedProductIds',
+            'riwayatStatus'
         ));
     }
 

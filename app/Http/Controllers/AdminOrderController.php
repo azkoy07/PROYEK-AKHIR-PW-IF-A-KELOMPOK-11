@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class AdminOrderController extends Controller
 {
-    // Menampilkan seluruh pesanan
+    // Menampilkan semua pesanan
     public function index()
     {
         $orders = DB::table('orders')
@@ -28,7 +28,12 @@ class AdminOrderController extends Controller
     {
         $order = DB::table('orders')
             ->join('users', 'orders.user_id', '=', 'users.id')
-            ->leftJoin('addresses', 'orders.address_id', '=', 'addresses.id')
+            ->leftJoin(
+                'addresses',
+                'orders.address_id',
+                '=',
+                'addresses.id'
+            )
             ->where('orders.id', $id)
             ->select(
                 'orders.*',
@@ -50,7 +55,10 @@ class AdminOrderController extends Controller
             ->where('order_id', $id)
             ->get();
 
-        return view('admin.orders.show', compact('order', 'items'));
+        return view('admin.orders.show', compact(
+            'order',
+            'items'
+        ));
     }
 
     // Memverifikasi pembayaran
@@ -71,6 +79,7 @@ class AdminOrderController extends Controller
                 return 'Pesanan ini sudah diproses sebelumnya.';
             }
 
+            // Transfer dan e-wallet wajib memiliki bukti pembayaran
             if (
                 in_array($order->metode_bayar, ['transfer', 'ewallet'])
                 && !$order->bukti_bayar
@@ -104,17 +113,20 @@ class AdminOrderController extends Controller
                 abort(404);
             }
 
+            // Hanya pesanan menunggu pembayaran yang dapat ditolak
             if ($order->status !== 'menunggu_bayar') {
                 return 'Pesanan ini sudah diproses sebelumnya.';
             }
 
+            // Mengambil seluruh produk dalam pesanan
             $items = DB::table('order_items')
                 ->where('order_id', $id)
                 ->get();
 
             foreach ($items as $item) {
 
-                if ($item->variant_id) {
+                // Produk yang memiliki variasi
+                if ($item->variant_id !== null) {
 
                     $variant = DB::table('product_variants')
                         ->where('id', $item->variant_id)
@@ -126,12 +138,15 @@ class AdminOrderController extends Controller
                         abort(422, 'Data variasi produk tidak ditemukan.');
                     }
 
+                    // Mengembalikan stok variasi
+                    // trg_log_stok akan mencatat perubahan ini
                     DB::table('product_variants')
                         ->where('id', $variant->id)
                         ->increment('stok', $item->qty);
 
                 } else {
 
+                    // Produk tanpa variasi
                     $product = DB::table('products')
                         ->where('id', $item->product_id)
                         ->lockForUpdate()
@@ -141,12 +156,16 @@ class AdminOrderController extends Controller
                         abort(422, 'Data produk tidak ditemukan.');
                     }
 
+                    // Mengembalikan stok produk biasa
+                    // trg_log_stok_produk akan mencatat perubahan ini
                     DB::table('products')
-                        ->where('id', $product->id)
+                        ->where('id', $item->product_id)
                         ->increment('stok', $item->qty);
                 }
             }
 
+            // Mengubah status pesanan
+            // Trigger riwayat status akan berjalan otomatis
             DB::table('orders')
                 ->where('id', $id)
                 ->update([
@@ -169,7 +188,7 @@ class AdminOrderController extends Controller
             'resi.max' => 'Nomor resi maksimal 50 karakter.',
         ]);
 
-        $message = DB::transaction(function () use ($id, $request) {
+        $result = DB::transaction(function () use ($id, $request) {
 
             $order = DB::table('orders')
                 ->where('id', $id)
@@ -194,7 +213,7 @@ class AdminOrderController extends Controller
             return true;
         });
 
-        if (!$message) {
+        if (!$result) {
             return back()->with(
                 'error',
                 'Pesanan hanya dapat dikirim jika berstatus dikemas.'
@@ -203,6 +222,9 @@ class AdminOrderController extends Controller
 
         return redirect()
             ->route('admin.orders.show', $id)
-            ->with('success', 'Pesanan berhasil dikirim dan nomor resi tersimpan.');
+            ->with(
+                'success',
+                'Pesanan berhasil dikirim dan nomor resi tersimpan.'
+            );
     }
 }
