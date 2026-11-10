@@ -588,6 +588,64 @@ class CheckoutController extends Controller
             return $orderId;
         });
 
+       
+        // ==========================================
+        // MEMBUAT NOTIFIKASI PESANAN UNTUK ADMIN
+        // DAN CUSTOMER
+        // ==========================================
+
+        $kodeOrderNotifikasi = DB::table('orders')
+            ->where('id', $orderId)
+            ->value('kode_order');
+
+        // 1. NOTIFIKASI UNTUK ADMIN
+        DB::table('notifications')->updateOrInsert(
+            [
+                'recipient_key' => 'admin',
+                'source_key' => 'order:' . $orderId . ':menunggu-pembayaran',
+            ],
+            [
+                'user_id' => null,
+                'recipient_type' => 'admin',
+                'judul' => 'Pesanan Baru',
+                'pesan' => 'Pesanan baru dengan kode ' .
+                    $kodeOrderNotifikasi .
+                    ' berhasil dibuat dan menunggu pembayaran.',
+                'ikon' => 'bi-cart',
+                'warna' => 'warning',
+                'link' => route('admin.orders.index'),
+                'read_at' => null,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
+        );
+
+        // 2. NOTIFIKASI UNTUK CUSTOMER
+        DB::table('notifications')->updateOrInsert(
+            [
+                'recipient_key' => 'customer:' . $userId,
+                'source_key' => 'order:' . $orderId .
+                    ':customer:belum-bayar',
+            ],
+            [
+                'user_id' => $userId,
+                'recipient_type' => 'customer',
+                'judul' => 'Menunggu Pembayaran',
+                'pesan' => 'Silakan selesaikan pembayaran pesanan ' .
+                    $kodeOrderNotifikasi . '.',
+                'ikon' => 'bi-credit-card',
+                'warna' => 'warning',
+                'link' => route('customer.orders.show', $orderId),
+                'read_at' => null,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
+        );
+
+        // ==========================================
+        // MEMBERSIHKAN SESSION CHECKOUT
+        // ==========================================
+
         session()->forget([
             'checkout_direct',
             'checkout_voucher'

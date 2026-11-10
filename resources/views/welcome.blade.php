@@ -15,7 +15,90 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+<style>
+    .notification-count {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+
+    min-width: 15px;
+    height: 15px;
+    padding: 0 4px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: #dc3545;
+    color: white;
+
+    font-size: 9px;
+    font-weight: 600;
+    line-height: 1;
+
+    border-radius: 50px;
+    border: 1px solid white;
+}
+
+.notification-item {
+    transition: background-color 0.2s ease;
+}
+
+.notification-item:hover {
+    background-color: #f5f7fa;
+}
+
+.notification-item:active {
+    background-color: #e9eef5;
+}
+
+.notification-item .fw-semibold {
+    font-size: 13px;
+}
+
+.notification-item .small {
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+
+/* Titik untuk notifikasi yang belum dibaca */
+.notification-unread-dot {
+    width: 7px;
+    height: 7px;
+    min-width: 7px;
+    margin-top: 5px;
+    background: #0d6efd;
+    border-radius: 50%;
+}
+
+/* Dropdown notifikasi */
+.notification-item {
+    white-space: normal;
+    transition: background-color .2s ease;
+}
+
+.notification-item:hover {
+    background-color: #f5f7fa;
+}
+
+.notification-item:active {
+    background-color: #e9eef5;
+}
+
+.notification-item .fw-semibold {
+    font-size: 13px;
+}
+
+.notification-item .small {
+    font-size: 11px;
+    line-height: 1.5;
+}
+</style>
+
 </head>
+
+
 
 <body>
 
@@ -196,11 +279,106 @@
             <!-- AKSI TOPBAR -->
             <div class="topbar-actions">
 
-                <!-- Notifikasi -->
-                <button type="button" class="icon-button" title="Notifikasi">
-                    <i class="bi bi-bell"></i>
-                    <span class="notification-dot"></span>
-                </button>
+                <!-- NOTIFIKASI -->
+                <div class="dropdown">
+                    <button
+                        type="button"
+                        class="icon-button position-relative"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                        title="Notifikasi"
+                    >
+                        <i class="bi bi-bell"></i>
+
+                        @if($jumlahNotifikasi > 0)
+                            <span class="notification-count">
+                                {{ $jumlahNotifikasi > 9 ? '9+' : $jumlahNotifikasi }}
+                            </span>
+                        @endif
+                    </button>
+
+                    <div class="dropdown-menu dropdown-menu-end p-0 shadow border-0"
+                         style="width: 330px; max-width: 90vw; border-radius: 12px;">
+
+                        <!-- HEADER NOTIFIKASI -->
+                        <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
+                            <div>
+                                <h6 class="mb-0 fw-bold">Notifikasi</h6>
+                                <small class="text-muted">
+                                    {{ $jumlahNotifikasi }} belum dibaca
+                                </small>
+                            </div>
+                            <i class="bi bi-bell text-primary"></i>
+                        </div>
+
+                        <!-- DAFTAR NOTIFIKASI -->
+                        <div style="max-height: 350px; overflow-y: auto;">
+                            @forelse($notifikasi as $item)
+                                <a
+                                    href="{{ route('notifications.read', $item->id) }}"
+                                    class="dropdown-item text-wrap p-3 border-bottom notification-item"
+                                >
+                                    <div class="d-flex gap-3">
+                                        <div class="text-{{ $item->warna }} fs-5">
+                                            <i class="bi {{ $item->ikon }}"></i>
+                                        </div>
+
+                                        <div class="flex-grow-1">
+                                            <div class="d-flex justify-content-between gap-2">
+                                                <div class="fw-semibold mb-1">
+                                                    {{ $item->judul }}
+                                                </div>
+
+                                                @if($item->read_at === null)
+                                                    <span class="notification-unread-dot"></span>
+                                                @endif
+                                            </div>
+
+                                            <div class="small text-muted">
+                                                {{ $item->pesan }}
+                                            </div>
+
+                                            <div class="small text-secondary mt-1">
+                                                {{ \Carbon\Carbon::parse($item->created_at)->diffForHumans() }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            @empty
+                                <div class="text-center p-4">
+                                    <i class="bi bi-bell-slash fs-2 text-muted"></i>
+                                    <p class="fw-semibold mt-2 mb-1">
+                                        Belum Ada Notifikasi
+                                    </p>
+                                    <small class="text-muted">
+                                        Informasi terbaru akan muncul di sini.
+                                    </small>
+                                </div>
+                            @endforelse
+                        </div>
+
+                        <!-- FOOTER NOTIFIKASI -->
+                        <div class="p-2 border-top">
+                            @if($jumlahNotifikasi > 0)
+                                <form action="{{ route('notifications.read-all') }}"
+                                      method="POST"
+                                      class="mb-2">
+                                    @csrf
+                                    <button type="submit" class="btn btn-sm btn-light w-100">
+                                        <i class="bi bi-check2-all"></i>
+                                        Tandai Semua Dibaca
+                                    </button>
+                                </form>
+                            @endif
+
+                            <a href="{{ route('notifications.index') }}"
+                               class="btn btn-sm btn-outline-primary w-100">
+                                Lihat Semua Notifikasi
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
 
                 <!-- Ikon Keranjang -->
                 @if(!auth()->check() || auth()->user()->role == 'customer')

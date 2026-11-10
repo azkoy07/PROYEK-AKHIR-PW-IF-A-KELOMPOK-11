@@ -17,6 +17,8 @@ use App\Http\Controllers\StoreSettingController;
 use App\Http\Controllers\AdminStockLogController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\AdminVoucherController;
+use App\Http\Controllers\AdminReportController;
+use App\Http\Controllers\NotificationController;
 
 // Halaman utama
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -44,6 +46,19 @@ Route::get(
 
 Route::post('/login', [AuthController::class, 'login'])
     ->name('login.process');
+
+    // ==========================================
+// NOTIFIKASI ADMIN, CUSTOMER, DAN GUEST
+// ==========================================
+
+Route::get('/notifications', [NotificationController::class, 'index'])
+    ->name('notifications.index');
+
+Route::get('/notifications/{id}/read', [NotificationController::class, 'read'])
+    ->name('notifications.read');
+
+Route::post('/notifications/read-all', [NotificationController::class, 'readAll'])
+    ->name('notifications.read-all');
 
 
 // Logout
@@ -144,6 +159,10 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     Route::delete('/admin/vouchers/{id}', [AdminVoucherController::class, 'destroy'])
         ->name('admin.vouchers.destroy');
+
+    // Laporan Penjualan
+    Route::get('/admin/reports', [AdminReportController::class, 'index'])
+        ->name('admin.reports.index');
 
 });
 

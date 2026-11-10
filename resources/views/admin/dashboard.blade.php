@@ -76,11 +76,30 @@
                 Riwayat Stok
             </a>
 
+            <!-- Laporan Penjualan -->
+            <a
+                href="{{ route('admin.reports.index') }}"
+                class="d-block text-white text-decoration-none mb-3"
+            >
+                <i class="bi bi-bar-chart-line me-2"></i>
+                Laporan Penjualan
+            </a>
+
             <hr class="border-secondary">
 
             <p class="text-secondary small fw-semibold">
                 PENGELOLAAN TOKO
             </p>
+
+            <!-- Voucher -->
+            <a
+                href="{{ route('admin.vouchers.index') }}"
+                class="d-block text-white text-decoration-none mb-3"
+            >
+                <i class="bi bi-ticket-perforated me-2"></i>
+                Voucher
+            </a>
+
 
             <!-- Pengaturan Toko -->
             <a
@@ -106,18 +125,14 @@
                 Lihat Toko
             </a>
 
-            <!-- Logout -->
-            <form action="{{ route('logout') }}" method="POST" class="mt-4">
-                @csrf
-
-                <button
-                    type="submit"
-                    class="btn btn-outline-light w-100"
-                >
-                    <i class="bi bi-box-arrow-right me-2"></i>
-                    Logout
-                </button>
-            </form>
+            <!-- KEMBALI KE HALAMAN UTAMA -->
+            <a
+                href="{{ route('home') }}"
+                class="btn btn-outline-light w-100 mt-4"
+            >
+                <i class="bi bi-arrow-left-circle me-2"></i>
+                Kembali ke Halaman Utama
+            </a>
 
         </div>
 
@@ -341,6 +356,17 @@
                             </a>
                         </div>
 
+                        <!-- LAPORAN PENJUALAN -->
+                        <div class="col-md-3">
+                            <a
+                                href="{{ route('admin.reports.index') }}"
+                                class="btn btn-outline-primary w-100 py-3"
+                            >
+                                <i class="bi bi-bar-chart-line fs-5 d-block mb-1"></i>
+                                Laporan Penjualan
+                            </a>
+                        </div>
+
                     </div>
 
                 </div>
@@ -456,4 +482,3 @@
 
 </body>
 </html>
-```
