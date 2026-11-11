@@ -1,26 +1,17 @@
 
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Voucher - SportZone</title>
+@extends('layouts.admin')
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-          rel="stylesheet">
-</head>
+@section('title', 'Edit Voucher - SportZone')
+@section('page_title', 'Edit Voucher')
+@section('page_subtitle', 'Perbarui informasi dan ketentuan voucher SportZone.')
 
-<body class="bg-light">
+@section('content')
 
-<div class="container py-5">
+<div class="w-100">
 
-    <div class="mb-4">
-        <h2>Edit Voucher</h2>
-        <p class="text-muted">Perbarui informasi voucher</p>
-    </div>
+    <div class="card border shadow-sm rounded-3 bg-white">
 
-    <div class="card shadow-sm">
-        <div class="card-body">
+        <div class="card-body p-4">
 
             <form action="{{ route('admin.vouchers.update', $voucher->id) }}"
                   method="POST">
@@ -28,88 +19,111 @@
                 @csrf
                 @method('PUT')
 
-                <div class="mb-3">
-                    <label class="form-label">Kode Voucher</label>
+                <div class="row g-4">
 
-                    <input type="text"
-                           name="kode"
-                           class="form-control @error('kode') is-invalid @enderror"
-                           value="{{ old('kode', $voucher->kode) }}"
-                           maxlength="30"
-                           required>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">
+                            Kode Voucher <span class="text-danger">*</span>
+                        </label>
 
-                    @error('kode')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
+                        <input type="text"
+                               name="kode"
+                               class="form-control @error('kode') is-invalid @enderror"
+                               value="{{ old('kode', $voucher->kode) }}"
+                               maxlength="30"
+                               required>
+
+                        @error('kode')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">
+                            Nominal Potongan (Rp) <span class="text-danger">*</span>
+                        </label>
+
+                        <input type="number"
+                               name="potongan"
+                               class="form-control @error('potongan') is-invalid @enderror"
+                               value="{{ old('potongan', $voucher->potongan) }}"
+                               min="1"
+                               required>
+
+                        @error('potongan')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">
+                            Minimal Belanja (Rp) <span class="text-danger">*</span>
+                        </label>
+
+                        <input type="number"
+                               name="min_belanja"
+                               class="form-control @error('min_belanja') is-invalid @enderror"
+                               value="{{ old('min_belanja', $voucher->min_belanja) }}"
+                               min="0"
+                               required>
+
+                        @error('min_belanja')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+
+                        <div class="form-text">
+                            Isi 0 jika voucher tidak memiliki minimal belanja.
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">
+                            Kuota Voucher <span class="text-danger">*</span>
+                        </label>
+
+                        <input type="number"
+                               name="kuota"
+                               class="form-control @error('kuota') is-invalid @enderror"
+                               value="{{ old('kuota', $voucher->kuota) }}"
+                               min="0"
+                               required>
+
+                        @error('kuota')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">
+                            Tanggal Kedaluwarsa <span class="text-danger">*</span>
+                        </label>
+
+                        <input type="date"
+                               name="expired"
+                               class="form-control @error('expired') is-invalid @enderror"
+                               value="{{ old('expired', \Carbon\Carbon::parse($voucher->expired)->format('Y-m-d')) }}"
+                               required>
+
+                        @error('expired')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
                 </div>
 
-                <div class="mb-3">
-                    <label class="form-label">Nominal Potongan (Rp)</label>
+                <hr class="my-4">
 
-                    <input type="number"
-                           name="potongan"
-                           class="form-control @error('potongan') is-invalid @enderror"
-                           value="{{ old('potongan', $voucher->potongan) }}"
-                           min="1"
-                           required>
+                <div class="d-flex justify-content-end gap-2">
+                    <a href="{{ route('admin.vouchers.index') }}"
+                       class="btn btn-outline-secondary px-4">
+                        Batal
+                    </a>
 
-                    @error('potongan')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
+                    <button type="submit" class="btn btn-primary px-4">
+                        <i class="bi bi-check-lg me-1"></i>
+                        Simpan Perubahan
+                    </button>
                 </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Minimal Belanja (Rp)</label>
-
-                    <input type="number"
-                           name="min_belanja"
-                           class="form-control @error('min_belanja') is-invalid @enderror"
-                           value="{{ old('min_belanja', $voucher->min_belanja) }}"
-                           min="0"
-                           required>
-
-                    @error('min_belanja')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Kuota Voucher</label>
-
-                    <input type="number"
-                           name="kuota"
-                           class="form-control @error('kuota') is-invalid @enderror"
-                           value="{{ old('kuota', $voucher->kuota) }}"
-                           min="0"
-                           required>
-
-                    @error('kuota')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
-
-                <div class="mb-4">
-                    <label class="form-label">Tanggal Kedaluwarsa</label>
-
-                    <input type="date"
-                           name="expired"
-                           class="form-control @error('expired') is-invalid @enderror"
-                           value="{{ old('expired', $voucher->expired) }}"
-                           required>
-
-                    @error('expired')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
-
-                <button type="submit" class="btn btn-primary">
-                    Simpan Perubahan
-                </button>
-
-                <a href="{{ route('admin.vouchers.index') }}"
-                   class="btn btn-secondary">
-                    Batal
-                </a>
 
             </form>
 
@@ -118,5 +132,4 @@
 
 </div>
 
-</body>
-</html>
+@endsection

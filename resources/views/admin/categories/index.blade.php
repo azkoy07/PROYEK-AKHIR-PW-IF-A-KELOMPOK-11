@@ -1,90 +1,96 @@
 
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kelola Kategori - SportZone</title>
+@extends('layouts.admin')
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="bg-light">
+@section('title', 'Kelola Kategori - SportZone')
+@section('page_title', 'Kelola Kategori')
+@section('page_subtitle', 'Kelola pengelompokan produk SportZone.')
 
-<div class="container py-5">
+@section('content')
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h2>Kelola Kategori</h2>
-            <p class="text-muted mb-0">Daftar kategori produk SportZone</p>
-        </div>
+    <!-- HEADER HALAMAN -->
+    <div class="d-flex justify-content-between align-items-center gap-3 mb-4">
 
         <div>
-            <a href="{{ route('admin.categories.create') }}"
-               class="btn btn-primary">
-                + Tambah Kategori
-            </a>
-
-            <a href="{{ route('admin.dashboard') }}"
-               class="btn btn-secondary">
-                Dashboard
-            </a>
+            <h3 class="sz-dashboard-title">Daftar Kategori</h3>
+            <p class="sz-dashboard-description">
+                Kelola kategori untuk mengelompokkan produk SportZone.
+            </p>
         </div>
+
+        <a href="{{ route('admin.categories.create') }}"
+           class="btn btn-primary px-3 py-2">
+            <i class="bi bi-plus-lg me-1"></i>
+            Tambah Kategori
+        </a>
+
     </div>
 
-    @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show">
-            {{ session('success') }}
-            <button type="button" class="btn-close"
-                    data-bs-dismiss="alert"></button>
-        </div>
-    @endif
+    <!-- DAFTAR KATEGORI -->
+    <div class="card">
 
-    @if(session('error'))
-        <div class="alert alert-danger alert-dismissible fade show">
-            {{ session('error') }}
-            <button type="button" class="btn-close"
-                    data-bs-dismiss="alert"></button>
-        </div>
-    @endif
+        <div class="card-header bg-white p-4">
 
-    @if($errors->any())
-        <div class="alert alert-danger">
-            @foreach($errors->all() as $error)
-                <div>{{ $error }}</div>
-            @endforeach
-        </div>
-    @endif
+            <div class="d-flex justify-content-between align-items-center">
 
-    <div class="card shadow-sm">
-        <div class="card-body">
+                <div>
+                    <h5 class="sz-dashboard-section-title">Informasi Kategori</h5>
+                    <p class="sz-dashboard-section-description">
+                        Daftar kategori yang digunakan pada katalog produk.
+                    </p>
+                </div>
+
+                <span class="badge bg-primary-subtle text-primary px-3 py-2">
+                    {{ $categories->count() }} kategori
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="card-body p-0">
 
             <div class="table-responsive">
-                <table class="table table-bordered table-striped align-middle">
 
-                    <thead class="table-dark">
+                <table class="table table-hover mb-0">
+
+                    <thead>
                         <tr>
-                            <th width="70">No</th>
+                            <th class="ps-4" width="90">No</th>
                             <th>Nama Kategori</th>
                             <th>Slug</th>
-                            <th width="180">Aksi</th>
+                            <th width="150">Aksi</th>
                         </tr>
                     </thead>
 
                     <tbody>
+
                         @forelse($categories as $category)
+
                             <tr>
-                                <td>{{ $loop->iteration }}</td>
 
-                                <td>{{ $category->nama_kategori }}</td>
-
-                                <td>{{ $category->slug }}</td>
+                                <td class="ps-4 text-secondary">
+                                    {{ $loop->iteration }}
+                                </td>
 
                                 <td>
-                                    <div class="d-flex gap-2">
+                                    <span class="fw-semibold text-dark">
+                                        {{ $category->nama_kategori }}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="text-secondary">
+                                        {{ $category->slug }}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <div class="d-flex gap-1">
 
                                         <a href="{{ route('admin.categories.edit', $category->id) }}"
-                                           class="btn btn-warning btn-sm">
-                                            Edit
+                                           class="btn btn-sm btn-outline-primary"
+                                           title="Edit kategori">
+                                            <i class="bi bi-pencil-square"></i>
                                         </a>
 
                                         <form action="{{ route('admin.categories.destroy', $category->id) }}"
@@ -95,31 +101,46 @@
                                             @method('DELETE')
 
                                             <button type="submit"
-                                                    class="btn btn-danger btn-sm">
-                                                Hapus
+                                                    class="btn btn-sm btn-outline-danger"
+                                                    title="Hapus kategori">
+                                                <i class="bi bi-trash"></i>
                                             </button>
+
                                         </form>
 
                                     </div>
                                 </td>
+
                             </tr>
+
                         @empty
+
                             <tr>
-                                <td colspan="4" class="text-center text-muted">
-                                    Belum ada kategori.
+                                <td colspan="4" class="text-center py-5">
+
+                                    <i class="bi bi-tags fs-2 text-secondary d-block mb-2"></i>
+
+                                    <span class="fw-semibold">
+                                        Belum ada kategori.
+                                    </span>
+
+                                    <p class="text-secondary small mb-0 mt-1">
+                                        Silakan tambahkan kategori terlebih dahulu.
+                                    </p>
+
                                 </td>
                             </tr>
+
                         @endforelse
+
                     </tbody>
 
                 </table>
+
             </div>
 
         </div>
+
     </div>
 
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+@endsection

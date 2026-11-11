@@ -1,101 +1,13 @@
 
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+@extends('layouts.admin')
 
-    <title>Laporan Penjualan - SportZone</title>
+@section('title', 'Laporan Penjualan - SportZone')
+@section('page_title', 'Laporan Penjualan')
+@section('page_subtitle', 'Ringkasan dan analisis penjualan SportZone berdasarkan periode.')
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-          rel="stylesheet">
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
-          rel="stylesheet">
-
-    <style>
-        body {
-            background: #f5f6fa;
-            font-family: Arial, sans-serif;
-        }
-
-        .report-card {
-            border: none;
-            border-radius: 12px;
-            box-shadow: 0 3px 12px rgba(0,0,0,0.04);
-        }
-
-        .report-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-            background: #eaf1ff;
-            color: #2563eb;
-        }
-
-        .table thead th {
-            background: #f8f9fa;
-            font-size: 13px;
-            color: #555;
-            white-space: nowrap;
-        }
-
-        .table td {
-            vertical-align: middle;
-        }
-
-        /* Bagian grafik */
-        .chart-card {
-            border: none;
-            border-radius: 12px;
-            box-shadow: 0 3px 12px rgba(0,0,0,0.04);
-            height: 100%;
-        }
-
-        .chart-container {
-            position: relative;
-            height: 260px;
-            width: 100%;
-        }
-
-        .chart-title {
-            font-size: 15px;
-            font-weight: bold;
-        }
-
-        .btn-chart {
-            background: #2563eb;
-            color: white;
-            border: none;
-        }
-
-        .btn-chart:hover {
-            background: #1d4ed8;
-            color: white;
-        }
-
-        @media (max-width: 576px) {
-            .container-fluid {
-                padding: 15px !important;
-            }
-
-            .chart-container {
-                height: 230px;
-            }
-        }
-    </style>
-</head>
-
-<body>
+@section('content')
 
 @php
-    // Data grafik harian diurutkan dari tanggal terlama ke terbaru.
-    // Urutan tabel laporan tetap mengikuti controller.
-
     $grafikHarian = $laporanHarian->reverse()->values();
 
     $grafikTanggal = $grafikHarian->map(function ($item) {
@@ -121,26 +33,371 @@
     })->values();
 @endphp
 
-<div class="container-fluid p-4">
+<style>
+    .report-page {
+        width: 100%;
+        color: #1e293b;
+        font-size: 13px;
+    }
 
-    <!-- Header -->
-    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+    .report-page .report-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 24px;
+    }
 
-        <div>
-            <h3 class="fw-bold mb-1">
-                Laporan Penjualan
-            </h3>
+    .report-heading {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+    }
 
-            <p class="text-secondary mb-0">
-                Ringkasan dan analisis penjualan SportZone
-            </p>
+    .report-heading-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 13px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #eaf1ff;
+        color: #2563eb;
+        font-size: 22px;
+        flex-shrink: 0;
+    }
+
+    .report-heading h3 {
+        color: #172033;
+        font-size: 19px;
+        font-weight: 800;
+        margin-bottom: 4px;
+        letter-spacing: -.4px;
+    }
+
+    .report-heading p {
+        color: #64748b;
+        margin: 0;
+        font-size: 12px;
+    }
+
+    .report-header-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .report-page .btn-sz-primary {
+        background: #2563eb;
+        color: #fff;
+        border: 1px solid #2563eb;
+        border-radius: 8px;
+        padding: 9px 14px;
+        font-size: 12px;
+        font-weight: 600;
+        transition: .2s;
+    }
+
+    .report-page .btn-sz-primary:hover {
+        background: #1d4ed8;
+        border-color: #1d4ed8;
+        color: #fff;
+    }
+
+    .report-page .btn-sz-outline {
+        background: #fff;
+        color: #172033;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 9px 14px;
+        font-size: 12px;
+        font-weight: 600;
+        transition: .2s;
+    }
+
+    .report-page .btn-sz-outline:hover {
+        background: #f8fafc;
+        border-color: #cbd5e1;
+        color: #172033;
+    }
+
+    .report-card,
+    .chart-main-card {
+        background: #fff;
+        border: 1px solid #e8edf4;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(15, 23, 42, .025);
+    }
+
+    .report-card-body {
+        padding: 21px;
+    }
+
+    .section-title {
+        color: #172033;
+        font-size: 14px;
+        font-weight: 700;
+        margin-bottom: 5px;
+    }
+
+    .section-description {
+        color: #64748b;
+        font-size: 11px;
+        margin-bottom: 0;
+    }
+
+    .filter-label {
+        display: block;
+        color: #475569;
+        font-size: 11px;
+        font-weight: 600;
+        margin-bottom: 7px;
+    }
+
+    .report-page .form-control {
+        min-height: 40px;
+        border: 1px solid #dfe5ed;
+        border-radius: 7px;
+        padding: 8px 11px;
+        font-size: 12px;
+        color: #1e293b;
+        box-shadow: none;
+    }
+
+    .report-page .form-control:focus {
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, .09);
+    }
+
+    .summary-card {
+        height: 100%;
+        transition: .2s;
+    }
+
+    .summary-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(15, 23, 42, .05);
+    }
+
+    .summary-label {
+        color: #64748b;
+        font-size: 11px;
+        font-weight: 600;
+        margin-bottom: 9px;
+    }
+
+    .summary-value {
+        color: #172033;
+        font-size: 23px;
+        font-weight: 800;
+        letter-spacing: -.5px;
+        margin: 0;
+        overflow-wrap: anywhere;
+    }
+
+    .summary-icon {
+        width: 44px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 11px;
+        font-size: 19px;
+    }
+
+    .summary-icon.blue {
+        color: #2563eb;
+        background: #eaf1ff;
+    }
+
+    .summary-icon.green {
+        color: #059669;
+        background: #e8f8f1;
+    }
+
+    .summary-icon.orange {
+        color: #d97706;
+        background: #fff5e6;
+    }
+
+    .chart-card {
+        height: 100%;
+        border: 1px solid #e8edf4;
+        border-radius: 10px;
+        background: #fff;
+    }
+
+    .chart-container {
+        position: relative;
+        height: 260px;
+        width: 100%;
+    }
+
+    .chart-title {
+        color: #172033;
+        font-size: 12px;
+        font-weight: 700;
+        margin-bottom: 17px;
+    }
+
+    .chart-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: #eff6ff;
+        color: #2563eb;
+        border-radius: 20px;
+        padding: 6px 10px;
+        font-size: 10px;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    .table-section-heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 18px;
+    }
+
+    .table-section-icon {
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #eff6ff;
+        color: #2563eb;
+        border-radius: 9px;
+        font-size: 16px;
+        flex-shrink: 0;
+    }
+
+    .report-table {
+        margin-bottom: 0;
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+
+    .report-table thead th {
+        background: #f8fafc;
+        color: #64748b;
+        border-top: 1px solid #e8edf4;
+        border-bottom: 1px solid #e8edf4;
+        padding: 13px 15px;
+        font-size: 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .3px;
+        white-space: nowrap;
+    }
+
+    .report-table tbody td {
+        color: #334155;
+        padding: 14px 15px;
+        border-bottom: 1px solid #edf1f6;
+        font-size: 12px;
+        vertical-align: middle;
+    }
+
+    .report-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    .report-table tbody tr:hover td {
+        background: #fafcff;
+    }
+
+    .table-number {
+        color: #94a3b8 !important;
+        font-weight: 600;
+    }
+
+    .table-amount {
+        color: #172033 !important;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .table-date {
+        font-weight: 600;
+        color: #475569 !important;
+        white-space: nowrap;
+    }
+
+    .table-empty {
+        text-align: center;
+        padding: 35px 15px !important;
+        color: #94a3b8 !important;
+    }
+
+    .table-footer-note {
+        color: #64748b;
+        font-size: 10px;
+        margin-top: 14px;
+        margin-bottom: 0;
+    }
+
+    @media print {
+        body {
+            background: #fff !important;
+        }
+
+        .admin-sidebar,
+        .admin-topbar,
+        .report-header-actions,
+        .filter-card,
+        .report-footer {
+            display: none !important;
+        }
+
+        .admin-main {
+            margin-left: 0 !important;
+        }
+
+        .report-page {
+            padding: 0 !important;
+        }
+
+        .report-card,
+        .chart-main-card {
+            box-shadow: none !important;
+            break-inside: avoid;
+        }
+
+        #panelGrafik {
+            display: block !important;
+            height: auto !important;
+            visibility: visible !important;
+        }
+
+        .chart-container {
+            height: 220px;
+        }
+    }
+</style>
+
+<div class="report-page">
+
+    {{-- Header --}}
+    <div class="report-header">
+
+        <div class="report-heading">
+            <div class="report-heading-icon">
+                <i class="bi bi-bar-chart-line"></i>
+            </div>
+
+            <div>
+                <h3>Laporan Penjualan</h3>
+                <p>Ringkasan dan analisis penjualan SportZone</p>
+            </div>
         </div>
 
-        <div class="d-flex gap-2 flex-wrap">
+        <div class="report-header-actions">
 
-            <!-- Tombol Buka Grafik -->
             <button
-                class="btn btn-chart"
+                class="btn btn-sz-primary"
                 type="button"
                 data-bs-toggle="collapse"
                 data-bs-target="#panelGrafik"
@@ -150,57 +407,58 @@
 
                 <i class="bi bi-bar-chart-line me-1" id="ikonGrafik"></i>
                 <span id="teksGrafik">Lihat Grafik</span>
-
             </button>
 
-            <a href="{{ route('admin.dashboard') }}"
-               class="btn btn-outline-secondary">
+            <button
+                type="button"
+                class="btn btn-sz-outline"
+                onclick="window.print()">
 
-                <i class="bi bi-arrow-left"></i>
-                Dashboard
-
-            </a>
+                <i class="bi bi-printer me-1"></i>
+                Cetak
+            </button>
 
         </div>
 
     </div>
 
-    <!-- Filter Tanggal -->
-    <div class="card report-card mb-4">
+    {{-- Filter Periode --}}
+    <div class="report-card filter-card mb-4">
 
-        <div class="card-body p-4">
+        <div class="report-card-body">
 
-            <h6 class="fw-bold mb-3">
-                <i class="bi bi-funnel"></i>
-                Filter Periode Laporan
-            </h6>
+            <div class="d-flex align-items-center gap-2 mb-4">
 
-            <form action="{{ route('admin.reports.index') }}"
-                  method="GET">
+                <div class="table-section-icon">
+                    <i class="bi bi-funnel"></i>
+                </div>
+
+                <div>
+                    <h6 class="section-title">Filter Periode Laporan</h6>
+                    <p class="section-description">
+                        Tentukan rentang tanggal untuk melihat data penjualan.
+                    </p>
+                </div>
+
+            </div>
+
+            <form action="{{ route('admin.reports.index') }}" method="GET">
 
                 <div class="row g-3 align-items-end">
 
                     <div class="col-md-4">
-
-                        <label class="form-label">
-                            Tanggal Mulai
-                        </label>
+                        <label class="filter-label">Tanggal Mulai</label>
 
                         <input
                             type="date"
                             name="tanggal_mulai"
                             class="form-control"
                             value="{{ $tanggalMulai }}"
-                            required
-                        >
-
+                            required>
                     </div>
 
                     <div class="col-md-4">
-
-                        <label class="form-label">
-                            Tanggal Akhir
-                        </label>
+                        <label class="filter-label">Tanggal Akhir</label>
 
                         <input
                             type="date"
@@ -208,26 +466,22 @@
                             class="form-control"
                             value="{{ $tanggalAkhir }}"
                             min="{{ $tanggalMulai }}"
-                            required
-                        >
-
+                            required>
                     </div>
 
                     <div class="col-md-4 d-flex gap-2">
 
-                        <button type="submit"
-                                class="btn btn-primary">
-
-                            <i class="bi bi-search"></i>
-                            Tampilkan
-
+                        <button type="submit" class="btn btn-sz-primary">
+                            <i class="bi bi-search me-1"></i>
+                            Tampilkan Laporan
                         </button>
 
-                        <a href="{{ route('admin.reports.index') }}"
-                           class="btn btn-outline-secondary">
+                        <a
+                            href="{{ route('admin.reports.index') }}"
+                            class="btn btn-sz-outline">
 
+                            <i class="bi bi-arrow-counterclockwise me-1"></i>
                             Reset
-
                         </a>
 
                     </div>
@@ -240,138 +494,119 @@
 
     </div>
 
-    <!-- Ringkasan Penjualan -->
+    {{-- Ringkasan --}}
     <div class="row g-3 mb-4">
 
         <div class="col-md-4">
-
-            <div class="card report-card h-100">
-
-                <div class="card-body p-4">
+            <div class="report-card summary-card">
+                <div class="report-card-body">
 
                     <div class="d-flex justify-content-between align-items-center">
 
                         <div>
-                            <p class="text-secondary mb-2">
-                                Total Pesanan
-                            </p>
+                            <p class="summary-label">Total Pesanan</p>
 
-                            <h3 class="fw-bold mb-0">
+                            <h3 class="summary-value">
                                 {{ number_format($ringkasan->total_pesanan, 0, ',', '.') }}
                             </h3>
                         </div>
 
-                        <div class="report-icon">
+                        <div class="summary-icon blue">
                             <i class="bi bi-receipt"></i>
                         </div>
 
                     </div>
 
                 </div>
-
             </div>
-
         </div>
 
         <div class="col-md-4">
-
-            <div class="card report-card h-100">
-
-                <div class="card-body p-4">
+            <div class="report-card summary-card">
+                <div class="report-card-body">
 
                     <div class="d-flex justify-content-between align-items-center">
 
                         <div>
-                            <p class="text-secondary mb-2">
-                                Item Terjual
-                            </p>
+                            <p class="summary-label">Item Terjual</p>
 
-                            <h3 class="fw-bold mb-0">
+                            <h3 class="summary-value">
                                 {{ number_format($ringkasan->total_item, 0, ',', '.') }}
                             </h3>
                         </div>
 
-                        <div class="report-icon">
+                        <div class="summary-icon green">
                             <i class="bi bi-box-seam"></i>
                         </div>
 
                     </div>
 
                 </div>
-
             </div>
-
         </div>
 
         <div class="col-md-4">
-
-            <div class="card report-card h-100">
-
-                <div class="card-body p-4">
+            <div class="report-card summary-card">
+                <div class="report-card-body">
 
                     <div class="d-flex justify-content-between align-items-center">
 
                         <div>
-                            <p class="text-secondary mb-2">
-                                Total Omzet
-                            </p>
+                            <p class="summary-label">Total Omzet</p>
 
-                            <h3 class="fw-bold mb-0">
+                            <h3 class="summary-value">
                                 Rp{{ number_format($ringkasan->total_omzet, 0, ',', '.') }}
                             </h3>
                         </div>
 
-                        <div class="report-icon">
-                            <i class="bi bi-currency-dollar"></i>
+                        <div class="summary-icon orange">
+                            <i class="bi bi-wallet2"></i>
                         </div>
 
                     </div>
 
                 </div>
-
             </div>
-
         </div>
 
     </div>
 
-    <!-- Grafik Penjualan (Tersembunyi Secara Default) -->
+    {{-- Grafik --}}
     <div class="collapse mb-4" id="panelGrafik">
 
-        <div class="card report-card">
+        <div class="chart-main-card">
 
-            <div class="card-body p-4">
+            <div class="report-card-body">
 
-                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-4">
 
                     <div>
-                        <h5 class="fw-bold mb-1">
-                            <i class="bi bi-bar-chart-line text-primary"></i>
+                        <h5 class="section-title mb-1">
+                            <i class="bi bi-graph-up-arrow text-primary me-1"></i>
                             Grafik Analisis Penjualan
                         </h5>
 
-                        <p class="text-secondary small mb-0">
+                        <p class="section-description">
                             Visualisasi data berdasarkan periode laporan yang dipilih.
                         </p>
                     </div>
 
-                    <span class="badge bg-primary-subtle text-primary">
-                        Grafik Penjualan
+                    <span class="chart-label">
+                        <i class="bi bi-calendar-range"></i>
+                        Periode Terpilih
                     </span>
 
                 </div>
 
                 <div class="row g-3">
 
-                    <!-- Grafik Omzet Harian -->
+                    {{-- Grafik Omzet --}}
                     <div class="col-lg-6">
+                        <div class="chart-card">
+                            <div class="report-card-body">
 
-                        <div class="card chart-card">
-
-                            <div class="card-body">
-
-                                <h6 class="chart-title mb-3">
-                                    <i class="bi bi-graph-up text-primary"></i>
+                                <h6 class="chart-title">
+                                    <i class="bi bi-graph-up text-primary me-1"></i>
                                     Omzet Penjualan Harian
                                 </h6>
 
@@ -379,9 +614,7 @@
 
                                     <div class="text-center text-secondary py-5">
                                         <i class="bi bi-bar-chart fs-2"></i>
-                                        <p class="mb-0 mt-2">
-                                            Belum ada data omzet.
-                                        </p>
+                                        <p class="mb-0 mt-2">Belum ada data omzet.</p>
                                     </div>
 
                                 @else
@@ -393,20 +626,16 @@
                                 @endif
 
                             </div>
-
                         </div>
-
                     </div>
 
-                    <!-- Grafik Pesanan dan Item -->
+                    {{-- Grafik Pesanan --}}
                     <div class="col-lg-6">
+                        <div class="chart-card">
+                            <div class="report-card-body">
 
-                        <div class="card chart-card">
-
-                            <div class="card-body">
-
-                                <h6 class="chart-title mb-3">
-                                    <i class="bi bi-bar-chart text-primary"></i>
+                                <h6 class="chart-title">
+                                    <i class="bi bi-bar-chart text-primary me-1"></i>
                                     Pesanan dan Item Terjual
                                 </h6>
 
@@ -414,9 +643,7 @@
 
                                     <div class="text-center text-secondary py-5">
                                         <i class="bi bi-bar-chart fs-2"></i>
-                                        <p class="mb-0 mt-2">
-                                            Belum ada data pesanan.
-                                        </p>
+                                        <p class="mb-0 mt-2">Belum ada data pesanan.</p>
                                     </div>
 
                                 @else
@@ -428,20 +655,16 @@
                                 @endif
 
                             </div>
-
                         </div>
-
                     </div>
 
-                    <!-- Grafik Kategori -->
+                    {{-- Grafik Kategori --}}
                     <div class="col-lg-6">
+                        <div class="chart-card">
+                            <div class="report-card-body">
 
-                        <div class="card chart-card">
-
-                            <div class="card-body">
-
-                                <h6 class="chart-title mb-3">
-                                    <i class="bi bi-tags text-primary"></i>
+                                <h6 class="chart-title">
+                                    <i class="bi bi-tags text-primary me-1"></i>
                                     Omzet Berdasarkan Kategori
                                 </h6>
 
@@ -449,9 +672,7 @@
 
                                     <div class="text-center text-secondary py-5">
                                         <i class="bi bi-tags fs-2"></i>
-                                        <p class="mb-0 mt-2">
-                                            Belum ada data penjualan kategori.
-                                        </p>
+                                        <p class="mb-0 mt-2">Belum ada data penjualan kategori.</p>
                                     </div>
 
                                 @else
@@ -463,9 +684,7 @@
                                 @endif
 
                             </div>
-
                         </div>
-
                     </div>
 
                 </div>
@@ -476,28 +695,45 @@
 
     </div>
 
-    <!-- Laporan Harian -->
-    <div class="card report-card mb-4">
+    {{-- Tabel Harian --}}
+    <div class="report-card mb-4">
 
-        <div class="card-body p-4">
+        <div class="report-card-body">
 
-            <h5 class="fw-bold mb-3">
-                <i class="bi bi-calendar3"></i>
-                Laporan Penjualan Harian
-            </h5>
+            <div class="table-section-heading">
 
-            <p class="text-secondary small">
-                Periode {{ \Carbon\Carbon::parse($tanggalMulai)->format('d/m/Y') }}
-                sampai {{ \Carbon\Carbon::parse($tanggalAkhir)->format('d/m/Y') }}
-            </p>
+                <div class="d-flex align-items-center gap-3">
+
+                    <div class="table-section-icon">
+                        <i class="bi bi-calendar3"></i>
+                    </div>
+
+                    <div>
+                        <h6 class="section-title">Laporan Penjualan Harian</h6>
+
+                        <p class="section-description">
+                            Periode
+                            {{ \Carbon\Carbon::parse($tanggalMulai)->format('d/m/Y') }}
+                            sampai
+                            {{ \Carbon\Carbon::parse($tanggalAkhir)->format('d/m/Y') }}
+                        </p>
+                    </div>
+
+                </div>
+
+                <span class="chart-label">
+                    {{ $laporanHarian->count() }} Data
+                </span>
+
+            </div>
 
             <div class="table-responsive">
 
-                <table class="table table-hover">
+                <table class="table report-table">
 
                     <thead>
                         <tr>
-                            <th>No</th>
+                            <th width="65">No</th>
                             <th>Tanggal</th>
                             <th>Jumlah Pesanan</th>
                             <th>Item Terjual</th>
@@ -510,10 +746,11 @@
                         @forelse($laporanHarian as $index => $laporan)
 
                             <tr>
+                                <td class="table-number">
+                                    {{ $index + 1 }}
+                                </td>
 
-                                <td>{{ $index + 1 }}</td>
-
-                                <td>
+                                <td class="table-date">
                                     {{ \Carbon\Carbon::parse($laporan->tanggal)->format('d/m/Y') }}
                                 </td>
 
@@ -525,20 +762,17 @@
                                     {{ number_format($laporan->item_terjual, 0, ',', '.') }}
                                 </td>
 
-                                <td class="fw-semibold">
+                                <td class="table-amount">
                                     Rp{{ number_format($laporan->omzet, 0, ',', '.') }}
                                 </td>
-
                             </tr>
 
                         @empty
 
                             <tr>
-                                <td colspan="5"
-                                    class="text-center text-secondary py-4">
-
+                                <td colspan="5" class="table-empty">
+                                    <i class="bi bi-inbox fs-3 d-block mb-2"></i>
                                     Belum ada data penjualan pada periode ini.
-
                                 </td>
                             </tr>
 
@@ -550,27 +784,51 @@
 
             </div>
 
+            <p class="table-footer-note">
+                <i class="bi bi-info-circle me-1"></i>
+                Data menampilkan pesanan dengan status dikemas, dikirim, dan selesai.
+            </p>
+
         </div>
 
     </div>
 
-    <!-- Laporan Kategori -->
-    <div class="card report-card">
+    {{-- Tabel Kategori --}}
+    <div class="report-card">
 
-        <div class="card-body p-4">
+        <div class="report-card-body">
 
-            <h5 class="fw-bold mb-3">
-                <i class="bi bi-tags"></i>
-                Penjualan Berdasarkan Kategori
-            </h5>
+            <div class="table-section-heading">
+
+                <div class="d-flex align-items-center gap-3">
+
+                    <div class="table-section-icon">
+                        <i class="bi bi-tags"></i>
+                    </div>
+
+                    <div>
+                        <h6 class="section-title">Penjualan Berdasarkan Kategori</h6>
+
+                        <p class="section-description">
+                            Ringkasan jumlah item dan omzet setiap kategori produk.
+                        </p>
+                    </div>
+
+                </div>
+
+                <span class="chart-label">
+                    {{ $laporanKategori->count() }} Kategori
+                </span>
+
+            </div>
 
             <div class="table-responsive">
 
-                <table class="table table-hover">
+                <table class="table report-table">
 
                     <thead>
                         <tr>
-                            <th>No</th>
+                            <th width="65">No</th>
                             <th>Nama Kategori</th>
                             <th>Item Terjual</th>
                             <th>Omzet</th>
@@ -582,8 +840,9 @@
                         @forelse($laporanKategori as $index => $kategori)
 
                             <tr>
-
-                                <td>{{ $index + 1 }}</td>
+                                <td class="table-number">
+                                    {{ $index + 1 }}
+                                </td>
 
                                 <td class="fw-semibold">
                                     {{ $kategori->nama_kategori }}
@@ -593,20 +852,17 @@
                                     {{ number_format($kategori->item_terjual, 0, ',', '.') }}
                                 </td>
 
-                                <td>
+                                <td class="table-amount">
                                     Rp{{ number_format($kategori->omzet, 0, ',', '.') }}
                                 </td>
-
                             </tr>
 
                         @empty
 
                             <tr>
-                                <td colspan="4"
-                                    class="text-center text-secondary py-4">
-
+                                <td colspan="4" class="table-empty">
+                                    <i class="bi bi-inbox fs-3 d-block mb-2"></i>
                                     Belum ada data penjualan kategori pada periode ini.
-
                                 </td>
                             </tr>
 
@@ -622,247 +878,256 @@
 
     </div>
 
-    <p class="text-secondary text-center small mt-4">
-        SportZone &copy; {{ date('Y') }} - Laporan Penjualan
-    </p>
 
 </div>
 
-<!-- Bootstrap JavaScript -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+@endsection
 
-<!-- Chart.js -->
+@push('scripts')
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-    // Data dari Laravel
-    const tanggalHarian = @json($grafikTanggal);
-    const omzetHarian = @json($grafikOmzet);
-    const jumlahPesanan = @json($grafikPesanan);
-    const jumlahItem = @json($grafikItem);
+    document.addEventListener('DOMContentLoaded', function () {
 
-    const namaKategori = @json($grafikNamaKategori);
-    const omzetKategori = @json($grafikOmzetKategori);
+        const tanggalHarian = @json($grafikTanggal);
+        const omzetHarian = @json($grafikOmzet);
+        const jumlahPesanan = @json($grafikPesanan);
+        const jumlahItem = @json($grafikItem);
 
-    // Format angka menjadi Rupiah
-    function formatRupiah(nilai) {
-        return 'Rp' + new Intl.NumberFormat('id-ID').format(nilai);
-    }
+        const namaKategori = @json($grafikNamaKategori);
+        const omzetKategori = @json($grafikOmzetKategori);
 
-    // Menghindari grafik dibuat berulang kali
-    let grafikOmzetInstance = null;
-    let grafikPesananInstance = null;
-    let grafikKategoriInstance = null;
+        function formatRupiah(nilai) {
+            return 'Rp' + new Intl.NumberFormat('id-ID').format(nilai);
+        }
 
-    // Membuat grafik ketika panel dibuka
-    const panelGrafik = document.getElementById('panelGrafik');
+        let grafikOmzetInstance = null;
+        let grafikPesananInstance = null;
+        let grafikKategoriInstance = null;
 
-    panelGrafik.addEventListener('shown.bs.collapse', function () {
+        const panelGrafik = document.getElementById('panelGrafik');
 
-        // Grafik Omzet Harian
-        if (
-            document.getElementById('grafikOmzet') &&
-            grafikOmzetInstance === null
-        ) {
+        if (!panelGrafik) {
+            return;
+        }
 
-            grafikOmzetInstance = new Chart(
-                document.getElementById('grafikOmzet'),
-                {
-                    type: 'line',
+        panelGrafik.addEventListener('shown.bs.collapse', function () {
 
-                    data: {
-                        labels: tanggalHarian,
+            if (!window.Chart) {
+                console.error('Chart.js belum berhasil dimuat.');
+                return;
+            }
 
-                        datasets: [{
-                            label: 'Omzet',
-                            data: omzetHarian,
-                            borderColor: '#2563eb',
-                            backgroundColor: 'rgba(37, 99, 235, 0.12)',
-                            borderWidth: 2,
-                            fill: true,
-                            tension: 0.35,
-                            pointRadius: 4,
-                            pointHoverRadius: 6
-                        }]
-                    },
+            // Grafik omzet harian
+            if (
+                document.getElementById('grafikOmzet') &&
+                grafikOmzetInstance === null
+            ) {
 
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
+                grafikOmzetInstance = new Chart(
+                    document.getElementById('grafikOmzet'),
+                    {
+                        type: 'line',
 
-                        plugins: {
-                            legend: {
-                                display: true,
-                                position: 'bottom'
-                            },
+                        data: {
+                            labels: tanggalHarian,
 
-                            tooltip: {
-                                callbacks: {
-                                    label: function(context) {
-                                        return formatRupiah(context.raw);
-                                    }
-                                }
-                            }
+                            datasets: [{
+                                label: 'Omzet',
+                                data: omzetHarian,
+                                borderColor: '#2563eb',
+                                backgroundColor: 'rgba(37, 99, 235, 0.12)',
+                                borderWidth: 2,
+                                fill: true,
+                                tension: 0.35,
+                                pointRadius: 4,
+                                pointHoverRadius: 6
+                            }]
                         },
 
-                        scales: {
-                            y: {
-                                beginAtZero: true,
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
 
-                                ticks: {
-                                    callback: function(value) {
-                                        return 'Rp' +
-                                            new Intl.NumberFormat('id-ID', {
+                            plugins: {
+                                legend: {
+                                    display: true,
+                                    position: 'bottom'
+                                },
+
+                                tooltip: {
+                                    callbacks: {
+                                        label: function(context) {
+                                            return formatRupiah(context.raw);
+                                        }
+                                    }
+                                }
+                            },
+
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+
+                                    ticks: {
+                                        callback: function(value) {
+                                            return 'Rp' + new Intl.NumberFormat('id-ID', {
                                                 notation: 'compact'
                                             }).format(value);
+                                        }
                                     }
                                 }
                             }
                         }
                     }
-                }
-            );
+                );
 
-        }
+            }
 
-        // Grafik Pesanan dan Item Terjual
-        if (
-            document.getElementById('grafikPesanan') &&
-            grafikPesananInstance === null
-        ) {
+            // Grafik jumlah pesanan dan item
+            if (
+                document.getElementById('grafikPesanan') &&
+                grafikPesananInstance === null
+            ) {
 
-            grafikPesananInstance = new Chart(
-                document.getElementById('grafikPesanan'),
-                {
-                    type: 'bar',
+                grafikPesananInstance = new Chart(
+                    document.getElementById('grafikPesanan'),
+                    {
+                        type: 'bar',
 
-                    data: {
-                        labels: tanggalHarian,
+                        data: {
+                            labels: tanggalHarian,
 
-                        datasets: [
-                            {
-                                label: 'Jumlah Pesanan',
-                                data: jumlahPesanan,
+                            datasets: [
+                                {
+                                    label: 'Jumlah Pesanan',
+                                    data: jumlahPesanan,
+                                    backgroundColor: '#2563eb',
+                                    borderRadius: 5
+                                },
+                                {
+                                    label: 'Item Terjual',
+                                    data: jumlahItem,
+                                    backgroundColor: '#16a34a',
+                                    borderRadius: 5
+                                }
+                            ]
+                        },
+
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+
+                            plugins: {
+                                legend: {
+                                    position: 'bottom'
+                                }
+                            },
+
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+
+                                    ticks: {
+                                        precision: 0
+                                    }
+                                }
+                            }
+                        }
+                    }
+                );
+
+            }
+
+            // Grafik omzet berdasarkan kategori
+            if (
+                document.getElementById('grafikKategori') &&
+                grafikKategoriInstance === null
+            ) {
+
+                grafikKategoriInstance = new Chart(
+                    document.getElementById('grafikKategori'),
+                    {
+                        type: 'bar',
+
+                        data: {
+                            labels: namaKategori,
+
+                            datasets: [{
+                                label: 'Omzet',
+                                data: omzetKategori,
                                 backgroundColor: '#2563eb',
                                 borderRadius: 5
-                            },
-                            {
-                                label: 'Item Terjual',
-                                data: jumlahItem,
-                                backgroundColor: '#16a34a',
-                                borderRadius: 5
-                            }
-                        ]
-                    },
-
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-
-                        plugins: {
-                            legend: {
-                                position: 'bottom'
-                            }
+                            }]
                         },
 
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                ticks: {
-                                    precision: 0
-                                }
-                            }
-                        }
-                    }
-                }
-            );
+                        options: {
+                            indexAxis: 'y',
+                            responsive: true,
+                            maintainAspectRatio: false,
 
-        }
+                            plugins: {
+                                legend: {
+                                    display: false
+                                },
 
-        // Grafik Omzet Berdasarkan Kategori
-        if (
-            document.getElementById('grafikKategori') &&
-            grafikKategoriInstance === null
-        ) {
-
-            grafikKategoriInstance = new Chart(
-                document.getElementById('grafikKategori'),
-                {
-                    type: 'bar',
-
-                    data: {
-                        labels: namaKategori,
-
-                        datasets: [{
-                            label: 'Omzet',
-                            data: omzetKategori,
-                            backgroundColor: '#2563eb',
-                            borderRadius: 5
-                        }]
-                    },
-
-                    options: {
-                        indexAxis: 'y',
-                        responsive: true,
-                        maintainAspectRatio: false,
-
-                        plugins: {
-                            legend: {
-                                display: false
-                            },
-
-                            tooltip: {
-                                callbacks: {
-                                    label: function(context) {
-                                        return formatRupiah(context.raw);
+                                tooltip: {
+                                    callbacks: {
+                                        label: function(context) {
+                                            return formatRupiah(context.raw);
+                                        }
                                     }
                                 }
-                            }
-                        },
+                            },
 
-                        scales: {
-                            x: {
-                                beginAtZero: true,
+                            scales: {
+                                x: {
+                                    beginAtZero: true,
 
-                                ticks: {
-                                    callback: function(value) {
-                                        return 'Rp' +
-                                            new Intl.NumberFormat('id-ID', {
+                                    ticks: {
+                                        callback: function(value) {
+                                            return 'Rp' + new Intl.NumberFormat('id-ID', {
                                                 notation: 'compact'
                                             }).format(value);
+                                        }
                                     }
                                 }
                             }
                         }
                     }
-                }
-            );
+                );
 
-        }
+            }
 
-    });
+        });
 
-    // Mengubah ikon dan tulisan tombol saat grafik dibuka atau ditutup
-    panelGrafik.addEventListener('show.bs.collapse', function () {
+        // Mengubah tulisan tombol ketika grafik dibuka
+        panelGrafik.addEventListener('show.bs.collapse', function () {
 
-        document.getElementById('ikonGrafik').className =
-            'bi bi-eye-slash me-1';
+            const ikon = document.getElementById('ikonGrafik');
+            const teks = document.getElementById('teksGrafik');
 
-        document.getElementById('teksGrafik').textContent =
-            'Sembunyikan Grafik';
+            if (ikon && teks) {
+                ikon.className = 'bi bi-eye-slash me-1';
+                teks.textContent = 'Sembunyikan Grafik';
+            }
 
-    });
+        });
 
-    panelGrafik.addEventListener('hide.bs.collapse', function () {
+        // Mengubah tulisan tombol ketika grafik ditutup
+        panelGrafik.addEventListener('hide.bs.collapse', function () {
 
-        document.getElementById('ikonGrafik').className =
-            'bi bi-bar-chart-line me-1';
+            const ikon = document.getElementById('ikonGrafik');
+            const teks = document.getElementById('teksGrafik');
 
-        document.getElementById('teksGrafik').textContent =
-            'Lihat Grafik';
+            if (ikon && teks) {
+                ikon.className = 'bi bi-bar-chart-line me-1';
+                teks.textContent = 'Lihat Grafik';
+            }
+
+        });
 
     });
 </script>
 
-</body>
-</html>
+@endpush

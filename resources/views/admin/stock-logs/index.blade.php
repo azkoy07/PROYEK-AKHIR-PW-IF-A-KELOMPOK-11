@@ -1,103 +1,56 @@
 
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+@extends('layouts.admin')
 
-    <title>Riwayat Stok - SportZone</title>
+@section('title', 'Riwayat Stok - SportZone')
+@section('page_title', 'Riwayat Stok')
+@section('page_subtitle', 'Pantau aktivitas perubahan persediaan produk SportZone.')
 
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-    >
+@section('content')
 
-    <style>
-        body {
-            background: #f5f6fa;
-        }
+    <!-- HEADER HALAMAN -->
+    <div class="mb-4">
 
-        .main-card {
-            border: none;
-            border-radius: 12px;
-        }
+        <h3 class="sz-dashboard-title">
+            Riwayat Perubahan Stok
+        </h3>
 
-        .table th {
-            white-space: nowrap;
-        }
-
-        .table td {
-            vertical-align: middle;
-        }
-
-        .page-title {
-            font-weight: 700;
-        }
-    </style>
-</head>
-
-<body>
-
-<div class="container py-5">
-
-    {{-- Header --}}
-    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
-
-        <div>
-            <h3 class="page-title mb-1">Riwayat Perubahan Stok</h3>
-
-            <p class="text-muted mb-0">
-                Catatan perubahan stok seluruh produk SportZone.
-            </p>
-        </div>
-
-        <a href="{{ route('admin.dashboard') }}"
-           class="btn btn-outline-secondary">
-            Kembali ke Dashboard
-        </a>
+        <p class="sz-dashboard-description">
+            Pantau seluruh aktivitas penambahan dan pengurangan stok produk.
+        </p>
 
     </div>
 
-    {{-- Notifikasi --}}
-    @if(session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
+    <!-- PENCARIAN -->
+    <div class="card mb-4">
 
-    @if(session('error'))
-        <div class="alert alert-danger">
-            {{ session('error') }}
-        </div>
-    @endif
+        <div class="card-body p-4">
 
-    {{-- Pencarian --}}
-    <div class="card main-card shadow-sm mb-4">
+            <form action="{{ route('admin.stock-logs.index') }}" method="GET">
 
-        <div class="card-body">
+                <div class="row g-3 align-items-center">
 
-            <form
-                action="{{ route('admin.stock-logs.index') }}"
-                method="GET"
-            >
+                    <div class="col-10">
 
-                <div class="row g-2">
+                        <div class="input-group">
 
-                    <div class="col-md-10">
+                            <span class="input-group-text bg-white">
+                                <i class="bi bi-search text-secondary"></i>
+                            </span>
 
-                        <input
-                            type="text"
-                            name="search"
-                            class="form-control"
-                            placeholder="Cari nama produk, ukuran, atau warna..."
-                            value="{{ request('search') }}"
-                        >
+                            <input type="text"
+                                   name="search"
+                                   class="form-control"
+                                   placeholder="Cari nama produk, ukuran, atau warna..."
+                                   value="{{ request('search') }}">
+
+                        </div>
 
                     </div>
 
-                    <div class="col-md-2 d-grid">
+                    <div class="col-2 d-grid">
 
-                        <button type="submit" class="btn btn-primary">
+                        <button type="submit" class="btn btn-primary py-2">
+                            <i class="bi bi-search me-1"></i>
                             Cari
                         </button>
 
@@ -106,12 +59,17 @@
                 </div>
 
                 @if(request('search'))
-                    <a
-                        href="{{ route('admin.stock-logs.index') }}"
-                        class="btn btn-sm btn-link px-0 mt-2"
-                    >
-                        Hapus pencarian
-                    </a>
+
+                    <div class="mt-3">
+
+                        <a href="{{ route('admin.stock-logs.index') }}"
+                           class="text-decoration-none small">
+                            <i class="bi bi-x-circle me-1"></i>
+                            Hapus pencarian
+                        </a>
+
+                    </div>
+
                 @endif
 
             </form>
@@ -120,27 +78,44 @@
 
     </div>
 
-    {{-- Tabel Riwayat Stok --}}
-    <div class="card main-card shadow-sm">
+    <!-- DAFTAR RIWAYAT STOK -->
+    <div class="card">
 
-        <div class="card-header bg-white py-3">
+        <div class="card-header bg-white p-4">
 
-            <h5 class="mb-0">
-                Daftar Riwayat Stok
-            </h5>
+            <div class="d-flex justify-content-between align-items-center">
+
+                <div>
+
+                    <h5 class="sz-dashboard-section-title">
+                        <i class="bi bi-clock-history text-primary me-2"></i>
+                        Daftar Riwayat Stok
+                    </h5>
+
+                    <p class="sz-dashboard-section-description mb-0">
+                        Catatan perubahan persediaan produk dan variasi.
+                    </p>
+
+                </div>
+
+                <span class="badge bg-primary-subtle text-primary px-3 py-2">
+                    {{ $logs->total() }} Data
+                </span>
+
+            </div>
 
         </div>
 
-        <div class="card-body">
+        <div class="card-body p-0">
 
             <div class="table-responsive">
 
-                <table class="table table-bordered table-hover">
+                <table class="table table-hover mb-0">
 
-                    <thead class="table-light">
+                    <thead>
 
                         <tr>
-                            <th>No.</th>
+                            <th class="ps-4" width="65">No.</th>
                             <th>Nama Produk</th>
                             <th>Variasi</th>
                             <th>Perubahan Stok</th>
@@ -156,26 +131,32 @@
 
                             <tr>
 
-                                <td>
+                                <td class="ps-4 text-secondary">
                                     {{ $logs->firstItem() + $index }}
                                 </td>
 
                                 <td>
-                                    <strong>
+                                    <span class="fw-semibold text-dark">
                                         {{ $log->nama_produk ?? 'Produk tidak ditemukan' }}
-                                    </strong>
+                                    </span>
                                 </td>
 
                                 <td>
 
                                     @if($log->variant_id)
-                                        {{ $log->ukuran ?? '-' }}
-                                        /
-                                        {{ $log->warna ?? '-' }}
+
+                                        <span class="badge bg-light text-dark border">
+                                            {{ $log->ukuran ?? '-' }}
+                                            /
+                                            {{ $log->warna ?? '-' }}
+                                        </span>
+
                                     @else
-                                        <span class="text-muted">
+
+                                        <span class="text-secondary small">
                                             Produk biasa
                                         </span>
+
                                     @endif
 
                                 </td>
@@ -184,21 +165,22 @@
 
                                     @if($log->selisih > 0)
 
-                                        <span class="badge bg-success">
-                                            +{{ $log->selisih }}
-                                            Bertambah
+                                        <span class="badge bg-success-subtle text-success px-3 py-2">
+                                            <i class="bi bi-arrow-up-circle-fill me-1"></i>
+                                            +{{ $log->selisih }} Bertambah
                                         </span>
 
                                     @elseif($log->selisih < 0)
 
-                                        <span class="badge bg-danger">
-                                            {{ $log->selisih }}
-                                            Berkurang
+                                        <span class="badge bg-danger-subtle text-danger px-3 py-2">
+                                            <i class="bi bi-arrow-down-circle-fill me-1"></i>
+                                            {{ $log->selisih }} Berkurang
                                         </span>
 
                                     @else
 
-                                        <span class="badge bg-secondary">
+                                        <span class="badge bg-secondary-subtle text-secondary px-3 py-2">
+                                            <i class="bi bi-dash-circle me-1"></i>
                                             Tidak berubah
                                         </span>
 
@@ -207,15 +189,21 @@
                                 </td>
 
                                 <td>
-                                    <strong>
+                                    <span class="fw-semibold">
                                         {{ $log->stok_akhir }}
-                                    </strong>
+                                    </span>
                                 </td>
 
-                                <td>
-                                    {{ $log->created_at
-                                        ? \Carbon\Carbon::parse($log->created_at)->format('d-m-Y H:i:s')
-                                        : '-' }}
+                                <td class="text-nowrap">
+
+                                    <span class="text-secondary small">
+                                        <i class="bi bi-calendar3 me-1"></i>
+
+                                        {{ $log->created_at
+                                            ? \Carbon\Carbon::parse($log->created_at)->format('d-m-Y H:i:s')
+                                            : '-' }}
+                                    </span>
+
                                 </td>
 
                             </tr>
@@ -223,13 +211,21 @@
                         @empty
 
                             <tr>
-                                <td colspan="6" class="text-center py-4">
 
-                                    <p class="text-muted mb-0">
-                                        Belum ada riwayat perubahan stok.
+                                <td colspan="6" class="text-center py-5">
+
+                                    <i class="bi bi-inbox fs-2 text-secondary d-block mb-2"></i>
+
+                                    <span class="fw-semibold">
+                                        Belum Ada Riwayat Stok
+                                    </span>
+
+                                    <p class="text-secondary small mb-0 mt-1">
+                                        Data perubahan stok akan ditampilkan di halaman ini.
                                     </p>
 
                                 </td>
+
                             </tr>
 
                         @endforelse
@@ -240,18 +236,32 @@
 
             </div>
 
-            {{-- Pagination --}}
-            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mt-3">
+        </div>
 
-                <small class="text-muted">
-                    Menampilkan {{ $logs->firstItem() ?? 0 }}
-                    sampai {{ $logs->lastItem() ?? 0 }}
-                    dari {{ $logs->total() }} data.
-                </small>
+        <!-- PAGINATION -->
+        
+<!-- PAGINATION -->
+<div class="card-footer bg-white p-0">
 
-                {{ $logs->links('pagination::bootstrap-5') }}
+    <div class="sz-pagination">
 
-            </div>
+        <!-- INFORMASI JUMLAH DATA -->
+        <small class="text-secondary">
+
+            Menampilkan
+            <strong>{{ $logs->firstItem() ?? 0 }}</strong>
+            sampai
+            <strong>{{ $logs->lastItem() ?? 0 }}</strong>
+            dari
+            <strong>{{ $logs->total() }}</strong>
+            data.
+
+        </small>
+
+        <!-- TOMBOL PAGINATION -->
+        <div class="pagination-navigation">
+
+            {{ $logs->appends(request()->query())->links('pagination::bootstrap-5') }}
 
         </div>
 
@@ -259,5 +269,7 @@
 
 </div>
 
-</body>
-</html>
+
+    </div>
+
+@endsection

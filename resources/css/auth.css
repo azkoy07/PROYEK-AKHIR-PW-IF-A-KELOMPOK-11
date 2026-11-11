@@ -1,0 +1,426 @@
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background: #f3f5f9;
+    color: #17243a;
+}
+
+/* PEMBUNGKUS */
+.auth-wrapper {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 20px;
+}
+
+/* CARD UTAMA */
+.auth-container {
+    width: 100%;
+    max-width: 820px;
+    display: grid;
+    grid-template-columns: 40% 60%;
+    background: #fff;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 12px 35px rgba(15, 35, 70, .10);
+}
+
+/* UKURAN LOGIN */
+.auth-container-login {
+    min-height: 470px;
+}
+
+/* UKURAN REGISTER */
+.auth-container-register {
+    min-height: 550px;
+}
+
+/* =========================
+   PANEL KIRI
+========================= */
+.auth-brand {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 30px;
+    color: #fff;
+    background: linear-gradient(145deg, #071b3b, #174d8d);
+}
+
+.auth-brand::before,
+.auth-brand::after {
+    content: "";
+    position: absolute;
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.auth-brand::before {
+    width: 260px;
+    height: 260px;
+    right: -130px;
+    top: -100px;
+}
+
+.auth-brand::after {
+    width: 190px;
+    height: 190px;
+    left: -105px;
+    bottom: -100px;
+}
+
+/* LOGO */
+.brand-logo {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    position: relative;
+    z-index: 1;
+}
+
+.brand-logo img {
+    width: 43px;
+    height: 43px;
+    object-fit: contain;
+    border-radius: 9px;
+    padding: 3px;
+    background: #fff;
+}
+
+.brand-name {
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: .5px;
+}
+
+.brand-tagline {
+    font-size: 9px;
+    color: rgba(255,255,255,.7);
+    margin-top: 2px;
+}
+
+/* KONTEN KIRI */
+.brand-content {
+    position: relative;
+    z-index: 1;
+    margin: auto 0;
+    padding: 20px 0;
+}
+
+.brand-label {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1.8px;
+    color: #b7d5ff;
+    margin-bottom: 15px;
+}
+
+.brand-content h1 {
+    font-size: 31px;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -.7px;
+    margin: 0 0 15px;
+}
+
+.brand-content p {
+    max-width: 240px;
+    font-size: 11px;
+    line-height: 1.8;
+    color: rgba(255,255,255,.78);
+    margin: 0;
+}
+
+.brand-footer {
+    position: relative;
+    z-index: 1;
+    font-size: 9px;
+    color: rgba(255,255,255,.6);
+}
+
+/* =========================
+   PANEL KANAN
+========================= */
+.auth-form-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 35px 45px;
+    min-width: 0;
+}
+
+.auth-form-content {
+    width: 100%;
+    max-width: 340px;
+}
+
+/* JUDUL FORM */
+.form-heading {
+    margin-bottom: 24px;
+}
+
+.eyebrow {
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 1.8px;
+    color: #2863a9;
+    margin-bottom: 9px;
+}
+
+.form-heading h2 {
+    font-size: 25px;
+    font-weight: 800;
+    color: #14233b;
+    margin: 0 0 7px;
+}
+
+.form-heading p {
+    font-size: 11px;
+    color: #7b8492;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* =========================
+   INPUT
+========================= */
+.auth-form-section .form-label {
+    display: block;
+    font-size: 10px;
+    font-weight: 700;
+    color: #344054;
+    margin-bottom: 6px;
+}
+
+.auth-form-section .form-control {
+    width: 100%;
+    height: 42px;
+    border: 1px solid #dce2ea;
+    border-radius: 7px;
+    padding: 9px 12px 9px 37px;
+    font-size: 11px;
+    color: #263449;
+    background: #fff;
+    box-shadow: none;
+}
+
+.auth-form-section .form-control:focus {
+    border-color: #2863a9;
+    box-shadow: 0 0 0 3px rgba(40,99,169,.09);
+}
+
+.auth-form-section .form-control::placeholder {
+    color: #a3aab5;
+    font-size: 10px;
+}
+
+/* ICON INPUT */
+.input-wrapper {
+    position: relative;
+}
+
+.input-wrapper > i:first-child {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #8b96a6;
+    font-size: 13px;
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* PASSWORD */
+.password-toggle {
+    position: absolute;
+    right: 11px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    background: transparent;
+    color: #7b8492;
+    padding: 4px;
+    cursor: pointer;
+    z-index: 3;
+}
+
+.password-wrapper .form-control,
+.input-wrapper:has(.password-toggle) .form-control {
+    padding-right: 38px;
+}
+
+/* JARAK FORM LOGIN */
+.auth-form-section form > .mb-3 {
+    margin-bottom: 17px !important;
+}
+
+.auth-form-section form > .mb-4 {
+    margin-bottom: 20px !important;
+}
+
+/* TOMBOL */
+.btn-auth {
+    width: 100%;
+    height: 43px;
+    border: none;
+    border-radius: 7px;
+    background: #174d8d;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    transition: background .2s ease, transform .2s ease;
+}
+
+.btn-auth:hover {
+    background: #103967;
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+/* LINK LOGIN / REGISTER */
+.auth-switch {
+    text-align: center;
+    font-size: 10px;
+    color: #7b8492;
+    margin-top: 20px;
+}
+
+.auth-switch a {
+    color: #174d8d;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.auth-switch a:hover {
+    text-decoration: underline;
+}
+
+/* ALERT */
+.auth-alert {
+    font-size: 10px;
+    padding: 9px 11px;
+    margin-bottom: 15px;
+    border-radius: 6px;
+}
+
+/* =========================
+   REGISTER
+========================= */
+.register-form .form-heading {
+    margin-bottom: 15px;
+}
+
+.register-form .form-heading h2 {
+    font-size: 23px;
+}
+
+.register-form form .form-group {
+    margin-bottom: 11px;
+}
+
+.register-form .form-label {
+    margin-bottom: 5px;
+}
+
+.register-form .form-control {
+    height: 39px;
+}
+
+.register-form .btn-auth {
+    height: 41px;
+}
+
+.register-form .auth-switch {
+    margin-top: 14px;
+}
+
+/* ALERT REGISTER */
+.register-form .auth-alert {
+    margin-bottom: 10px;
+}
+
+/* =========================
+   PENYESUAIAN TINGGI DESKTOP
+========================= */
+@media (min-width: 851px) and (max-height: 700px) {
+    .auth-wrapper {
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+
+    .auth-container-login {
+        min-height: 440px;
+    }
+
+    .auth-container-register {
+        min-height: 520px;
+    }
+
+    .auth-form-section {
+        padding-top: 24px;
+        padding-bottom: 24px;
+    }
+
+    .register-form form .form-group {
+        margin-bottom: 8px;
+    }
+
+    .register-form .form-control {
+        height: 36px;
+    }
+
+    .register-form .form-heading {
+        margin-bottom: 11px;
+    }
+
+    .register-form .auth-switch {
+        margin-top: 10px;
+    }
+}
+
+/* =========================
+   PENYESUAIAN LAYAR SEMPIT
+========================= */
+@media (max-width: 850px) {
+    .auth-wrapper {
+        padding: 20px 14px;
+    }
+
+    .auth-container {
+        max-width: 470px;
+        grid-template-columns: 1fr;
+        min-height: 0;
+    }
+
+    .auth-brand {
+        min-height: 190px;
+        padding: 22px 25px;
+    }
+
+    .brand-content {
+        margin: 20px 0 0;
+        padding: 5px 0 15px;
+    }
+
+    .brand-content h1 {
+        font-size: 25px;
+    }
+
+    .brand-footer {
+        display: none;
+    }
+
+    .auth-form-section {
+        padding: 30px 25px;
+    }
+}

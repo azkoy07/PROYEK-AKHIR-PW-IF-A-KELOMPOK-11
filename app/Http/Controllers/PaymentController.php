@@ -83,11 +83,11 @@ class PaymentController extends Controller
             );
         }
 
-        // COD tidak memerlukan bukti pembayaran
+        // Hanya Transfer Bank dan E-Wallet yang dapat mengunggah bukti
         if (!in_array($order->metode_bayar, ['transfer', 'ewallet'])) {
             return back()->with(
                 'error',
-                'Metode pembayaran ini tidak memerlukan upload bukti.'
+                'Metode pembayaran pesanan tidak valid.'
             );
         }
 

@@ -19,6 +19,7 @@ use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\AdminVoucherController;
 use App\Http\Controllers\AdminReportController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\AdminReviewController;
 
 // Halaman utama
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -163,6 +164,13 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     // Laporan Penjualan
     Route::get('/admin/reports', [AdminReportController::class, 'index'])
         ->name('admin.reports.index');
+
+    // Pengelolaan Ulasan
+    Route::get('/admin/reviews', [AdminReviewController::class, 'index'])
+        ->name('admin.reviews.index');
+
+    Route::delete('/admin/reviews/{id}', [AdminReviewController::class, 'destroy'])
+        ->name('admin.reviews.destroy');
 
 });
 

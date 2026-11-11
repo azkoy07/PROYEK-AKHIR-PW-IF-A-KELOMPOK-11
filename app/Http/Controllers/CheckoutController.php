@@ -75,6 +75,28 @@ class CheckoutController extends Controller
     {
         $userId = Auth::id();
 
+        // Mengecek apakah pengguna baru saja menyelesaikan checkout
+        $successOrderId = session()->pull('checkout_success_order_id');
+
+        if ($successOrderId) {
+            $order = DB::table('orders')
+                ->where('id', $successOrderId)
+                ->where('user_id', $userId)
+                ->first();
+
+            if ($order) {
+                // Menggunakan false agar navbar tidak menganggap
+                // checkout berasal dari pembelian langsung
+                $direct = false;
+
+                return view('customer.checkout.index', [
+                    'checkoutSuccess' => true,
+                    'order' => $order,
+                    'direct' => $direct,
+                ]);
+            }
+        }
+
         $direct = session('checkout_direct');
 
         if ($direct) {
@@ -385,7 +407,7 @@ class CheckoutController extends Controller
     {
         $validated = $request->validate([
             'address_id' => 'required|integer|exists:addresses,id',
-            'metode_bayar' => 'required|in:transfer,cod,ewallet',
+            'metode_bayar' => 'required|in:transfer,ewallet',
         ]);
 
         $userId = Auth::id();
@@ -588,7 +610,6 @@ class CheckoutController extends Controller
             return $orderId;
         });
 
-       
         // ==========================================
         // MEMBUAT NOTIFIKASI PESANAN UNTUK ADMIN
         // DAN CUSTOMER
@@ -651,12 +672,14 @@ class CheckoutController extends Controller
             'checkout_voucher'
         ]);
 
+        // Mengarahkan kembali ke checkout untuk menampilkan pop-up
         return redirect()
-            ->route('checkout.success', $orderId)
-            ->with('success', 'Pesanan berhasil dibuat.');
+            ->route('checkout.index')
+            ->with('checkout_success_order_id', $orderId);
     }
 
     // Menampilkan pesanan yang berhasil dibuat
+    // Method ini dipertahankan agar route lama tetap tersedia
     public function success($id)
     {
         $order = DB::table('orders')
