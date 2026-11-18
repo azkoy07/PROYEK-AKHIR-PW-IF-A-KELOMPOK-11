@@ -32,26 +32,30 @@
         .navbar {
             background: #fff;
             border-bottom: 1px solid #e8edf3;
-            padding: 17px 0;
+            padding: 17px 0; 
         }
 
         .brand {
+            display: inline-block;
             color: #172033;
             font-size: 22px;
             font-weight: 800;
             text-decoration: none;
-            letter-spacing: -0.8px;
+            letter-spacing: -.8px;
+            margin-left: -45px;
         }
 
         .brand span {
             color: #2563eb;
         }
 
+        
         .back-link {
             color: #64748b;
             text-decoration: none;
-            font-weight: 600;
             font-size: 13px;
+            font-weight: 600;
+            margin-right: -45px;
         }
 
         .back-link:hover {
@@ -585,24 +589,17 @@
 
 <body>
 
-<nav class="navbar">
-    <div class="container" style="max-width: 1180px;">
-        <div class="d-flex align-items-center justify-content-between w-100">
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="{{ route('home') }}" class="brand">SPORT<span>ZONE</span></a>
 
-            <a href="{{ route('home') }}" class="brand">
-                <i class="bi bi-lightning-charge-fill text-primary"></i>
-                Sport<span>Zone</span>
-            </a>
-
-            <a href="{{ $direct ? route('home') : route('cart.index') }}"
-               class="back-link">
+            <a href="{{ route('home') }}" class="back-link">
                 <i class="bi bi-arrow-left me-1"></i>
-                {{ $direct ? 'Kembali ke Toko' : 'Kembali ke Keranjang' }}
+                Kembali ke Toko
             </a>
-
         </div>
-    </div>
-</nav>
+    </nav>
 
 {{-- =====================================
      TAMPILAN POP-UP SETELAH CHECKOUT

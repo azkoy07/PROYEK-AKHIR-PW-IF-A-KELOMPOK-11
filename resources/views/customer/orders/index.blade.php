@@ -30,20 +30,35 @@
         }
 
         .navbar {
-            background: #E8EEF8;
+            background: #fff;
             border-bottom: 1px solid #e8edf3;
             padding: 17px 0;
         }
 
         .brand {
+            display: inline-block;
             color: #172033;
             font-size: 22px;
             font-weight: 800;
             text-decoration: none;
-            letter-spacing: -0.8px;
+            letter-spacing: -.8px;
+            margin-left: -45px;
         }
 
         .brand span {
+            color: #2563eb;
+        }
+
+        
+        .back-link {
+            color: #64748b;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            margin-right: -45px;
+        }
+
+        .back-link:hover {
             color: #2563eb;
         }
 
@@ -265,21 +280,15 @@
 
 <body>
 
+<!-- NAVBAR -->
 <nav class="navbar">
-    <div class="container" style="max-width: 1180px;">
-        <div class="d-flex justify-content-between align-items-center w-100">
+    <div class="container">
+        <a href="{{ route('home') }}" class="brand">SPORT<span>ZONE</span></a>
 
-            <a href="{{ route('home') }}" class="brand">
-                SPORT<span>ZONE</span>
-            </a>
-
-            <a href="{{ route('home') }}"
-               class="btn btn-outline-secondary btn-sm px-3">
-                <i class="bi bi-arrow-left me-1"></i>
-                Kembali Belanja
-            </a>
-
-        </div>
+        <a href="{{ route('home') }}" class="back-link">
+            <i class="bi bi-arrow-left me-1"></i>
+            Kembali ke Toko
+        </a>
     </div>
 </nav>
 

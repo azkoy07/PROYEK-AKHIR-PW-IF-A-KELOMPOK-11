@@ -29,36 +29,6 @@
 
     </div>
 
-    <!-- NOTIFIKASI -->
-    @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show">
-            <i class="bi bi-check-circle me-2"></i>
-            {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    @endif
-
-    @if(session('error'))
-        <div class="alert alert-danger alert-dismissible fade show">
-            <i class="bi bi-exclamation-circle me-2"></i>
-            {{ session('error') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    @endif
-
-    @if($errors->any())
-        <div class="alert alert-danger">
-            <div class="fw-semibold mb-1">
-                <i class="bi bi-exclamation-circle me-1"></i>
-                Terjadi kesalahan:
-            </div>
-
-            @foreach($errors->all() as $error)
-                <div>{{ $error }}</div>
-            @endforeach
-        </div>
-    @endif
-
     <!-- RINGKASAN PESANAN -->
     <div class="card mb-4">
 
@@ -423,15 +393,6 @@
             </div>
 
             <div class="card-body p-4">
-
-                @if(in_array($order->metode_bayar, ['transfer', 'ewallet']) && !$order->bukti_bayar)
-
-                    <div class="alert alert-warning mb-3">
-                        <i class="bi bi-exclamation-triangle me-2"></i>
-                        Bukti pembayaran belum tersedia. Verifikasi transfer atau e-wallet belum dapat dilakukan.
-                    </div>
-
-                @endif
 
                 <div class="d-flex gap-2 flex-wrap">
 

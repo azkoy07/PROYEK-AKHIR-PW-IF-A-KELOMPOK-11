@@ -27,14 +27,23 @@
 
         <!-- BRAND -->
         <a href="{{ route('admin.dashboard') }}" class="sz-brand">
+
             <div class="sz-brand-icon">
                 <i class="bi bi-dribbble"></i>
             </div>
 
-            <div>
-                <div class="sz-brand-name">SportZone</div>
-                <div class="sz-brand-caption">ADMIN PANEL</div>
+            <div class="sz-brand-text">
+
+                <div class="sz-brand-name">
+                    <span class="sz-brand-sport">SPORT</span><span class="sz-brand-zone">ZONE</span>
+                </div>
+
+                <div class="sz-brand-caption">
+                    SPORTS STORE
+                </div>
+
             </div>
+
         </a>
 
         <div class="sz-sidebar-divider"></div>
@@ -212,12 +221,23 @@
         <!-- KONTEN HALAMAN -->
         <div class="sz-admin-content">
 
-            @if(session('success'))
+            @if(session('success') && !(
+                request()->routeIs('admin.orders.*')
+                && isset($order)
+                && $order->status === 'menunggu_bayar'
+                && in_array($order->metode_bayar, ['transfer', 'ewallet'])
+                && !$order->bukti_bayar
+            ))
                 <div class="alert alert-success alert-dismissible fade show sz-alert" role="alert">
+
                     <i class="bi bi-check-circle-fill me-2"></i>
                     {{ session('success') }}
 
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="alert">
+                    </button>
+
                 </div>
             @endif
 

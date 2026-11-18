@@ -18,18 +18,23 @@
 
     <style>
         * {
+            box-sizing: border-box;
             font-family: 'Inter', sans-serif;
         }
 
         body {
             background: #f5f7fb;
             color: #172033;
+            font-size: 14px;
+            margin: 0;
         }
+
+        /* NAVBAR */
 
         .navbar {
             background: #fff;
             border-bottom: 1px solid #e8edf3;
-            padding: 17px 0; 
+            padding: 17px 0;
         }
 
         .brand {
@@ -38,6 +43,7 @@
             font-weight: 800;
             text-decoration: none;
             letter-spacing: -.8px;
+            margin-left: -45px;
         }
 
         .brand span {
@@ -49,27 +55,41 @@
             text-decoration: none;
             font-size: 13px;
             font-weight: 600;
+            margin-right: -45px;
         }
 
         .back-link:hover {
             color: #2563eb;
         }
 
+        /* KONTEN UTAMA */
+
         .page-container {
             max-width: 1180px;
             margin: 0 auto;
-            padding: 40px 20px 70px;
+            padding: 22px 20px 65px;
+        }
+
+        /* HEADER */
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 23px;
         }
 
         .page-title {
-            font-size: 25px;
+            font-size: 24px;
             font-weight: 800;
             letter-spacing: -.7px;
+            color: #172033;
         }
 
         .page-subtitle {
             color: #7b8495;
-            font-size: 13px;
+            font-size: 12px;
+            margin: 0;
         }
 
         .wishlist-icon {
@@ -78,15 +98,18 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #fff0f1;
-            color: #e34c61;
-            border-radius: 11px;
-            font-size: 20px;
+            background: #eff6ff;
+            color: #2563eb;
+            border-radius: 10px;
+            font-size: 19px;
+            flex-shrink: 0;
         }
+
+        /* TOMBOL */
 
         .btn {
             border-radius: 8px;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
             padding: 9px 13px;
         }
@@ -101,41 +124,57 @@
             border-color: #1d4ed8;
         }
 
+        /* WISHLIST WRAPPER */
+
         .wishlist-wrapper {
             background: #fff;
-            border: 1px solid #e9edf3;
-            border-radius: 13px;
+            border: 1px solid #e8edf3;
+            border-radius: 12px;
             overflow: hidden;
+            box-shadow: 0 4px 18px rgba(15, 23, 42, .03);
         }
 
         .wishlist-header {
-            padding: 21px 25px;
+            padding: 19px 23px;
             border-bottom: 1px solid #edf0f5;
         }
 
         .wishlist-header h5 {
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 700;
+            color: #172033;
         }
+
+        .wishlist-header span {
+            font-size: 11px;
+        }
+
+        .wishlist-content {
+            padding: 23px;
+        }
+
+        /* KARTU PRODUK */
 
         .product-card {
             height: 100%;
             background: #fff;
-            border: 1px solid #e9edf3;
-            border-radius: 12px;
+            border: 1px solid #e8edf3;
+            border-radius: 11px;
             overflow: hidden;
             transition: .2s ease;
+            display: flex;
+            flex-direction: column;
         }
 
         .product-card:hover {
             border-color: #cbdafc;
-            box-shadow: 0 7px 22px rgba(20, 35, 65, .07);
-            transform: translateY(-3px);
+            box-shadow: 0 6px 18px rgba(20, 35, 65, .06);
+            transform: translateY(-2px);
         }
 
         .product-image {
-            height: 215px;
-            background: #f7f8fa;
+            height: 195px;
+            background: #f7f9fc;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -150,47 +189,52 @@
         }
 
         .image-placeholder {
-            color: #aab2c0;
-            font-size: 48px;
+            color: #cbd5e1;
+            font-size: 43px;
         }
 
         .product-info {
-            padding: 19px;
+            padding: 17px 18px;
+            flex-grow: 1;
         }
 
         .category-badge {
             display: inline-block;
-            background: #eff4ff;
+            background: #eff6ff;
             color: #2563eb;
             font-size: 10px;
             font-weight: 700;
             padding: 6px 9px;
             border-radius: 5px;
-            margin-bottom: 12px;
+            margin-bottom: 11px;
         }
 
         .product-name {
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 700;
             line-height: 1.5;
-            min-height: 45px;
+            min-height: 42px;
             margin-bottom: 7px;
+            color: #172033;
         }
 
         .product-brand {
             color: #8490a2;
-            font-size: 12px;
-            margin-bottom: 15px;
+            font-size: 11px;
+            margin-bottom: 13px;
         }
 
         .product-price {
             color: #2563eb;
-            font-size: 17px;
+            font-size: 16px;
             font-weight: 800;
-            margin-bottom: 12px;
+            margin-bottom: 13px;
         }
 
+        /* STATUS PRODUK */
+
         .status-active {
+            display: inline-block;
             background: #e8f7ef;
             color: #16834b;
             font-size: 10px;
@@ -200,16 +244,19 @@
         }
 
         .status-inactive {
-            background: #f0f1f3;
-            color: #697386;
+            display: inline-block;
+            background: #f1f5f9;
+            color: #64748b;
             font-size: 10px;
             font-weight: 700;
             padding: 6px 9px;
             border-radius: 5px;
         }
 
+        /* FOOTER KARTU */
+
         .product-footer {
-            padding: 14px 19px 18px;
+            padding: 13px 18px 16px;
             border-top: 1px solid #edf0f5;
         }
 
@@ -218,40 +265,45 @@
         }
 
         .product-footer .btn {
-            height: 37px;
+            height: 36px;
         }
+
+        /* WISHLIST KOSONG */
 
         .empty-state {
             text-align: center;
-            padding: 75px 20px;
+            padding: 65px 20px;
         }
 
         .empty-icon {
-            width: 90px;
-            height: 90px;
+            width: 85px;
+            height: 85px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #fff0f1;
-            color: #e34c61;
-            font-size: 38px;
-            border-radius: 24px;
-            margin: 0 auto 22px;
+            background: #eff6ff;
+            color: #2563eb;
+            font-size: 36px;
+            border-radius: 20px;
+            margin: 0 auto 20px;
         }
 
         .empty-state h5 {
-            font-size: 18px;
+            font-size: 17px;
             font-weight: 800;
+            color: #172033;
         }
 
         .empty-state p {
             color: #8490a2;
-            font-size: 13px;
+            font-size: 12px;
         }
+
+        /* NOTIFIKASI */
 
         .alert {
             border-radius: 9px;
-            font-size: 13px;
+            font-size: 12px;
         }
     </style>
 </head>
@@ -261,6 +313,7 @@
 <!-- NAVBAR -->
 <nav class="navbar">
     <div class="container">
+
         <a href="{{ route('home') }}" class="brand">
             SPORT<span>ZONE</span>
         </a>
@@ -269,6 +322,7 @@
             <i class="bi bi-arrow-left me-1"></i>
             Kembali ke Toko
         </a>
+
     </div>
 </nav>
 
@@ -277,11 +331,12 @@
 <div class="page-container">
 
     <!-- HEADER -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="page-header">
 
         <div class="d-flex align-items-center gap-3">
+
             <div class="wishlist-icon">
-                <i class="bi bi-heart-fill"></i>
+                <i class="bi bi-heart"></i>
             </div>
 
             <div>
@@ -289,10 +344,11 @@
                     Wishlist Saya
                 </h3>
 
-                <p class="page-subtitle mb-0">
+                <p class="page-subtitle">
                     Daftar produk favorit yang kamu simpan.
                 </p>
             </div>
+
         </div>
 
         <a href="{{ route('home') }}" class="btn btn-outline-primary">
@@ -336,13 +392,13 @@
                 Produk Favorit
             </h5>
 
-            <span class="text-secondary small">
+            <span class="text-secondary">
                 {{ $products->count() }} produk tersimpan
             </span>
 
         </div>
 
-        <div class="p-4">
+        <div class="wishlist-content">
 
             @if($products->count() > 0)
 

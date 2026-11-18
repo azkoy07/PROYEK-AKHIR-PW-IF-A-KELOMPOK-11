@@ -19,73 +19,54 @@
         }
 
         body {
-            background: #f7f9fc;
+            background: #f3f6fb;
             color: #172033;
         }
 
-        .navbar-detail {
-            background: #ffffff;
-            border-bottom: 1px solid #e9edf3;
+        /* NAVBAR */
+        .navbar {
+            background: #fff;
+            border-bottom: 1px solid #e8edf3;
             padding: 17px 0;
         }
 
         .brand {
-            display: flex;
-            align-items: center;
-            gap: 11px;
-            text-decoration: none;
+            display: inline-block;
             color: #172033;
-        }
-
-        .brand-icon {
-            width: 42px;
-            height: 42px;
-            background: #2563eb;
-            color: #ffffff;
-            border-radius: 11px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 21px;
-        }
-
-        .brand-name {
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 800;
-            letter-spacing: -0.7px;
+            text-decoration: none;
+            letter-spacing: -.8px;
+            margin-left: -45px;
         }
 
-        .brand-caption {
-            display: block;
-            color: #8993a4;
-            font-size: 10px;
-            font-weight: 600;
-            letter-spacing: 1.5px;
-            margin-top: -3px;
+        .brand span {
+            color: #2563eb;
         }
 
         .back-link {
-            color: #596579;
+            color: #64748b;
             text-decoration: none;
             font-size: 13px;
             font-weight: 600;
-            transition: .2s;
+            margin-right: -45px;
         }
 
         .back-link:hover {
             color: #2563eb;
         }
 
+        /* KONTEN UTAMA */
         .main-container {
-            max-width: 1200px;
+            max-width: 1160px;
             margin: 0 auto;
-            padding: 35px 24px 65px;
+            padding: 20px 24px 45px;
         }
 
         .breadcrumb-detail {
-            font-size: 12px;
+            font-size: 11px;
             color: #8993a4;
-            margin-bottom: 23px;
+            margin-bottom: 14px;
         }
 
         .breadcrumb-detail a {
@@ -97,34 +78,46 @@
             color: #2563eb;
         }
 
+        /* CARD UTAMA */
         .product-card {
             background: #ffffff;
-            border: 1px solid #edf0f5;
-            border-radius: 16px;
-            padding: 30px;
-            box-shadow: 0 5px 25px rgba(15, 23, 42, .035);
+            border: 1px solid #e5eaf1;
+            border-radius: 13px;
+            padding: 22px;
+            box-shadow: 0 5px 20px rgba(15, 23, 42, .045);
         }
 
+        .product-layout {
+            align-items: flex-start;
+        }
+
+        /* GAMBAR */
         .product-image-wrapper {
-            background: #f7f9fc;
-            border: 1px solid #edf0f5;
-            border-radius: 13px;
-            min-height: 440px;
+            background: #f8fafc;
+            border: 1px solid #e9eef5;
+            border-radius: 11px;
+            height: 310px;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 25px;
+            padding: 22px;
         }
 
         .product-image {
             width: 100%;
-            max-height: 390px;
+            height: 100%;
+            max-height: 255px;
             object-fit: contain;
         }
 
         .image-placeholder {
             color: #c3cad5;
-            font-size: 100px;
+            font-size: 75px;
+        }
+
+        /* INFORMASI PRODUK */
+        .product-information {
+            padding-left: 8px;
         }
 
         .category-badge {
@@ -132,104 +125,163 @@
             align-items: center;
             background: #edf4ff;
             color: #2563eb;
-            padding: 7px 12px;
+            padding: 6px 10px;
             border-radius: 6px;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 700;
-            margin-bottom: 15px;
+            margin-bottom: 9px;
         }
 
         .product-name {
-            font-size: 27px;
+            font-size: 21px;
             font-weight: 800;
             line-height: 1.4;
-            letter-spacing: -.8px;
-            margin-bottom: 10px;
+            letter-spacing: -.5px;
+            margin-bottom: 5px;
             color: #172033;
         }
 
+        .rating-wrapper {
+            margin: 5px 0 8px;
+            font-size: 11px;
+        }
+
         .product-brand {
-            font-size: 13px;
-            color: #7b8798;
-            margin: 17px 0 12px;
+            font-size: 11px;
+            color: #718096;
+            margin: 7px 0 11px;
+        }
+
+        /* CARD HARGA */
+        .price-card {
+            background: #f8faff;
+            border: 1px solid #e4edfc;
+            border-radius: 9px;
+            padding: 11px 14px;
+            margin-bottom: 11px;
+        }
+
+        .price-label {
+            display: block;
+            color: #64748b;
+            font-size: 10px;
+            font-weight: 600;
+            margin-bottom: 3px;
         }
 
         .product-price {
-            font-size: 29px;
+            font-size: 23px;
             font-weight: 800;
             color: #2563eb;
-            letter-spacing: -.7px;
-            margin-bottom: 20px;
+            letter-spacing: -.5px;
+            margin: 0;
         }
 
+        /* WISHLIST */
+        .wishlist-button {
+            border: 1px solid #dce5f1;
+            color: #64748b;
+            background: #ffffff;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 8px 11px;
+            border-radius: 7px;
+            transition: .2s;
+        }
+
+        .wishlist-button:hover {
+            border-color: #2563eb;
+            color: #2563eb;
+            background: #eff6ff;
+        }
+
+        /* CARD INFORMASI STOK */
         .product-meta {
             display: flex;
-            gap: 25px;
-            flex-wrap: wrap;
-            margin: 20px 0;
+            gap: 9px;
+            margin: 12px 0;
         }
 
         .meta-item {
+            flex: 1;
+            background: #ffffff;
+            border: 1px solid #e8edf4;
+            border-radius: 8px;
+            padding: 9px 11px;
             color: #64748b;
-            font-size: 12px;
+            font-size: 10px;
+        }
+
+        .meta-item i {
+            color: #2563eb;
+            margin-right: 3px;
         }
 
         .meta-item strong {
             display: block;
             color: #172033;
-            font-size: 14px;
-            margin-top: 5px;
+            font-size: 13px;
+            margin-top: 4px;
         }
 
+        /* PEMBATAS */
         .section-divider {
-            border-color: #edf0f5;
-            margin: 23px 0;
+            border-color: #e9edf3;
+            margin: 13px 0;
+            opacity: 1;
         }
 
+        /* DESKRIPSI */
         .section-title {
-            font-size: 14px;
-            font-weight: 700;
-            margin-bottom: 12px;
+            font-size: 12px;
+            font-weight: 800;
+            margin-bottom: 8px;
             color: #172033;
         }
 
+        .description-box {
+            background: #f8fafc;
+            border: 1px solid #edf0f5;
+            border-radius: 8px;
+            padding: 11px 13px;
+        }
+
         .description {
-            color: #718096;
-            font-size: 13px;
-            line-height: 1.9;
+            color: #64748b;
+            font-size: 11px;
+            line-height: 1.75;
             white-space: pre-line;
             margin-bottom: 0;
         }
 
-        .wishlist-button {
-            border: 1px solid #e4e8ef;
-            color: #64748b;
-            background: #ffffff;
-            font-size: 12px;
-            font-weight: 600;
-            padding: 9px 13px;
-            border-radius: 7px;
+        /* AREA PEMBELIAN */
+        .purchase-card {
+            background: #fbfcfe;
+            border: 1px solid #e8edf4;
+            border-radius: 9px;
+            padding: 13px;
         }
 
-        .wishlist-button:hover {
-            border-color: #ef4444;
-            color: #ef4444;
-            background: #fff7f7;
+        .purchase-title {
+            font-size: 12px;
+            font-weight: 800;
+            color: #172033;
+            margin-bottom: 11px;
         }
 
         .form-label {
             color: #344054;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 700;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .form-select,
         .form-control {
             border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            min-height: 43px;
-            font-size: 12px;
+            border-radius: 7px;
+            min-height: 39px;
+            font-size: 11px;
             box-shadow: none !important;
         }
 
@@ -241,23 +293,23 @@
         .stock-info {
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 12px;
+            gap: 6px;
+            font-size: 10px;
             color: #16a34a;
-            margin-top: 9px;
+            margin-top: 7px;
         }
 
         .quantity-input {
-            max-width: 130px;
+            max-width: 110px;
         }
 
         .btn-primary-custom {
             background: #2563eb;
             border: 1px solid #2563eb;
             color: #ffffff;
-            border-radius: 8px;
-            padding: 12px 19px;
-            font-size: 12px;
+            border-radius: 7px;
+            padding: 10px 14px;
+            font-size: 11px;
             font-weight: 700;
             transition: .2s;
         }
@@ -272,9 +324,9 @@
             background: #ffffff;
             border: 1px solid #d8e1ef;
             color: #2563eb;
-            border-radius: 8px;
-            padding: 12px 19px;
-            font-size: 12px;
+            border-radius: 7px;
+            padding: 10px 14px;
+            font-size: 11px;
             font-weight: 700;
             transition: .2s;
         }
@@ -285,10 +337,11 @@
             color: #2563eb;
         }
 
+        /* NOTIFIKASI */
         .notice-box {
-            border-radius: 9px;
-            padding: 15px;
-            font-size: 12px;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 11px;
             line-height: 1.7;
         }
 
@@ -315,13 +368,119 @@
         }
 
         .alert {
-            font-size: 13px;
-            border-radius: 9px;
+            font-size: 12px;
+            border-radius: 8px;
         }
 
+        /* CARD INFORMASI GUEST DAN ADMIN */
+        .access-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 13px;
+            background: #ffffff;
+            border: 1px solid #e5eaf1;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 3px;
+        }
+
+        .access-icon {
+            width: 38px;
+            height: 38px;
+            min-width: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #eff6ff;
+            color: #2563eb;
+            border-radius: 9px;
+            font-size: 17px;
+        }
+
+        .access-content {
+            flex: 1;
+        }
+
+        .access-title {
+            color: #172033;
+            font-size: 12px;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .access-description {
+            color: #64748b;
+            font-size: 11px;
+            line-height: 1.7;
+            margin-bottom: 12px;
+        }
+
+        .access-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .access-button-primary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #2563eb;
+            border: 1px solid #2563eb;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 7px;
+            padding: 8px 13px;
+            font-size: 10px;
+            font-weight: 700;
+            transition: .2s;
+        }
+
+        .access-button-primary:hover {
+            background: #1d4ed8;
+            border-color: #1d4ed8;
+            color: #ffffff;
+        }
+
+        .access-button-outline {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #ffffff;
+            border: 1px solid #d8e1ef;
+            color: #2563eb;
+            text-decoration: none;
+            border-radius: 7px;
+            padding: 8px 13px;
+            font-size: 10px;
+            font-weight: 700;
+            transition: .2s;
+        }
+
+        .access-button-outline:hover {
+            background: #eff6ff;
+            border-color: #2563eb;
+            color: #2563eb;
+        }
+
+        .access-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: #eff6ff;
+            color: #2563eb;
+            border-radius: 5px;
+            padding: 4px 8px;
+            font-size: 9px;
+            font-weight: 700;
+            margin-bottom: 7px;
+        }
+
+        /* FOOTER */
         .footer-detail {
             border-top: 1px solid #e9edf3;
-            padding: 22px 0;
+            padding: 20px 0;
             color: #8993a4;
             font-size: 11px;
             text-align: center;
@@ -333,25 +492,14 @@
 <body>
 
     <!-- NAVBAR -->
-    <nav class="navbar-detail">
-        <div class="container d-flex justify-content-between align-items-center">
-
-            <a href="{{ route('home') }}" class="brand">
-                <div class="brand-icon">
-                    <i class="bi bi-bag-check-fill"></i>
-                </div>
-
-                <div>
-                    <div class="brand-name">SportZone</div>
-                    <span class="brand-caption">SPORTS STORE</span>
-                </div>
-            </a>
+    <nav class="navbar">
+        <div class="container">
+            <a href="{{ route('home') }}" class="brand">SPORT<span>ZONE</span></a>
 
             <a href="{{ route('home') }}" class="back-link">
-                <i class="bi bi-arrow-left me-2"></i>
-                Kembali ke Katalog
+                <i class="bi bi-arrow-left me-1"></i>
+                Kembali ke Toko
             </a>
-
         </div>
     </nav>
 
@@ -396,7 +544,7 @@
         <!-- DETAIL PRODUK -->
         <div class="product-card">
 
-            <div class="row g-5">
+            <div class="row g-3 product-layout">
 
                 <!-- GAMBAR PRODUK -->
                 <div class="col-md-5">
@@ -423,7 +571,7 @@
 
 
                 <!-- INFORMASI PRODUK -->
-                <div class="col-md-7">
+                <div class="col-md-7 product-information">
 
                     <span class="category-badge">
                         <i class="bi bi-tag-fill me-2"></i>
@@ -436,9 +584,11 @@
 
 
                     <!-- RATING -->
-                    @include('products.reviews.summary', [
-                        'product' => $product
-                    ])
+                    <div class="rating-wrapper">
+                        @include('products.reviews.summary', [
+                            'product' => $product
+                        ])
+                    </div>
 
 
                     <p class="product-brand">
@@ -448,8 +598,12 @@
 
 
                     <!-- HARGA -->
-                    <div class="product-price" id="productPrice">
-                        Rp{{ number_format($product->harga_dasar, 0, ',', '.') }}
+                    <div class="price-card">
+                        <span class="price-label">Harga Produk</span>
+
+                        <div class="product-price" id="productPrice">
+                            Rp{{ number_format($product->harga_dasar, 0, ',', '.') }}
+                        </div>
                     </div>
 
 
@@ -459,7 +613,7 @@
                         <form
                             action="{{ route('customer.wishlist.store', $product->id) }}"
                             method="POST"
-                            class="mb-3"
+                            class="mb-2"
                         >
                             @csrf
 
@@ -471,7 +625,7 @@
 
                     @elseif(!auth()->check())
 
-                        <a href="{{ route('login') }}" class="wishlist-button text-decoration-none d-inline-block mb-3">
+                        <a href="{{ route('login') }}" class="wishlist-button text-decoration-none d-inline-block mb-2">
                             <i class="bi bi-heart me-1"></i>
                             Login untuk Menambahkan Wishlist
                         </a>
@@ -483,13 +637,13 @@
                     <div class="product-meta">
 
                         <div class="meta-item">
-                            <i class="bi bi-bag-check me-1"></i>
+                            <i class="bi bi-bag-check"></i>
                             Terjual
                             <strong>{{ $product->terjual ?? 0 }} produk</strong>
                         </div>
 
                         <div class="meta-item">
-                            <i class="bi bi-box-seam me-1"></i>
+                            <i class="bi bi-box-seam"></i>
                             Total Stok
                             <strong id="totalStock">{{ $totalStok }} produk</strong>
                         </div>
@@ -502,12 +656,15 @@
 
                     <!-- DESKRIPSI -->
                     <h5 class="section-title">
+                        <i class="bi bi-card-text me-1"></i>
                         Deskripsi Produk
                     </h5>
 
-                    <p class="description">
-                        {{ $product->deskripsi ?: 'Belum ada deskripsi produk.' }}
-                    </p>
+                    <div class="description-box">
+                        <p class="description">
+                            {{ $product->deskripsi ?: 'Belum ada deskripsi produk.' }}
+                        </p>
+                    </div>
 
 
                     <hr class="section-divider">
@@ -519,175 +676,186 @@
                         <!-- CUSTOMER LOGIN -->
                         @if(auth()->check() && auth()->user()->role === 'customer')
 
-                            <form
-                                action="{{ route('cart.store') }}"
-                                method="POST"
-                                id="purchaseForm"
-                            >
+                            <div class="purchase-card">
 
-                                @csrf
+                                <div class="purchase-title">
+                                    <i class="bi bi-cart3 me-1"></i>
+                                    Pembelian Produk
+                                </div>
 
-                                <input
-                                    type="hidden"
-                                    name="product_id"
-                                    value="{{ $product->id }}"
+                                <form
+                                    action="{{ route('cart.store') }}"
+                                    method="POST"
+                                    id="purchaseForm"
                                 >
 
-
-                                <!-- PILIH VARIASI -->
-                                @if($product->jenis_produk == 'variasi')
-
-                                    <div class="mb-3">
-
-                                        <label for="variant_id" class="form-label">
-                                            Pilih Ukuran / Warna
-                                        </label>
-
-                                        <select
-                                            name="variant_id"
-                                            id="variant_id"
-                                            class="form-select"
-                                            required
-                                        >
-
-                                            <option value="">
-                                                Pilih variasi produk
-                                            </option>
-
-                                            @foreach($variants as $variant)
-
-                                                @if($variant->stok > 0)
-
-                                                    <option
-                                                        value="{{ $variant->id }}"
-                                                        data-stock="{{ $variant->stok }}"
-                                                        data-price="{{ $variant->harga }}"
-                                                        {{ old('variant_id') == $variant->id ? 'selected' : '' }}
-                                                    >
-                                                        {{ $variant->ukuran ?: '-' }}
-                                                        /
-                                                        {{ $variant->warna ?: '-' }}
-                                                        - Rp{{ number_format($variant->harga, 0, ',', '.') }}
-                                                        (Stok: {{ $variant->stok }})
-                                                    </option>
-
-                                                @endif
-
-                                            @endforeach
-
-                                        </select>
-
-                                        <div class="stock-info" id="variantStockInfo">
-                                            <i class="bi bi-info-circle"></i>
-                                            Pilih variasi untuk melihat stok.
-                                        </div>
-
-                                    </div>
-
-                                @else
+                                    @csrf
 
                                     <input
                                         type="hidden"
-                                        name="variant_id"
-                                        value=""
+                                        name="product_id"
+                                        value="{{ $product->id }}"
                                     >
 
-                                    <div class="stock-info mb-3">
-                                        <i class="bi bi-check-circle-fill"></i>
-                                        Produk tersedia: {{ $product->stok }} stok
+
+                                    <!-- PILIH VARIASI -->
+                                    @if($product->jenis_produk == 'variasi')
+
+                                        <div class="mb-3">
+
+                                            <label for="variant_id" class="form-label">
+                                                Pilih Ukuran / Warna
+                                            </label>
+
+                                            <select
+                                                name="variant_id"
+                                                id="variant_id"
+                                                class="form-select"
+                                                required
+                                            >
+
+                                                <option value="">
+                                                    Pilih variasi produk
+                                                </option>
+
+                                                @foreach($variants as $variant)
+
+                                                    @if($variant->stok > 0)
+
+                                                        <option
+                                                            value="{{ $variant->id }}"
+                                                            data-stock="{{ $variant->stok }}"
+                                                            data-price="{{ $variant->harga }}"
+                                                            {{ old('variant_id') == $variant->id ? 'selected' : '' }}
+                                                        >
+                                                            {{ $variant->ukuran ?: '-' }}
+                                                            /
+                                                            {{ $variant->warna ?: '-' }}
+                                                            - Rp{{ number_format($variant->harga, 0, ',', '.') }}
+                                                            (Stok: {{ $variant->stok }})
+                                                        </option>
+
+                                                    @endif
+
+                                                @endforeach
+
+                                            </select>
+
+                                            <div class="stock-info" id="variantStockInfo">
+                                                <i class="bi bi-info-circle"></i>
+                                                Pilih variasi untuk melihat stok.
+                                            </div>
+
+                                        </div>
+
+                                    @else
+
+                                        <input
+                                            type="hidden"
+                                            name="variant_id"
+                                            value=""
+                                        >
+
+                                        <div class="stock-info mb-3">
+                                            <i class="bi bi-check-circle-fill"></i>
+                                            Produk tersedia: {{ $product->stok }} stok
+                                        </div>
+
+                                    @endif
+
+
+                                    <!-- JUMLAH PEMBELIAN -->
+                                    <div class="mb-3">
+
+                                        <label for="qty" class="form-label">
+                                            Jumlah Pembelian
+                                        </label>
+
+                                        <input
+                                            type="number"
+                                            name="qty"
+                                            id="qty"
+                                            class="form-control quantity-input"
+                                            value="{{ old('qty', 1) }}"
+                                            min="1"
+                                            @if($product->jenis_produk != 'variasi')
+                                                max="{{ $product->stok }}"
+                                            @endif
+                                            required
+                                        >
+
                                     </div>
 
-                                @endif
 
+                                    <!-- TOMBOL -->
+                                    <div class="d-flex gap-2 flex-wrap">
 
-                                <!-- JUMLAH PEMBELIAN -->
-                                <div class="mb-4">
+                                        <button
+                                            type="submit"
+                                            class="btn-outline-custom"
+                                            id="cartButton"
+                                        >
+                                            <i class="bi bi-cart-plus me-1"></i>
+                                            Tambah Keranjang
+                                        </button>
 
-                                    <label for="qty" class="form-label">
-                                        Jumlah Pembelian
-                                    </label>
+                                        <button
+                                            type="submit"
+                                            formaction="{{ route('checkout.buyNow') }}"
+                                            class="btn-primary-custom"
+                                            id="buyButton"
+                                        >
+                                            <i class="bi bi-bag-check me-1"></i>
+                                            Beli Sekarang
+                                        </button>
 
-                                    <input
-                                        type="number"
-                                        name="qty"
-                                        id="qty"
-                                        class="form-control quantity-input"
-                                        value="{{ old('qty', 1) }}"
-                                        min="1"
-                                        @if($product->jenis_produk != 'variasi')
-                                            max="{{ $product->stok }}"
-                                        @endif
-                                        required
-                                    >
+                                    </div>
 
-                                </div>
+                                </form>
 
-
-                                <!-- TOMBOL -->
-                                <div class="d-flex gap-2 flex-wrap">
-
-                                    <button
-                                        type="submit"
-                                        class="btn-outline-custom"
-                                        id="cartButton"
-                                    >
-                                        <i class="bi bi-cart-plus me-2"></i>
-                                        Tambah Keranjang
-                                    </button>
-
-                                    <button
-                                        type="submit"
-                                        formaction="{{ route('checkout.buyNow') }}"
-                                        class="btn-primary-custom"
-                                        id="buyButton"
-                                    >
-                                        <i class="bi bi-bag-check me-2"></i>
-                                        Beli Sekarang
-                                    </button>
-
-                                </div>
-
-                            </form>
+                            </div>
 
 
                         <!-- PENGUNJUNG BELUM LOGIN -->
                         @elseif(!auth()->check())
 
-                            <div class="notice-box notice-warning mb-3">
+                            <div class="access-card">
 
-                                <div class="d-flex align-items-start gap-2">
+                                <div class="access-icon">
+                                    <i class="bi bi-person-lock"></i>
+                                </div>
 
-                                    <i class="bi bi-info-circle fs-5"></i>
+                                <div class="access-content">
 
-                                    <div>
-                                        <strong>
-                                            Login diperlukan untuk berbelanja
-                                        </strong>
+                                    <div class="access-label">
+                                        <i class="bi bi-info-circle"></i>
+                                        AKSES PENGUNJUNG
+                                    </div>
 
-                                        <p class="mt-1">
-                                            Kamu dapat melihat informasi produk,
-                                            tetapi harus login atau membuat akun
-                                            terlebih dahulu untuk menggunakan fitur
-                                            Tambah ke Keranjang dan Beli Sekarang.
-                                        </p>
+                                    <h6 class="access-title">
+                                        Masuk untuk Mulai Berbelanja
+                                    </h6>
+
+                                    <p class="access-description">
+                                        Silakan login atau buat akun terlebih dahulu untuk
+                                        menggunakan fitur keranjang dan melakukan pembelian produk.
+                                    </p>
+
+                                    <div class="access-actions">
+
+                                        <a href="{{ route('login') }}" class="access-button-primary">
+                                            <i class="bi bi-box-arrow-in-right me-1"></i>
+                                            Login Sekarang
+                                        </a>
+
+                                        <a href="{{ route('register') }}" class="access-button-outline">
+                                            <i class="bi bi-person-plus me-1"></i>
+                                            Buat Akun
+                                        </a>
+
                                     </div>
 
                                 </div>
-
-                            </div>
-
-
-                            <div class="d-flex gap-2">
-
-                                <a href="{{ route('login') }}" class="btn-primary-custom text-decoration-none">
-                                    <i class="bi bi-box-arrow-in-right me-1"></i>
-                                    Login Sekarang
-                                </a>
-
-                                <a href="{{ route('register') }}" class="btn-outline-custom text-decoration-none">
-                                    <i class="bi bi-person-plus me-1"></i>
-                                    Buat Akun
-                                </a>
 
                             </div>
 
@@ -695,29 +863,36 @@
                         <!-- ADMIN LOGIN -->
                         @else
 
-                            <div class="notice-box notice-info">
+                            <div class="access-card">
 
-                                <div class="d-flex align-items-start gap-2">
+                                <div class="access-icon">
+                                    <i class="bi bi-shield-check"></i>
+                                </div>
 
-                                    <i class="bi bi-info-circle fs-5"></i>
+                                <div class="access-content">
 
-                                    <div>
-                                        <strong>
-                                            Kamu sedang login sebagai Admin
-                                        </strong>
+                                    <div class="access-label">
+                                        <i class="bi bi-person-badge"></i>
+                                        AKUN ADMIN
+                                    </div>
 
-                                        <p class="mt-1 mb-3">
-                                            Fitur Tambah ke Keranjang dan Beli Sekarang
-                                            hanya tersedia untuk customer.
-                                        </p>
+                                    <h6 class="access-title">
+                                        Anda Sedang Login sebagai Admin
+                                    </h6>
 
-                                        <a
-                                            href="{{ route('admin.dashboard') }}"
-                                            class="btn btn-sm btn-outline-primary"
-                                        >
+                                    <p class="access-description">
+                                        Halaman ini merupakan tampilan detail produk untuk customer.
+                                        Untuk mengelola produk dan aktivitas toko, silakan menuju
+                                        dashboard admin.
+                                    </p>
+
+                                    <div class="access-actions">
+
+                                        <a href="{{ route('admin.dashboard') }}" class="access-button-primary">
                                             <i class="bi bi-speedometer2 me-1"></i>
-                                            Panel Admin
+                                            Buka Dashboard Admin
                                         </a>
+
                                     </div>
 
                                 </div>

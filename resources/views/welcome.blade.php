@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -729,7 +728,59 @@ body {
     margin-top: auto;
 }
 
-    </style>
+/* =========================================
+   ICON NOTIFIKASI DAN KERANJANG NAVBAR
+========================================= */
+
+/* Tombol icon */
+.topbar .icon-button {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+    margin: 0;
+
+    background: transparent !important;
+    color: #64748b !important;
+
+    border: none !important;
+    border-radius: 8px;
+    box-shadow: none !important;
+
+    transition: all 0.2s ease;
+}
+
+/* Ukuran icon */
+.topbar .icon-button i {
+    font-size: 20px;
+}
+
+/* Hover soft grey */
+.topbar .icon-button:hover {
+    background: #f1f5f9 !important;
+    color: #1e40af !important;
+}
+
+/* Focus */
+.topbar .icon-button:focus-visible {
+    background: #f1f5f9 !important;
+    color: #1e40af !important;
+    outline: 2px solid #bfdbfe;
+    outline-offset: 1px;
+}
+
+/* Indikator keranjang */
+.topbar .icon-button .cart-dot {
+    background: #2563eb !important;
+    color: #ffffff !important;
+    border: 2px solid #ffffff;
+}
+</style>
 </head>
 
 <body>
@@ -1730,9 +1781,8 @@ body {
 
                     </div>
 
-
                     <!-- PAGINATION -->
-                    <div class="mt-4">
+                    <div class="mt-4 d-flex justify-content-end">
                         {{ $products->appends(request()->query())->fragment('catalog')->links('pagination::bootstrap-5') }}
                     </div>
 

@@ -14,87 +14,58 @@
 
     <style>
         * {
+            box-sizing: border-box;
             font-family: 'Inter', sans-serif;
         }
 
         body {
-            background: #f7f9fc;
+            background: #f5f7fb;
             color: #172033;
+            font-size: 14px;
+            margin: 0;
         }
 
-        .navbar-store {
-            background: #E8EEF8;
-            border-bottom: 1px solid #e9edf3;
-            padding: 16px 0;
+        /* NAVBAR */
+
+        .navbar {
+            background: #fff;
+            border-bottom: 1px solid #e8edf3;
+            padding: 17px 0; 
         }
 
         .brand {
-            display: flex;
-            align-items: center;
-            gap: 11px;
-            text-decoration: none;
+            display: inline-block;
             color: #172033;
-        }
-
-        .brand-icon {
-            width: 42px;
-            height: 42px;
-            background: #2563eb;
-            color: #fff;
-            border-radius: 11px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 21px;
-        }
-
-        .brand-name {
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 800;
-            letter-spacing: -.7px;
-        }
-
-        .brand-caption {
-            display: block;
-            color: #8993a4;
-            font-size: 10px;
-            font-weight: 600;
-            letter-spacing: 1.5px;
-            margin-top: -3px;
-        }
-
-        .nav-link-custom {
-            color: #64748b;
             text-decoration: none;
-            font-size: 12px;
-            font-weight: 600;
-            transition: .2s;
+            letter-spacing: -.8px;
+            margin-left: -45px;
         }
 
-        .nav-link-custom:hover {
+        .brand span {
             color: #2563eb;
         }
 
-        .logout-button {
-            background: #fff;
-            border: 1px solid #e2e8f0;
+        
+        .back-link {
             color: #64748b;
-            padding: 8px 13px;
-            border-radius: 7px;
-            font-size: 11px;
+            text-decoration: none;
+            font-size: 13px;
             font-weight: 600;
+            margin-right: -45px;
         }
 
-        .logout-button:hover {
-            background: #fff1f2;
-            color: #dc2626;
-            border-color: #fecaca;
+        .back-link:hover {
+            color: #2563eb;
         }
+
+        /* KONTEN UTAMA */
 
         .main-container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 38px 24px 65px;
+            padding: 22px 24px 65px;
         }
 
         .page-title {
@@ -102,39 +73,27 @@
             font-weight: 800;
             letter-spacing: -.7px;
             margin-bottom: 7px;
+            color: #172033;
         }
 
         .page-subtitle {
             font-size: 12px;
             color: #8993a4;
-            margin-bottom: 27px;
+            margin-bottom: 23px;
         }
 
-        .breadcrumb-custom {
-            font-size: 11px;
-            color: #94a3b8;
-            margin-bottom: 18px;
-        }
-
-        .breadcrumb-custom a {
-            color: #64748b;
-            text-decoration: none;
-        }
-
-        .breadcrumb-custom a:hover {
-            color: #2563eb;
-        }
+        /* KARTU */
 
         .cart-card,
         .summary-card {
             background: #fff;
-            border: 1px solid #edf0f5;
-            border-radius: 13px;
-            box-shadow: 0 5px 22px rgba(15, 23, 42, .035);
+            border: 1px solid #e8edf3;
+            border-radius: 12px;
+            box-shadow: 0 4px 18px rgba(15, 23, 42, .035);
         }
 
         .cart-card {
-            padding: 24px;
+            padding: 23px 25px;
         }
 
         .summary-card {
@@ -146,7 +105,8 @@
         .card-heading {
             font-size: 15px;
             font-weight: 800;
-            margin-bottom: 22px;
+            margin-bottom: 19px;
+            color: #172033;
         }
 
         .item-count {
@@ -154,12 +114,14 @@
             font-weight: 700;
         }
 
+        /* ITEM KERANJANG */
+
         .cart-item {
             display: grid;
-            grid-template-columns: 105px minmax(200px, 1fr) 155px 145px;
+            grid-template-columns: 100px minmax(180px, 1fr) 145px 140px;
             gap: 18px;
             align-items: center;
-            padding: 22px 0;
+            padding: 21px 0;
             border-bottom: 1px solid #edf0f5;
         }
 
@@ -173,15 +135,15 @@
         }
 
         .product-image-box {
-            width: 105px;
-            height: 105px;
+            width: 100px;
+            height: 100px;
             background: #f7f9fc;
             border: 1px solid #edf0f5;
             border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 8px;
+            padding: 9px;
         }
 
         .product-image {
@@ -191,14 +153,14 @@
         }
 
         .product-placeholder {
-            font-size: 35px;
+            font-size: 34px;
             color: #cbd5e1;
         }
 
         .product-name {
             font-size: 13px;
             font-weight: 700;
-            line-height: 1.5;
+            line-height: 1.6;
             color: #172033;
             text-decoration: none;
         }
@@ -220,7 +182,10 @@
             margin-top: 9px;
         }
 
+        /* JUMLAH PRODUK */
+
         .quantity-label {
+            display: block;
             font-size: 10px;
             font-weight: 700;
             color: #64748b;
@@ -258,8 +223,10 @@
             display: block;
             color: #94a3b8;
             font-size: 10px;
-            margin-top: 6px;
+            margin-top: 7px;
         }
+
+        /* SUBTOTAL DAN HAPUS */
 
         .subtotal-label {
             font-size: 10px;
@@ -282,6 +249,7 @@
             padding: 7px 10px;
             font-size: 10px;
             font-weight: 600;
+            transition: .2s;
         }
 
         .delete-button:hover {
@@ -296,17 +264,20 @@
             text-decoration: none;
             font-size: 11px;
             font-weight: 600;
-            margin-top: 20px;
+            margin-top: 17px;
         }
 
         .continue-button:hover {
             color: #2563eb;
         }
 
+        /* RINGKASAN BELANJA */
+
         .summary-title {
             font-size: 15px;
             font-weight: 800;
             margin-bottom: 22px;
+            color: #172033;
         }
 
         .summary-row {
@@ -372,13 +343,15 @@
             text-align: center;
         }
 
+        /* KERANJANG KOSONG */
+
         .empty-card {
             background: #fff;
-            border: 1px solid #edf0f5;
-            border-radius: 13px;
-            padding: 75px 20px;
+            border: 1px solid #e8edf3;
+            border-radius: 12px;
+            padding: 65px 20px;
             text-align: center;
-            box-shadow: 0 5px 22px rgba(15, 23, 42, .035);
+            box-shadow: 0 4px 18px rgba(15, 23, 42, .035);
         }
 
         .empty-icon {
@@ -422,14 +395,18 @@
             color: #fff;
         }
 
+        /* NOTIFIKASI */
+
         .alert {
             border-radius: 9px;
             font-size: 12px;
         }
 
+        /* FOOTER */
+
         .footer-store {
             background: #fff;
-            border-top: 1px solid #e9edf3;
+            border-top: 1px solid #e8edf3;
             padding: 22px;
             color: #94a3b8;
             text-align: center;
@@ -441,49 +418,20 @@
 <body>
 
     <!-- NAVBAR -->
-    <nav class="navbar-store">
-        <div class="container d-flex justify-content-between align-items-center">
+    <nav class="navbar">
+        <div class="container">
+            <a href="{{ route('home') }}" class="brand">SPORT<span>ZONE</span></a>
 
-            <a href="{{ route('home') }}" class="brand">
-                <div class="brand-icon">
-                    <i class="bi bi-bag-check-fill"></i>
-                </div>
-
-                <div>
-                    <div class="brand-name">SportZone</div>
-                    <span class="brand-caption">SPORTS STORE</span>
-                </div>
+            <a href="{{ route('home') }}" class="back-link">
+                <i class="bi bi-arrow-left me-1"></i>
+                Kembali ke Toko
             </a>
-
-            <div class="d-flex align-items-center gap-4">
-
-                <a href="{{ route('home') }}" class="nav-link-custom">
-                    <i class="bi bi-house me-1"></i>
-                    Beranda
-                </a>
-
-                <form action="{{ route('logout') }}" method="POST" class="m-0">
-                    @csrf
-                    <button type="submit" class="logout-button">
-                        <i class="bi bi-box-arrow-right me-1"></i>
-                        Logout
-                    </button>
-                </form>
-
-            </div>
-
         </div>
     </nav>
 
 
     <!-- KONTEN -->
     <main class="main-container">
-
-        <div class="breadcrumb-custom">
-            <a href="{{ route('home') }}">Beranda</a>
-            <i class="bi bi-chevron-right mx-2"></i>
-            <span>Keranjang Belanja</span>
-        </div>
 
         <h1 class="page-title">Keranjang Belanja</h1>
 
@@ -703,12 +651,6 @@
                         @endforeach
 
                     </div>
-
-
-                    <a href="{{ route('home') }}" class="continue-button">
-                        <i class="bi bi-arrow-left"></i>
-                        Lanjut Belanja
-                    </a>
 
                 </div>
 

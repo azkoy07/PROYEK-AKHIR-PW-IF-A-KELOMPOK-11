@@ -40,10 +40,23 @@
             font-size: 22px;
             font-weight: 800;
             text-decoration: none;
-            letter-spacing: -0.8px;
+            letter-spacing: -.8px;
+            margin-left: -25px;
         }
 
         .brand span {
+            color: #2563eb;
+        }
+
+        .back-link {
+            color: #64748b;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            margin-right: -25px;
+        }
+
+        .back-link:hover {
             color: #2563eb;
         }
 
@@ -457,23 +470,17 @@
 
 <body>
 
-<nav class="navbar bg-white border-bottom">
+<nav class="navbar">
     <div class="container" style="max-width: 1180px;">
 
-        <div class="d-flex justify-content-between align-items-center w-100">
+        <a href="{{ route('home') }}" class="brand">
+            SPORT<span>ZONE</span>
+        </a>
 
-            <a href="{{ route('home') }}" class="brand">
-                <i class="bi bi-lightning-charge-fill text-primary"></i>
-                Sport<span>Zone</span>
-            </a>
-
-            <a href="{{ route('customer.orders.index') }}"
-               class="btn btn-outline-secondary btn-sm px-3">
-                <i class="bi bi-arrow-left me-1"></i>
-                Kembali ke Pesanan
-            </a>
-
-        </div>
+        <a href="{{ route('customer.orders.index') }}" class="back-link">
+            <i class="bi bi-arrow-left me-1"></i>
+            Kembali ke Pesanan
+        </a>
 
     </div>
 </nav>

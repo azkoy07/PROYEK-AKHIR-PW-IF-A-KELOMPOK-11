@@ -3528,4 +3528,61 @@ button {
     font-size: 25px;
 }
 
+/* PAGINATION RIWAYAT STOK */
+.sz-pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 14px;
+    padding: 16px 20px;
+}
 
+.sz-pagination-info {
+    color: #64748b;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.sz-pagination-info strong {
+    color: #172033;
+    font-weight: 700;
+}
+
+.pagination-navigation {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.pagination-navigation .pagination {
+    margin-bottom: 0;
+    gap: 4px;
+    flex-wrap: wrap;
+}
+
+.pagination-navigation .page-link {
+    border-radius: 6px !important;
+    border: 1px solid #e2e8f0;
+    color: #475569;
+    font-size: 11px;
+    padding: 7px 11px;
+    box-shadow: none;
+}
+
+.pagination-navigation .page-item.active .page-link {
+    background: #2563eb;
+    border-color: #2563eb;
+    color: #ffffff;
+}
+
+.pagination-navigation .page-link:hover {
+    background: #eff6ff;
+    border-color: #bfdbfe;
+    color: #2563eb;
+}
+
+.pagination-navigation .page-item.disabled .page-link {
+    background: #f8fafc;
+    color: #a0aaba;
+}

@@ -238,36 +238,36 @@
 
         </div>
 
-        <!-- PAGINATION -->
+    
         
-<!-- PAGINATION -->
-<div class="card-footer bg-white p-0">
+        <!-- PAGINATION -->
+        <div class="card-footer bg-white">
 
-    <div class="sz-pagination">
+            <div class="sz-pagination">
 
-        <!-- INFORMASI JUMLAH DATA -->
-        <small class="text-secondary">
+                <!-- INFORMASI JUMLAH DATA -->
+                <div class="sz-pagination-info">
 
-            Menampilkan
-            <strong>{{ $logs->firstItem() ?? 0 }}</strong>
-            sampai
-            <strong>{{ $logs->lastItem() ?? 0 }}</strong>
-            dari
-            <strong>{{ $logs->total() }}</strong>
-            data.
+                    Menampilkan
+                    <strong>{{ $logs->firstItem() ?? 0 }}</strong>
+                    sampai
+                    <strong>{{ $logs->lastItem() ?? 0 }}</strong>
+                    dari
+                    <strong>{{ $logs->total() }}</strong>
+                    data riwayat stok.
 
-        </small>
+                </div>
 
-        <!-- TOMBOL PAGINATION -->
-        <div class="pagination-navigation">
+                <!-- TOMBOL PAGINATION -->
+                <div class="pagination-navigation">
 
-            {{ $logs->appends(request()->query())->links('pagination::bootstrap-5') }}
+                    {{ $logs->appends(request()->query())->links('pagination::bootstrap-5') }}
+
+                </div>
+
+            </div>
 
         </div>
-
-    </div>
-
-</div>
 
 
     </div>

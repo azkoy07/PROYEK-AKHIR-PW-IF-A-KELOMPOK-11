@@ -61,10 +61,10 @@ class AdminOrderController extends Controller
         ));
     }
 
-    // Memverifikasi pembayaran
+   // Memverifikasi pembayaran
     public function approve($id)
     {
-        $message = DB::transaction(function () use ($id) {
+        $result = DB::transaction(function () use ($id) {
 
             $order = DB::table('orders')
                 ->where('id', $id)
@@ -76,7 +76,10 @@ class AdminOrderController extends Controller
             }
 
             if ($order->status !== 'menunggu_bayar') {
-                return 'Pesanan ini sudah diproses sebelumnya.';
+                return [
+                    'success' => false,
+                    'message' => 'Pesanan ini sudah diproses sebelumnya.'
+                ];
             }
 
             // Transfer dan e-wallet wajib memiliki bukti pembayaran
@@ -84,7 +87,10 @@ class AdminOrderController extends Controller
                 in_array($order->metode_bayar, ['transfer', 'ewallet'])
                 && !$order->bukti_bayar
             ) {
-                return 'Pelanggan belum mengunggah bukti pembayaran.';
+                return [
+                    'success' => false,
+                    'message' => 'Pelanggan belum mengunggah bukti pembayaran.'
+                ];
             }
 
             DB::table('orders')
@@ -93,10 +99,17 @@ class AdminOrderController extends Controller
                     'status' => 'dikemas'
                 ]);
 
-            return 'Pembayaran berhasil diverifikasi. Pesanan masuk tahap pengemasan.';
+            return [
+                'success' => true,
+                'message' => 'Pembayaran berhasil diverifikasi. Pesanan masuk tahap pengemasan.'
+            ];
         });
 
-        return back()->with('success', $message);
+        if (!$result['success']) {
+            return back()->with('error', $result['message']);
+        }
+
+        return back()->with('success', $result['message']);
     }
 
     // Menolak pesanan dan mengembalikan stok
