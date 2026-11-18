@@ -16,14 +16,21 @@
 <div class="sz-product-page">
     <div class="sz-wrapper">
 
-        <div class="mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+
+            <div>
+                <h2 class="sz-page-title mb-1">Tambah Produk</h2>
+                <p class="sz-page-subtitle mb-0">
+                    Masukkan informasi produk baru ke katalog SportZone.
+                </p>
+            </div>
+
             <a href="{{ route('admin.products.index') }}"
-               class="btn btn-light mb-3">
-                <i class="bi bi-arrow-left me-1"></i> Kembali ke Produk
+            class="btn btn-light">
+                <i class="bi bi-arrow-left me-1"></i>
+                Kembali ke Produk
             </a>
 
-            <h2 class="sz-page-title">Tambah Produk</h2>
-            <p class="sz-page-subtitle">Masukkan informasi produk baru ke katalog SportZone.</p>
         </div>
 
         <div class="sz-card">

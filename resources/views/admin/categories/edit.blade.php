@@ -7,11 +7,11 @@
 
 @section('content')
 
-    <div class="mb-4">
+    <div class="d-flex justify-content-end mb-4">
         <a href="{{ route('admin.categories.index') }}"
-           class="btn btn-light border">
-            <i class="bi bi-arrow-left me-1"></i>
-            Kembali ke Kategori
+        class="btn btn-light border">
+        <i class="bi bi-arrow-left me-1"></i>
+        Kembali ke Kategori
         </a>
     </div>
 

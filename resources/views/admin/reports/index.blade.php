@@ -11,7 +11,7 @@
     $grafikHarian = $laporanHarian->reverse()->values();
 
     $grafikTanggal = $grafikHarian->map(function ($item) {
-        return \Carbon\Carbon::parse($item->tanggal)->format('d/m/Y');
+        return \Carbon\Carbon::parse($item->tanggal)->format('d/m');
     })->values();
 
     $grafikOmzet = $grafikHarian->map(function ($item) {
@@ -193,6 +193,7 @@
         letter-spacing: -.5px;
         margin: 0;
         overflow-wrap: anywhere;
+        font-variant-numeric: tabular-nums;
     }
 
     .summary-icon {
@@ -220,24 +221,44 @@
         background: #fff5e6;
     }
 
+    .chart-main-card {
+        overflow: hidden;
+    }
+
     .chart-card {
         height: 100%;
         border: 1px solid #e8edf4;
         border-radius: 10px;
         background: #fff;
+        transition: .2s;
+    }
+
+    .chart-card:hover {
+        border-color: #cbd5e1;
+        box-shadow: 0 4px 12px rgba(15, 23, 42, .035);
     }
 
     .chart-container {
         position: relative;
-        height: 260px;
+        height: 290px;
         width: 100%;
+    }
+
+    .chart-container.chart-category {
+        height: 320px;
     }
 
     .chart-title {
         color: #172033;
         font-size: 12px;
         font-weight: 700;
-        margin-bottom: 17px;
+        margin-bottom: 8px;
+    }
+
+    .chart-description {
+        color: #94a3b8;
+        font-size: 10px;
+        margin-bottom: 18px;
     }
 
     .chart-label {
@@ -318,6 +339,12 @@
         color: #172033 !important;
         font-weight: 700;
         white-space: nowrap;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .table-quantity {
+        font-weight: 600;
+        font-variant-numeric: tabular-nums;
     }
 
     .table-date {
@@ -610,6 +637,10 @@
                                     Omzet Penjualan Harian
                                 </h6>
 
+                                <p class="chart-description">
+                                    Pergerakan total pendapatan untuk setiap tanggal.
+                                </p>
+
                                 @if($grafikTanggal->isEmpty())
 
                                     <div class="text-center text-secondary py-5">
@@ -639,6 +670,10 @@
                                     Pesanan dan Item Terjual
                                 </h6>
 
+                                <p class="chart-description">
+                                    Perbandingan jumlah pesanan dengan item yang terjual.
+                                </p>
+
                                 @if($grafikTanggal->isEmpty())
 
                                     <div class="text-center text-secondary py-5">
@@ -659,7 +694,7 @@
                     </div>
 
                     {{-- Grafik Kategori --}}
-                    <div class="col-lg-6">
+                    <div class="col-12">
                         <div class="chart-card">
                             <div class="report-card-body">
 
@@ -667,6 +702,10 @@
                                     <i class="bi bi-tags text-primary me-1"></i>
                                     Omzet Berdasarkan Kategori
                                 </h6>
+
+                                <p class="chart-description">
+                                    Perbandingan pendapatan dari setiap kategori produk.
+                                </p>
 
                                 @if($grafikNamaKategori->isEmpty())
 
@@ -677,7 +716,10 @@
 
                                 @else
 
-                                    <div class="chart-container">
+                                    <div
+                                        class="chart-container chart-category"
+                                        style="height: {{ max(260, $grafikNamaKategori->count() * 48) }}px;">
+
                                         <canvas id="grafikKategori"></canvas>
                                     </div>
 
@@ -735,9 +777,9 @@
                         <tr>
                             <th width="65">No</th>
                             <th>Tanggal</th>
-                            <th>Jumlah Pesanan</th>
-                            <th>Item Terjual</th>
-                            <th>Omzet</th>
+                            <th class="text-end">Jumlah Pesanan</th>
+                            <th class="text-end">Item Terjual</th>
+                            <th class="text-end">Omzet</th>
                         </tr>
                     </thead>
 
@@ -754,15 +796,15 @@
                                     {{ \Carbon\Carbon::parse($laporan->tanggal)->format('d/m/Y') }}
                                 </td>
 
-                                <td>
+                                <td class="text-end table-quantity">
                                     {{ number_format($laporan->jumlah_pesanan, 0, ',', '.') }}
                                 </td>
 
-                                <td>
+                                <td class="text-end table-quantity">
                                     {{ number_format($laporan->item_terjual, 0, ',', '.') }}
                                 </td>
 
-                                <td class="table-amount">
+                                <td class="text-end table-amount">
                                     Rp{{ number_format($laporan->omzet, 0, ',', '.') }}
                                 </td>
                             </tr>
@@ -830,8 +872,8 @@
                         <tr>
                             <th width="65">No</th>
                             <th>Nama Kategori</th>
-                            <th>Item Terjual</th>
-                            <th>Omzet</th>
+                            <th class="text-end">Item Terjual</th>
+                            <th class="text-end">Omzet</th>
                         </tr>
                     </thead>
 
@@ -848,11 +890,11 @@
                                     {{ $kategori->nama_kategori }}
                                 </td>
 
-                                <td>
+                                <td class="text-end table-quantity">
                                     {{ number_format($kategori->item_terjual, 0, ',', '.') }}
                                 </td>
 
-                                <td class="table-amount">
+                                <td class="text-end table-amount">
                                     Rp{{ number_format($kategori->omzet, 0, ',', '.') }}
                                 </td>
                             </tr>
@@ -878,7 +920,6 @@
 
     </div>
 
-
 </div>
 
 @endsection
@@ -899,6 +940,30 @@
         const omzetKategori = @json($grafikOmzetKategori);
 
         function formatRupiah(nilai) {
+            return 'Rp' + new Intl.NumberFormat('id-ID', {
+                maximumFractionDigits: 0
+            }).format(nilai || 0);
+        }
+
+        function formatRupiahRingkas(nilai) {
+            if (nilai >= 1000000000) {
+                return 'Rp' + (nilai / 1000000000).toLocaleString('id-ID', {
+                    maximumFractionDigits: 1
+                }) + ' M';
+            }
+
+            if (nilai >= 1000000) {
+                return 'Rp' + (nilai / 1000000).toLocaleString('id-ID', {
+                    maximumFractionDigits: 1
+                }) + ' jt';
+            }
+
+            if (nilai >= 1000) {
+                return 'Rp' + (nilai / 1000).toLocaleString('id-ID', {
+                    maximumFractionDigits: 0
+                }) + ' rb';
+            }
+
             return 'Rp' + new Intl.NumberFormat('id-ID').format(nilai);
         }
 
@@ -911,6 +976,14 @@
         if (!panelGrafik) {
             return;
         }
+
+        const opsiTooltipRupiah = {
+            callbacks: {
+                label: function(context) {
+                    return context.dataset.label + ': ' + formatRupiah(context.raw);
+                }
+            }
+        };
 
         panelGrafik.addEventListener('shown.bs.collapse', function () {
 
@@ -925,62 +998,98 @@
                 grafikOmzetInstance === null
             ) {
 
-                grafikOmzetInstance = new Chart(
-                    document.getElementById('grafikOmzet'),
-                    {
-                        type: 'line',
+                const canvasOmzet = document.getElementById('grafikOmzet');
 
-                        data: {
-                            labels: tanggalHarian,
+                const contextOmzet = canvasOmzet.getContext('2d');
 
-                            datasets: [{
-                                label: 'Omzet',
-                                data: omzetHarian,
-                                borderColor: '#2563eb',
-                                backgroundColor: 'rgba(37, 99, 235, 0.12)',
-                                borderWidth: 2,
-                                fill: true,
-                                tension: 0.35,
-                                pointRadius: 4,
-                                pointHoverRadius: 6
-                            }]
+                const gradientOmzet = contextOmzet.createLinearGradient(0, 0, 0, 280);
+
+                gradientOmzet.addColorStop(0, 'rgba(37, 99, 235, 0.22)');
+                gradientOmzet.addColorStop(1, 'rgba(37, 99, 235, 0.01)');
+
+                grafikOmzetInstance = new Chart(canvasOmzet, {
+                    type: 'line',
+
+                    data: {
+                        labels: tanggalHarian,
+
+                        datasets: [{
+                            label: 'Omzet Penjualan',
+                            data: omzetHarian,
+                            borderColor: '#2563eb',
+                            backgroundColor: gradientOmzet,
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.35,
+                            pointRadius: 4,
+                            pointHoverRadius: 7,
+                            pointBackgroundColor: '#ffffff',
+                            pointBorderColor: '#2563eb',
+                            pointBorderWidth: 2
+                        }]
+                    },
+
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+
+                        interaction: {
+                            intersect: false,
+                            mode: 'index'
                         },
 
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-
-                            plugins: {
-                                legend: {
-                                    display: true,
-                                    position: 'bottom'
-                                },
-
-                                tooltip: {
-                                    callbacks: {
-                                        label: function(context) {
-                                            return formatRupiah(context.raw);
-                                        }
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'bottom',
+                                labels: {
+                                    usePointStyle: true,
+                                    pointStyle: 'circle',
+                                    padding: 20,
+                                    color: '#64748b',
+                                    font: {
+                                        size: 11
                                     }
                                 }
                             },
 
-                            scales: {
-                                y: {
-                                    beginAtZero: true,
+                            tooltip: opsiTooltipRupiah
+                        },
 
-                                    ticks: {
-                                        callback: function(value) {
-                                            return 'Rp' + new Intl.NumberFormat('id-ID', {
-                                                notation: 'compact'
-                                            }).format(value);
-                                        }
+                        scales: {
+                            x: {
+                                grid: {
+                                    display: false
+                                },
+                                ticks: {
+                                    color: '#64748b',
+                                    maxRotation: 0,
+                                    autoSkip: true,
+                                    font: {
+                                        size: 10
+                                    }
+                                }
+                            },
+
+                            y: {
+                                beginAtZero: true,
+                                grid: {
+                                    color: '#edf1f6',
+                                    drawBorder: false
+                                },
+                                ticks: {
+                                    color: '#64748b',
+                                    callback: function(value) {
+                                        return formatRupiahRingkas(value);
+                                    },
+                                    font: {
+                                        size: 10
                                     }
                                 }
                             }
                         }
                     }
-                );
+                });
 
             }
 
@@ -1003,13 +1112,15 @@
                                     label: 'Jumlah Pesanan',
                                     data: jumlahPesanan,
                                     backgroundColor: '#2563eb',
-                                    borderRadius: 5
+                                    borderRadius: 5,
+                                    maxBarThickness: 24
                                 },
                                 {
                                     label: 'Item Terjual',
                                     data: jumlahItem,
-                                    backgroundColor: '#16a34a',
-                                    borderRadius: 5
+                                    backgroundColor: '#10b981',
+                                    borderRadius: 5,
+                                    maxBarThickness: 24
                                 }
                             ]
                         },
@@ -1018,18 +1129,62 @@
                             responsive: true,
                             maintainAspectRatio: false,
 
+                            interaction: {
+                                intersect: false,
+                                mode: 'index'
+                            },
+
                             plugins: {
                                 legend: {
-                                    position: 'bottom'
+                                    position: 'bottom',
+                                    labels: {
+                                        usePointStyle: true,
+                                        pointStyle: 'rectRounded',
+                                        padding: 20,
+                                        color: '#64748b',
+                                        font: {
+                                            size: 11
+                                        }
+                                    }
+                                },
+
+                                tooltip: {
+                                    callbacks: {
+                                        label: function(context) {
+                                            return context.dataset.label + ': ' +
+                                                new Intl.NumberFormat('id-ID').format(context.raw);
+                                        }
+                                    }
                                 }
                             },
 
                             scales: {
+                                x: {
+                                    grid: {
+                                        display: false
+                                    },
+                                    ticks: {
+                                        color: '#64748b',
+                                        maxRotation: 0,
+                                        autoSkip: true,
+                                        font: {
+                                            size: 10
+                                        }
+                                    }
+                                },
+
                                 y: {
                                     beginAtZero: true,
-
+                                    grid: {
+                                        color: '#edf1f6',
+                                        drawBorder: false
+                                    },
                                     ticks: {
-                                        precision: 0
+                                        precision: 0,
+                                        color: '#64748b',
+                                        font: {
+                                            size: 10
+                                        }
                                     }
                                 }
                             }
@@ -1054,10 +1209,12 @@
                             labels: namaKategori,
 
                             datasets: [{
-                                label: 'Omzet',
+                                label: 'Omzet Penjualan',
                                 data: omzetKategori,
                                 backgroundColor: '#2563eb',
-                                borderRadius: 5
+                                hoverBackgroundColor: '#1d4ed8',
+                                borderRadius: 5,
+                                maxBarThickness: 28
                             }]
                         },
 
@@ -1071,24 +1228,36 @@
                                     display: false
                                 },
 
-                                tooltip: {
-                                    callbacks: {
-                                        label: function(context) {
-                                            return formatRupiah(context.raw);
-                                        }
-                                    }
-                                }
+                                tooltip: opsiTooltipRupiah
                             },
 
                             scales: {
                                 x: {
                                     beginAtZero: true,
-
+                                    grid: {
+                                        color: '#edf1f6',
+                                        drawBorder: false
+                                    },
                                     ticks: {
+                                        color: '#64748b',
                                         callback: function(value) {
-                                            return 'Rp' + new Intl.NumberFormat('id-ID', {
-                                                notation: 'compact'
-                                            }).format(value);
+                                            return formatRupiahRingkas(value);
+                                        },
+                                        font: {
+                                            size: 10
+                                        }
+                                    }
+                                },
+
+                                y: {
+                                    grid: {
+                                        display: false
+                                    },
+                                    ticks: {
+                                        color: '#475569',
+                                        font: {
+                                            size: 11,
+                                            weight: '600'
                                         }
                                     }
                                 }

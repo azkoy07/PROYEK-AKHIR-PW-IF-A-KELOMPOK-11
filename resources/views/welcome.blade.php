@@ -11,15 +11,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <style>
-       
+
 /* =========================================
-   SIDEBAR SPORTZONE - BLUE THEME
+   SIDEBAR SPORTZONE
 ========================================= */
 
 .sidebar {
@@ -42,7 +41,7 @@
 }
 
 /* =========================================
-   BRAND / LOGO SPORTZONE
+   BRAND / LOGO
 ========================================= */
 
 .brand {
@@ -125,11 +124,12 @@
     flex-direction: column;
     gap: 5px;
     flex-shrink: 0;
+    margin-bottom: 2px;
 }
 
 .side-link {
-    min-height: 46px;
-    height: 46px;
+    min-height: 44px;
+    height: 44px;
     display: flex;
     align-items: center;
     gap: 13px;
@@ -201,12 +201,28 @@
 ========================================= */
 
 .category-navigation {
+    display: flex;
+    flex-direction: column;
     gap: 4px;
+    max-height: 300px;
+    overflow-y: auto;
+    padding-right: 5px;
+    scrollbar-width: thin;
+    scrollbar-color: #60a5fa transparent;
+}
+
+.category-navigation::-webkit-scrollbar {
+    width: 4px;
+}
+
+.category-navigation::-webkit-scrollbar-thumb {
+    background: #60a5fa;
+    border-radius: 10px;
 }
 
 .category-link {
-    min-height: 42px;
-    height: 42px;
+    min-height: 40px;
+    height: 40px;
     display: flex;
     align-items: center;
     gap: 11px;
@@ -252,51 +268,38 @@
 
 .sidebar-bottom {
     margin-top: auto;
-    padding-top: 18px;
+    padding-top: 16px;
     flex-shrink: 0;
 }
 
-/* KARTU BANTUAN */
+/* WHATSAPP CUSTOMER SERVICE */
 
-.help-card {
-    display: flex;
-    align-items: center;
-    gap: 11px;
-    padding: 11px;
-    margin-bottom: 12px;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 10px;
-}
-
-.help-icon {
-    width: 35px;
-    height: 35px;
-    min-width: 35px;
+.help-whatsapp {
+    width: 100%;
+    min-height: 39px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #1e40af;
-    background: #ffffff;
-    border-radius: 9px;
-    font-size: 17px;
-}
-
-.help-info {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-}
-
-.help-info strong {
+    gap: 8px;
+    margin: 0 0 14px;
+    padding: 8px 10px;
     color: #ffffff;
+    background: #16a34a;
+    border-radius: 8px;
+    text-decoration: none;
     font-size: 11px;
     font-weight: 700;
+    transition: all 0.2s ease;
 }
 
-.help-info small {
-    color: #bfdbfe;
-    font-size: 9px;
+.help-whatsapp:hover {
+    color: #ffffff;
+    background: #15803d;
+    transform: translateY(-1px);
+}
+
+.help-whatsapp i {
+    font-size: 15px;
 }
 
 /* =========================================
@@ -306,6 +309,8 @@
 .sidebar-guest-actions {
     display: flex;
     gap: 8px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .sidebar-login,
@@ -323,35 +328,29 @@
     transition: all 0.2s ease;
 }
 
-.sidebar-login {
+/* Masuk dan Daftar menggunakan warna yang sama */
+
+.sidebar-login,
+.sidebar-register {
     color: #1e40af;
     background: #ffffff;
 }
 
-.sidebar-login:hover {
+.sidebar-login:hover,
+.sidebar-register:hover {
     color: #1e40af;
     background: #dbeafe;
 }
 
-.sidebar-register {
-    color: #1e40af;
-    background: #bfdbfe;
-}
-
-.sidebar-register:hover {
-    color: #1e40af;
-    background: #ffffff;
-}
-
 /* =========================================
-   PROFIL PENGGUNA
+   PROFIL PENGGUNA SIDEBAR
 ========================================= */
 
 .sidebar-user {
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 10px 9px;
+    padding: 12px 5px 3px;
     border-top: 1px solid rgba(255, 255, 255, 0.2);
 }
 
@@ -413,21 +412,29 @@
 
 .notification-count {
     position: absolute;
-    top: 2px;
-    right: 2px;
-    min-width: 15px;
-    height: 15px;
+    top: -5px;
+    right: -5px;
+    z-index: 5;
+    min-width: 19px;
+    height: 19px;
     padding: 0 4px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #dc3545;
+    background-color: #e11d48;
     color: #ffffff;
-    font-size: 9px;
-    font-weight: 600;
+    font-size: 10px;
+    font-weight: 700;
     line-height: 1;
-    border-radius: 50px;
-    border: 1px solid #ffffff;
+    border-radius: 999px;
+    border: 2px solid #ffffff;
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+.topbar .dropdown > .icon-button {
+    position: relative;
+    overflow: visible;
 }
 
 .notification-item {
@@ -466,148 +473,109 @@
 ========================================= */
 
 #catalog {
-    scroll-margin-top: 25px;
+    scroll-margin-top: 90px;
 }
 
 /* =========================================
-   KONSISTENSI JARAK SIDEBAR
+   NAVBAR SPORTZONE - PUTIH
 ========================================= */
 
-.sidebar .brand {
-    margin: 0 !important;
-    padding: 2px 0 14px !important;
-}
-
-.sidebar .sidebar-divider {
-    margin: 8px 0 16px !important;
-}
-
-.sidebar .sidebar-label {
-    margin: 0 0 9px !important;
-}
-
-.sidebar .sidebar-navigation {
-    gap: 5px;
-}
-
-.sidebar .category-navigation {
-    gap: 4px;
-}
-
-.sidebar .sidebar-bottom {
-    margin-top: auto;
-    padding-top: 18px;
-}
-
-.sidebar .sidebar-user {
-    padding: 10px 9px;
-}
-
-.sidebar .help-card {
-    margin-bottom: 12px;
-    padding: 11px;
-}
-
-.sidebar .sidebar-guest-actions {
-    gap: 8px;
-}
-
-/* =========================
-   NAVBAR SPORTZONE
-========================= */
-
 .topbar {
-    background: #E8EEF8 !important;
+    background: #ffffff !important;
     background-image: none !important;
-    border-bottom: 1px solid #D5DEEC !important;
-    color: #1E293B !important;
+    border-bottom: 1px solid #e5e7eb !important;
+    color: #1e293b !important;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);
 }
 
-/* Tombol menu */
 .topbar .mobile-menu {
-    color: #1E40AF !important;
+    color: #1e40af !important;
 }
 
-/* Logo */
 .topbar .mobile-brand {
-    color: #1E293B !important;
+    color: #1e293b !important;
 }
 
 .topbar .mobile-brand span {
-    color: #1E40AF !important;
+    color: #1e40af !important;
 }
 
-/* Search */
+/* SEARCH */
+
 .topbar .search-box {
-    background: #FFFFFF !important;
-    border: 1px solid #D5DEEC !important;
+    background: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
 }
 
 .topbar .search-box i {
-    color: #64748B !important;
+    color: #64748b !important;
 }
 
 .topbar .search-box input {
-    color: #1E293B !important;
+    color: #1e293b !important;
 }
 
 .topbar .search-box input::placeholder {
-    color: #94A3B8 !important;
+    color: #94a3b8 !important;
 }
 
 .topbar .search-shortcut {
-    background: #F1F5F9 !important;
-    color: #64748B !important;
+    background: #f1f5f9 !important;
+    color: #64748b !important;
 }
 
-/* Tombol notifikasi dan keranjang */
+/* TOMBOL NOTIFIKASI DAN KERANJANG */
+
 .topbar .icon-button {
-    background: #DCE6F5 !important;
-    color: #1E40AF !important;
+    background: #f1f5f9 !important;
+    color: #1e40af !important;
     border: none !important;
 }
 
 .topbar .icon-button:hover {
-    background: #1E40AF !important;
-    color: #FFFFFF !important;
+    background: #1e40af !important;
+    color: #ffffff !important;
 }
 
-/* Indikator keranjang */
+/* INDIKATOR KERANJANG */
+
 .topbar .cart-dot {
-    background: #2563EB !important;
-    border-color: #E8EEF8 !important;
+    background: #2563eb !important;
+    border-color: #ffffff !important;
 }
 
-/* Akun pengguna */
+/* AKUN PENGGUNA */
+
 .topbar .account-area {
-    color: #1E293B !important;
+    color: #1e293b !important;
 }
 
 .topbar .account-area:hover {
-    background: #DCE6F5 !important;
+    background: #f1f5f9 !important;
 }
 
 .topbar .account-avatar {
-    background: #D1DFF3 !important;
-    color: #1E40AF !important;
+    background: #dbeafe !important;
+    color: #1e40af !important;
 }
 
 .topbar .account-info strong {
-    color: #1E293B !important;
+    color: #1e293b !important;
 }
 
 .topbar .account-info small {
-    color: #64748B !important;
+    color: #64748b !important;
 }
 
 .topbar .account-arrow {
-    color: #64748B !important;
+    color: #64748b !important;
 }
 
-/* Dropdown akun */
+/* DROPDOWN AKUN */
+
 .topbar .account-dropdown-menu {
-    background: #FFFFFF !important;
-    border: 1px solid #E2E8F0 !important;
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
 }
 
 .topbar .account-dropdown-menu a {
@@ -615,12 +583,12 @@
 }
 
 .topbar .account-dropdown-menu a:hover {
-    background: #EFF6FF !important;
-    color: #1E40AF !important;
+    background: #eff6ff !important;
+    color: #1e40af !important;
 }
 
 /* =========================================
-   FIX SIDEBAR DAN NAVBAR AGAR MENYATU
+   SIDEBAR DAN KONTEN UTAMA
 ========================================= */
 
 html,
@@ -631,7 +599,6 @@ body {
     min-height: 100%;
 }
 
-/* Pembungkus sidebar dan konten */
 .store-container {
     display: flex !important;
     flex-direction: row !important;
@@ -643,7 +610,8 @@ body {
     min-height: 100vh;
 }
 
-/* Sidebar */
+/* SIDEBAR */
+
 .store-container > .sidebar {
     flex: 0 0 270px !important;
     width: 270px !important;
@@ -653,15 +621,19 @@ body {
     top: 0 !important;
 }
 
-/* Area utama */
+/* AREA UTAMA */
+
 .store-container > .main-content {
     flex: 1 !important;
     min-width: 0;
+    min-height: 100vh;
     margin: 0 !important;
     padding: 0 !important;
+    background: #f3f4f6 !important;
 }
 
-/* Navbar */
+/* NAVBAR */
+
 .main-content > .topbar {
     position: sticky;
     top: 0;
@@ -671,7 +643,91 @@ body {
     z-index: 1000;
 }
 
+/* AREA KONTEN */
 
+.content-area {
+    min-height: calc(100vh - 70px);
+    background: #f3f4f6 !important;
+}
+
+/* =========================================
+   TAMPILAN GRID DAN LIST PRODUK
+========================================= */
+
+.view-options {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.view-button {
+    width: 30px;
+    height: 30px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    color: #94a3b8;
+    font-size: 19px;
+    cursor: pointer;
+    transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.view-button:hover {
+    color: #2563eb;
+    background: #eff6ff;
+}
+
+.view-button.active {
+    color: #2563eb;
+}
+
+/* =========================================
+   TAMPILAN LIST PRODUK
+========================================= */
+
+.product-grid.list-view {
+    display: flex !important;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.product-grid.list-view > a {
+    display: block;
+    width: 100%;
+}
+
+.product-grid.list-view .product-card {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    width: 100%;
+    min-height: 190px;
+}
+
+.product-grid.list-view .product-image {
+    width: 220px;
+    min-width: 220px;
+    height: 190px;
+    min-height: 190px;
+    flex: 0 0 220px;
+}
+
+.product-grid.list-view .product-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px 25px;
+}
+
+.product-grid.list-view .product-bottom {
+    margin-top: auto;
+}
 
     </style>
 </head>
@@ -727,6 +783,7 @@ body {
                 <span>Semua Produk</span>
             </a>
 
+            {{-- Menu khusus customer dan pengunjung --}}
             @if(!auth()->check() || auth()->user()->role == 'customer')
 
                 <a
@@ -761,14 +818,6 @@ body {
 
             @endif
 
-            @if(auth()->check() && auth()->user()->role == 'admin')
-                <a href="{{ route('admin.dashboard') }}" class="side-link">
-                    <i class="bi bi-speedometer2"></i>
-                    <span>Panel Admin</span>
-                    <i class="bi bi-box-arrow-up-right side-link-external"></i>
-                </a>
-            @endif
-
         </nav>
 
         <div class="sidebar-divider"></div>
@@ -777,7 +826,6 @@ body {
 
         <nav class="sidebar-navigation category-navigation">
 
-            <!-- SEMUA KATEGORI -->
             <a
                 href="{{ route('home', request()->except(['category', 'page'])) }}#catalog"
                 class="category-link {{ !request('category') ? 'active' : '' }}"
@@ -786,7 +834,6 @@ body {
                 <span>Semua Kategori</span>
             </a>
 
-            <!-- KATEGORI BERDASARKAN DATABASE -->
             @foreach($categories as $category)
 
                 <a
@@ -806,18 +853,31 @@ body {
 
         <div class="sidebar-bottom">
 
+            {{-- =====================================
+                 WHATSAPP CUSTOMER SERVICE
+                 Tersedia untuk guest dan customer
+            ====================================== --}}
+
+            @if(!auth()->check() || auth()->user()->role == 'customer')
+
+                <a
+                    href="https://wa.me/6285741854468?text=Halo%20Admin%20SportZone,%20saya%20ingin%20bertanya."
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="help-whatsapp"
+                >
+                    <i class="bi bi-whatsapp"></i>
+                    Hubungi CS via WhatsApp
+                </a>
+
+            @endif
+
+
+            {{-- =====================================
+                 TOMBOL LOGIN DAN REGISTER GUEST
+            ====================================== --}}
+
             @guest
-
-                <div class="help-card">
-                    <div class="help-icon">
-                        <i class="bi bi-headset"></i>
-                    </div>
-
-                    <div class="help-info">
-                        <strong>Butuh Bantuan?</strong>
-                        <small>Hubungi layanan pelanggan</small>
-                    </div>
-                </div>
 
                 <div class="sidebar-guest-actions">
 
@@ -827,12 +887,18 @@ body {
                     </a>
 
                     <a href="{{ route('register') }}" class="sidebar-register">
+                        <i class="bi bi-person-plus"></i>
                         Daftar
                     </a>
 
                 </div>
 
             @endguest
+
+
+            {{-- =====================================
+                 PROFIL PENGGUNA SIDEBAR
+            ====================================== --}}
 
             @auth
 
@@ -863,19 +929,6 @@ body {
                         </button>
 
                         <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
-
-                            @if(auth()->user()->role == 'admin')
-                                <li>
-                                    <a href="{{ route('admin.dashboard') }}" class="dropdown-item">
-                                        <i class="bi bi-speedometer2 me-2"></i>
-                                        Dashboard Admin
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                            @endif
 
                             <li>
                                 <form action="{{ route('logout') }}" method="POST">
@@ -1085,7 +1138,7 @@ body {
                 </div>
 
 
-                <!-- IKON KERANJANG -->
+                <!-- IKON KERANJANG KHUSUS CUSTOMER DAN GUEST -->
                 @if(!auth()->check() || auth()->user()->role == 'customer')
 
                     <a
@@ -1093,11 +1146,13 @@ body {
                         class="icon-button text-decoration-none"
                         title="Keranjang Belanja"
                     >
-                        <i class="bi bi-bag"></i>
+                        <i class="bi bi-cart3"></i>
 
-                        <span class="cart-dot">
-                            {{ $jumlahKeranjang }}
-                        </span>
+                        @if($jumlahKeranjang > 0)
+                            <span class="cart-dot">
+                                {{ $jumlahKeranjang > 99 ? '99+' : $jumlahKeranjang }}
+                            </span>
+                        @endif
                     </a>
 
                 @endif
@@ -1179,6 +1234,7 @@ body {
                                 <hr class="dropdown-divider">
                             </li>
 
+                            {{-- Toko Saya hanya untuk admin melalui dropdown akun --}}
                             @if(auth()->user()->role == 'admin')
 
                                 <li class="px-2">
@@ -1262,18 +1318,13 @@ body {
 
 
         <!-- =========================================
-            AREA HALAMAN
+             AREA HALAMAN
         ========================================== -->
 
         <section class="content-area">
 
-            <!-- BANNER -->
+            <!-- BANNER PROMOSI -->
             <div class="welcome-banner">
-
-                
-                <!-- =========================================
-                    BANNER PROMOSI SPORTZONE
-                ========================================== -->
 
                 <div
                     id="sportZoneBanner"
@@ -1464,11 +1515,10 @@ body {
 
                 </div>
 
-
             </div>
 
 
-            <!-- KATALOG -->
+            <!-- KATALOG PRODUK -->
             <section class="catalog-section" id="catalog">
 
                 <div class="catalog-header">
@@ -1564,8 +1614,29 @@ body {
                     </span>
 
                     <div class="view-options">
-                        <i class="bi bi-grid-3x3-gap-fill active"></i>
-                        <i class="bi bi-list"></i>
+
+                        <button
+                            type="button"
+                            class="view-button active"
+                            id="gridView"
+                            title="Tampilan Grid"
+                            aria-label="Tampilan Grid"
+                            aria-pressed="true"
+                        >
+                            <i class="bi bi-grid-3x3-gap-fill"></i>
+                        </button>
+
+                        <button
+                            type="button"
+                            class="view-button"
+                            id="listView"
+                            title="Tampilan List"
+                            aria-label="Tampilan List"
+                            aria-pressed="false"
+                        >
+                            <i class="bi bi-list"></i>
+                        </button>
+
                     </div>
 
                 </div>
@@ -1588,13 +1659,17 @@ body {
                                     <div class="product-image">
 
                                         @if($product->total_stok <= 0)
+
                                             <span class="product-badge sold-out">
                                                 Stok Habis
                                             </span>
+
                                         @else
+
                                             <span class="product-badge">
                                                 Tersedia
                                             </span>
+
                                         @endif
 
                                         @if($product->file_name)
@@ -1639,8 +1714,10 @@ body {
 
                                             <span class="add-button">
                                                 <i class="bi bi-arrow-right"
-                                                style="display: flex; align-items: center; justify-content: center; width: 100%; height: 100%;"></i>
+                                                    style="display: flex; align-items: center; justify-content: center; width: 100%; height: 100%;">
+                                                </i>
                                             </span>
+
                                         </div>
 
                                     </div>
@@ -1694,24 +1771,16 @@ body {
 
 <!-- =========================================
      JAVASCRIPT
-========================================== -->
+========================================= -->
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
 
-        /*
-         * Scroll otomatis ke katalog apabila URL memiliki
-         * hash #catalog.
-         *
-         * Berlaku untuk:
-         * - Pencarian produk
-         * - Pemilihan kategori
-         * - Tombol Semua Kategori
-         * - Pengurutan produk
-         * - Pagination
-         */
+        // =====================================
+        // SCROLL OTOMATIS KE KATALOG
+        // =====================================
 
         if (window.location.hash === '#catalog') {
 
@@ -1729,6 +1798,43 @@ body {
                 }, 150);
 
             }
+
+        }
+
+
+        // =====================================
+        // TAMPILAN GRID DAN LIST PRODUK
+        // =====================================
+
+        const productGrid = document.querySelector('.product-grid');
+        const gridButton = document.getElementById('gridView');
+        const listButton = document.getElementById('listView');
+
+        if (productGrid && gridButton && listButton) {
+
+            gridButton.addEventListener('click', function () {
+
+                productGrid.classList.remove('list-view');
+
+                gridButton.classList.add('active');
+                listButton.classList.remove('active');
+
+                gridButton.setAttribute('aria-pressed', 'true');
+                listButton.setAttribute('aria-pressed', 'false');
+
+            });
+
+            listButton.addEventListener('click', function () {
+
+                productGrid.classList.add('list-view');
+
+                listButton.classList.add('active');
+                gridButton.classList.remove('active');
+
+                listButton.setAttribute('aria-pressed', 'true');
+                gridButton.setAttribute('aria-pressed', 'false');
+
+            });
 
         }
 
