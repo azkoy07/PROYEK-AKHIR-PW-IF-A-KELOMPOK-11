@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/sportzone-logo.jpg" alt="SportZone Logo" width="300">
+<img src="sportzone-logo.jpg" alt="SportZone Logo" width="300">
 
 # SPORTZONE
 ### Sports Equipment E-Commerce Web Application
@@ -37,7 +37,7 @@ Proyek ini disusun sebagai bentuk penerapan materi perkuliahan Pemrograman Web, 
 Tampilan halaman pelanggan untuk melihat katalog perlengkapan olahraga dan mengakses aktivitas belanja.
 
 <div align="center">
-  <img src="assets/screenshots/customer-dashboard.png" alt="SportZone Customer Dashboard" width="100%">
+  <img src="customer-dashboard.png" alt="SportZone Customer Dashboard" width="100%">
 </div>
 
 ### Admin Dashboard
@@ -45,7 +45,7 @@ Tampilan halaman pelanggan untuk melihat katalog perlengkapan olahraga dan menga
 Tampilan halaman administrator untuk memantau ringkasan toko dan mengakses pengelolaan operasional.
 
 <div align="center">
-  <img src="assets/screenshots/admin-dashboard.png" alt="SportZone Admin Dashboard" width="100%">
+  <img src="admin-dashboard.png" alt="SportZone Admin Dashboard" width="100%">
 </div>
 
 ## 🎯 Tujuan Pengembangan
