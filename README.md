@@ -215,7 +215,7 @@ Rencana tersebut merupakan peluang pengembangan lanjutan dan bukan pernyataan ba
 
 **Status:** Proyek akademik / pengembangan aplikasi web.
 
-SportZone dikembangkan sebagai proyek akhir mata kuliah Pemrograman Web. Proyek ini berfokus pada penerapan konsep pemrograman web, integrasi basis data, dan pengembangan aplikasi e-commerce. Penyempurnaan dan pengembangan lebih lanjut dapat dilakukan sesuai kebutuhan.
+SportZone dikembangkan sebagai proyek akhir mata kuliah Praktikum Pemrograman Web. Proyek ini berfokus pada penerapan konsep pemrograman web, integrasi basis data, dan pengembangan aplikasi e-commerce. Penyempurnaan dan pengembangan lebih lanjut dapat dilakukan sesuai kebutuhan.
 
 ---
 
@@ -225,7 +225,7 @@ SportZone dikembangkan sebagai proyek akhir mata kuliah Pemrograman Web. Proyek 
 
 *Sports Equipment E-Commerce Web Application*
 
-Dibuat sebagai bagian dari Proyek Akhir Pemrograman Web  
+Dibuat sebagai bagian dari Proyek Akhir Praktikum Pemrograman Web  
 **IF-A · Kelompok 11**
 
 </div>
