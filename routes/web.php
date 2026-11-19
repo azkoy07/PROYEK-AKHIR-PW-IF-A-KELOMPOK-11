@@ -160,10 +160,13 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     Route::delete('/admin/vouchers/{id}', [AdminVoucherController::class, 'destroy'])
         ->name('admin.vouchers.destroy');
-
     // Laporan Penjualan
     Route::get('/admin/reports', [AdminReportController::class, 'index'])
         ->name('admin.reports.index');
+
+    // Export Laporan Penjualan CSV
+    Route::get('/admin/reports/export', [AdminReportController::class, 'export'])
+        ->name('admin.reports.export');
 
     // Pengelolaan Ulasan
     Route::get('/admin/reviews', [AdminReviewController::class, 'index'])

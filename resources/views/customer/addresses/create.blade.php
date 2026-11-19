@@ -23,19 +23,35 @@
         }
 
         .navbar {
-            height: 72px;
             background: #fff;
-            border-bottom: 1px solid #e8ebf1;
+            border-bottom: 1px solid #e8edf3;
+            padding: 17px 0; 
         }
 
         .brand {
+            display: inline-block;
             color: #172033;
-            font-size: 21px;
+            font-size: 22px;
             font-weight: 800;
             text-decoration: none;
+            letter-spacing: -.8px;
+            margin-left: -45px;
         }
 
         .brand span {
+            color: #2563eb;
+        }
+
+        
+        .back-link {
+            color: #64748b;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            margin-right: -45px;
+        }
+
+        .back-link:hover {
             color: #2563eb;
         }
 

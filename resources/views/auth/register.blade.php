@@ -81,13 +81,33 @@
 
                 <!-- NOTIFIKASI VALIDASI -->
                 @if ($errors->any())
+
                     <div class="alert alert-danger auth-alert">
 
-                        <i class="bi bi-exclamation-circle-fill me-2"></i>
+                        <div class="d-flex align-items-start">
 
-                        {{ $errors->first() }}
+                            <i class="bi bi-exclamation-circle-fill me-2 mt-1"></i>
+
+                            <div>
+
+                                <strong>Pendaftaran gagal!</strong>
+
+                                <ul class="mb-0 mt-1 ps-3">
+
+                                    @foreach ($errors->all() as $error)
+
+                                        <li>{{ $error }}</li>
+
+                                    @endforeach
+
+                                </ul>
+
+                            </div>
+
+                        </div>
 
                     </div>
+
                 @endif
 
                 <!-- FORM REGISTER -->
@@ -114,6 +134,7 @@
                                 placeholder="Masukkan nama lengkap"
                                 value="{{ old('nama') }}"
                                 autocomplete="name"
+                                maxlength="100"
                                 required
                             >
 
@@ -140,6 +161,7 @@
                                 placeholder="Masukkan alamat email"
                                 value="{{ old('email') }}"
                                 autocomplete="email"
+                                maxlength="100"
                                 required
                             >
 
@@ -172,6 +194,7 @@
                                 placeholder="Masukkan nomor HP"
                                 value="{{ old('no_hp') }}"
                                 autocomplete="tel"
+                                maxlength="20"
                             >
 
                         </div>
@@ -196,6 +219,7 @@
                                 class="form-control"
                                 placeholder="Buat password"
                                 autocomplete="new-password"
+                                minlength="8"
                                 required
                             >
 
@@ -208,6 +232,10 @@
                                 <i class="bi bi-eye"></i>
                             </button>
 
+                        </div>
+
+                        <div class="password-hint">
+                            Password minimal terdiri dari 8 karakter.
                         </div>
 
                     </div>

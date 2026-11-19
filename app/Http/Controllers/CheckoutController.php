@@ -85,8 +85,6 @@ class CheckoutController extends Controller
                 ->first();
 
             if ($order) {
-                // Menggunakan false agar navbar tidak menganggap
-                // checkout berasal dari pembelian langsung
                 $direct = false;
 
                 return view('customer.checkout.index', [
@@ -213,6 +211,8 @@ class CheckoutController extends Controller
             }
         }
 
+        // Mengambil alamat customer.
+        // Jika belum ada alamat, halaman checkout tetap ditampilkan.
         $addresses = DB::table('addresses')
             ->where('user_id', $userId)
             ->orderByDesc('is_utama')
@@ -405,13 +405,31 @@ class CheckoutController extends Controller
     // Menyimpan pesanan
     public function store(Request $request)
     {
+        $userId = Auth::id();
+
+        // Memastikan customer sudah mempunyai alamat
+        $hasAddress = DB::table('addresses')
+            ->where('user_id', $userId)
+            ->exists();
+
+        if (!$hasAddress) {
+            return back()
+                ->with('error', 'Pesanan tidak dapat dibuat karena alamat pengiriman belum tersedia. Silakan tambahkan alamat terlebih dahulu.')
+                ->withInput();
+        }
+
+        // Validasi data checkout
         $validated = $request->validate([
             'address_id' => 'required|integer|exists:addresses,id',
             'metode_bayar' => 'required|in:transfer,ewallet',
+        ], [
+            'address_id.required' => 'Silakan pilih alamat pengiriman terlebih dahulu.',
+            'address_id.exists' => 'Alamat pengiriman tidak ditemukan.',
+            'metode_bayar.required' => 'Silakan pilih metode pembayaran.',
+            'metode_bayar.in' => 'Metode pembayaran tidak valid.',
         ]);
 
-        $userId = Auth::id();
-
+        // Memastikan alamat merupakan milik customer yang login
         $address = DB::table('addresses')
             ->where('id', $validated['address_id'])
             ->where('user_id', $userId)

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -780,6 +781,50 @@ body {
     color: #ffffff !important;
     border: 2px solid #ffffff;
 }
+
+/* =========================================
+   PAGINATION PRODUK - UKURAN LEBIH KECIL
+========================================= */
+
+.catalog-section .pagination {
+    margin-bottom: 0;
+    gap: 4px;
+}
+
+.catalog-section .pagination .page-link {
+    min-width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 10px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #475569;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px !important;
+    box-shadow: none;
+}
+
+.catalog-section .pagination .page-link:hover {
+    color: #2563eb;
+    background: #eff6ff;
+    border-color: #bfdbfe;
+}
+
+.catalog-section .pagination .page-item.active .page-link {
+    color: #ffffff;
+    background: #2563eb;
+    border-color: #2563eb;
+}
+
+.catalog-section .pagination .page-item.disabled .page-link {
+    color: #cbd5e1;
+    background: #ffffff;
+    border-color: #e2e8f0;
+    cursor: not-allowed;
+}
+
 </style>
 </head>
 
@@ -1039,6 +1084,13 @@ body {
                         value="{{ request('sort') }}"
                     >
                 @endif
+
+                <!-- Mempertahankan pilihan Grid/List -->
+                <input
+                    type="hidden"
+                    name="view"
+                    value="{{ request('view', 'grid') }}"
+                >
 
                 <i class="bi bi-search"></i>
 
@@ -1612,6 +1664,13 @@ body {
                             >
                         @endif
 
+                        <!-- Mempertahankan pilihan Grid/List -->
+                        <input
+                            type="hidden"
+                            name="view"
+                            value="{{ request('view', 'grid') }}"
+                        >
+
                         <span>Urutkan:</span>
 
                         <select
@@ -1668,22 +1727,22 @@ body {
 
                         <button
                             type="button"
-                            class="view-button active"
+                            class="view-button {{ request('view', 'grid') == 'grid' ? 'active' : '' }}"
                             id="gridView"
                             title="Tampilan Grid"
                             aria-label="Tampilan Grid"
-                            aria-pressed="true"
+                            aria-pressed="{{ request('view', 'grid') == 'grid' ? 'true' : 'false' }}"
                         >
                             <i class="bi bi-grid-3x3-gap-fill"></i>
                         </button>
 
                         <button
                             type="button"
-                            class="view-button"
+                            class="view-button {{ request('view') == 'list' ? 'active' : '' }}"
                             id="listView"
                             title="Tampilan List"
                             aria-label="Tampilan List"
-                            aria-pressed="false"
+                            aria-pressed="{{ request('view') == 'list' ? 'true' : 'false' }}"
                         >
                             <i class="bi bi-list"></i>
                         </button>
@@ -1696,7 +1755,7 @@ body {
                 <!-- DAFTAR PRODUK -->
                 @if($products->count() > 0)
 
-                    <div class="product-grid">
+                    <div class="product-grid {{ request('view', 'grid') == 'list' ? 'list-view' : '' }}">
 
                         @foreach($products as $product)
 
@@ -1862,29 +1921,76 @@ body {
 
         if (productGrid && gridButton && listButton) {
 
-            gridButton.addEventListener('click', function () {
+            function ubahTampilan(view) {
 
-                productGrid.classList.remove('list-view');
+                // Mengatur tampilan produk
+                if (view === 'list') {
+                    productGrid.classList.add('list-view');
+                } else {
+                    productGrid.classList.remove('list-view');
+                }
 
-                gridButton.classList.add('active');
-                listButton.classList.remove('active');
+                // Mengatur tombol aktif
+                gridButton.classList.toggle('active', view === 'grid');
+                listButton.classList.toggle('active', view === 'list');
 
-                gridButton.setAttribute('aria-pressed', 'true');
-                listButton.setAttribute('aria-pressed', 'false');
+                gridButton.setAttribute(
+                    'aria-pressed',
+                    view === 'grid' ? 'true' : 'false'
+                );
 
+                listButton.setAttribute(
+                    'aria-pressed',
+                    view === 'list' ? 'true' : 'false'
+                );
+
+                // Memperbarui parameter URL tanpa reload
+                const url = new URL(window.location.href);
+
+                url.searchParams.set('view', view);
+
+                window.history.replaceState({}, '', url);
+
+                // Memperbarui hidden input pada form
+                document.querySelectorAll('form').forEach(function(form) {
+
+                    const inputView = form.querySelector('input[name="view"]');
+
+                    if (inputView) {
+                        inputView.value = view;
+                    }
+
+                });
+
+                // Memperbarui link pagination
+                document.querySelectorAll('.pagination a.page-link').forEach(function(link) {
+
+                    const linkUrl = new URL(link.href, window.location.origin);
+
+                    linkUrl.searchParams.set('view', view);
+
+                    link.href = linkUrl.toString();
+
+                });
+
+            }
+
+            // Klik Grid
+            gridButton.addEventListener('click', function() {
+                ubahTampilan('grid');
             });
 
-            listButton.addEventListener('click', function () {
-
-                productGrid.classList.add('list-view');
-
-                listButton.classList.add('active');
-                gridButton.classList.remove('active');
-
-                listButton.setAttribute('aria-pressed', 'true');
-                gridButton.setAttribute('aria-pressed', 'false');
-
+            // Klik List
+            listButton.addEventListener('click', function() {
+                ubahTampilan('list');
             });
+
+            // Menentukan tampilan awal berdasarkan URL
+            const parameterView = new URLSearchParams(
+                window.location.search
+            ).get('view');
+
+            ubahTampilan(parameterView === 'list' ? 'list' : 'grid');
 
         }
 

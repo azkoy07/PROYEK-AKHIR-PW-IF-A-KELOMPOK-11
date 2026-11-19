@@ -1,4 +1,3 @@
-
 @extends('layouts.admin')
 
 @section('title', 'Laporan Penjualan - SportZone')
@@ -435,6 +434,18 @@
                 <i class="bi bi-bar-chart-line me-1" id="ikonGrafik"></i>
                 <span id="teksGrafik">Lihat Grafik</span>
             </button>
+
+            {{-- Tombol Export CSV --}}
+            <a
+                href="{{ route('admin.reports.export', [
+                    'tanggal_mulai' => $tanggalMulai,
+                    'tanggal_akhir' => $tanggalAkhir
+                ]) }}"
+                class="btn btn-sz-outline">
+
+                <i class="bi bi-file-earmark-spreadsheet me-1"></i>
+                Export CSV
+            </a>
 
             <button
                 type="button"

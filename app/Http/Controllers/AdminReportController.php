@@ -39,7 +39,6 @@ class AdminReportController extends Controller
             ->first();
 
         // 3. Laporan penjualan berdasarkan kategori
-        // Menggunakan query langsung agar dapat difilter berdasarkan tanggal
         $laporanKategori = DB::table('order_items as oi')
             ->join('orders as o', 'o.id', '=', 'oi.order_id')
             ->join('products as p', 'p.id', '=', 'oi.product_id')
@@ -66,5 +65,62 @@ class AdminReportController extends Controller
             'ringkasan',
             'laporanKategori'
         ));
+    }
+
+    // 5. Export laporan penjualan ke CSV
+    public function export(Request $request)
+    {
+        // Validasi tanggal laporan
+        $validated = $request->validate([
+            'tanggal_mulai' => 'nullable|date',
+            'tanggal_akhir' => 'nullable|date|after_or_equal:tanggal_mulai',
+        ]);
+
+        // Periode laporan
+        $tanggalMulai = $validated['tanggal_mulai']
+            ?? now()->startOfMonth()->toDateString();
+
+        $tanggalAkhir = $validated['tanggal_akhir']
+            ?? now()->toDateString();
+
+        // Mengambil data laporan harian
+        $laporanHarian = DB::table('v_laporan_penjualan')
+            ->whereBetween('tanggal', [$tanggalMulai, $tanggalAkhir])
+            ->orderBy('tanggal')
+            ->get();
+
+        // Membuat file CSV
+        return response()->streamDownload(function () use ($laporanHarian) {
+
+            $file = fopen('php://output', 'w');
+
+            // BOM agar karakter terbaca dengan baik di Microsoft Excel
+            fwrite($file, "\xEF\xBB\xBF");
+
+            // Header CSV
+            fputcsv($file, [
+                'No',
+                'Tanggal',
+                'Jumlah Pesanan',
+                'Item Terjual',
+                'Omzet'
+            ], ';');
+
+            // Isi data CSV
+            foreach ($laporanHarian as $index => $laporan) {
+                fputcsv($file, [
+                    $index + 1,
+                    \Carbon\Carbon::parse($laporan->tanggal)->format('d/m/Y'),
+                    $laporan->jumlah_pesanan,
+                    $laporan->item_terjual,
+                    $laporan->omzet
+                ], ';');
+            }
+
+            fclose($file);
+
+        }, 'laporan-penjualan-' . $tanggalMulai . '-sampai-' . $tanggalAkhir . '.csv', [
+            'Content-Type' => 'text/csv; charset=UTF-8',
+        ]);
     }
 }

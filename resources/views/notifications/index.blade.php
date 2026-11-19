@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -31,49 +32,59 @@
         /* NAVBAR */
 
         .navbar {
-            height: 72px;
             background: #fff;
-            border-bottom: 1px solid #e9edf3;
+            border-bottom: 1px solid #e8edf3;
+            padding: 17px 0; 
         }
 
-        .navbar-brand {
-            font-size: 21px;
-            font-weight: 800;
-            letter-spacing: -0.7px;
+
+        .brand {
+            display: inline-block;
             color: #172033;
+            font-size: 22px;
+            font-weight: 800;
+            text-decoration: none;
+            letter-spacing: -.8px;
+            margin-left: -45px;
         }
 
-        .brand-icon {
-            width: 36px;
-            height: 36px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background: #eaf2ff;
+        .brand span {
             color: #2563eb;
-            border-radius: 10px;
-            margin-right: 9px;
+        }
+
+        .back-link {
+            color: #64748b;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 600;
+            transition: .2s;
+            margin-right: -45px;
+        }
+
+        .back-link:hover {
+            color: #2563eb;
         }
 
         /* PAGE */
 
         .page-container {
-            max-width: 1050px;
-            margin: 38px auto;
-            padding: 0 20px;
+            max-width: 1100px;
+            margin: 34px auto 55px;
+            padding: 0 24px;
         }
 
         .page-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 25px;
+            margin-bottom: 22px;
         }
 
         .page-title {
             font-size: 23px;
             font-weight: 800;
-            letter-spacing: -0.7px;
+            letter-spacing: -.7px;
+            color: #172033;
             margin-bottom: 6px;
         }
 
@@ -83,31 +94,14 @@
             margin: 0;
         }
 
-        .btn-back {
-            border: 1px solid #dce2ea;
-            background: #fff;
-            color: #475569;
-            padding: 9px 15px;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: .2s;
-        }
-
-        .btn-back:hover {
-            background: #f1f5f9;
-            color: #1e293b;
-        }
-
         /* SUMMARY */
 
         .notification-summary {
             background: #fff;
             border: 1px solid #e9edf3;
             border-radius: 11px;
-            padding: 15px 18px;
-            margin-bottom: 14px;
+            padding: 16px 19px;
+            margin-bottom: 17px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -116,12 +110,13 @@
         .summary-text {
             color: #64748b;
             font-size: 12px;
+            font-weight: 500;
         }
 
         .summary-number {
             color: #2563eb;
             font-weight: 800;
-            font-size: 14px;
+            font-size: 15px;
         }
 
         .btn-read-all {
@@ -129,7 +124,7 @@
             border: 1px solid #dbeafe;
             color: #2563eb;
             border-radius: 8px;
-            padding: 8px 13px;
+            padding: 9px 14px;
             font-size: 11px;
             font-weight: 700;
             transition: .2s;
@@ -140,58 +135,109 @@
             color: #1d4ed8;
         }
 
-        /* NOTIFICATION CARD */
+        /* NOTIFICATION LIST */
+
+        .notification-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .notification-link {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+        }
 
         .notification-card {
+            width: 100%;
             background: #fff;
             border: 1px solid #e9edf3;
             border-radius: 11px;
-            padding: 18px;
-            margin-bottom: 11px;
-            transition: .2s;
+            padding: 17px 19px;
+            transition: all .2s ease;
         }
 
         .notification-card:hover {
-            border-color: #cbd5e1;
-            box-shadow: 0 4px 14px rgba(15, 23, 42, .04);
+            border-color: #bfdbfe;
+            box-shadow: 0 5px 16px rgba(15, 23, 42, .045);
+            transform: translateY(-1px);
         }
 
         .notification-card.unread {
-            background: #f7faff;
+            background: #f8fbff;
             border-left: 4px solid #2563eb;
+            padding-left: 16px;
+        }
+
+        /* NOTIFICATION CONTENT */
+
+        .notification-content {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            width: 100%;
+            text-align: left;
         }
 
         .notification-icon {
-            width: 43px;
-            height: 43px;
-            min-width: 43px;
-            border-radius: 11px;
+            width: 42px;
+            height: 42px;
+            min-width: 42px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             background: #f1f5f9;
-            font-size: 19px;
+            font-size: 18px;
         }
 
         .notification-card.unread .notification-icon {
             background: #e8f1ff;
         }
 
+        .notification-body {
+            flex: 1;
+            min-width: 0;
+            text-align: left;
+        }
+
+        .notification-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
         .notification-title {
             font-size: 13px;
             font-weight: 700;
             color: #263246;
+            line-height: 1.5;
+            text-align: left;
         }
 
         .notification-message {
             font-size: 12px;
             color: #64748b;
             line-height: 1.7;
+            margin-top: 5px;
+            text-align: left;
+            overflow-wrap: anywhere;
+        }
+
+        .notification-footer {
+            display: flex;
+            align-items: center;
+            margin-top: 11px;
         }
 
         .notification-time {
             font-size: 10px;
             color: #94a3b8;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
 
         .notification-status {
@@ -200,6 +246,7 @@
             padding: 6px 9px;
             border-radius: 20px;
             white-space: nowrap;
+            flex-shrink: 0;
         }
 
         /* EMPTY STATE */
@@ -213,21 +260,22 @@
         }
 
         .empty-icon {
-            width: 70px;
-            height: 70px;
+            width: 66px;
+            height: 66px;
             margin: 0 auto 17px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 20px;
+            border-radius: 18px;
             background: #f1f5f9;
             color: #94a3b8;
-            font-size: 30px;
+            font-size: 28px;
         }
 
         .empty-title {
             font-size: 15px;
             font-weight: 800;
+            color: #263246;
             margin-bottom: 7px;
         }
 
@@ -237,23 +285,36 @@
             margin: 0;
         }
 
-        /* PAGINATION BOOTSTRAP 5 */
+        
+        /* PAGINATION */
 
         .notification-pagination {
-            margin-top: 25px;
+            width: 100%;
+            margin-top: 24px;
             display: flex;
-            justify-content: right;
+            justify-content: flex-end;
+            align-items: center;
         }
 
         .notification-pagination nav {
+            width: 100%;
+        }
+
+        .notification-pagination nav > div {
+            width: 100%;
             display: flex;
-            justify-content: right;
+            justify-content: flex-end !important;
+        }
+
+        .notification-pagination nav > div > div:last-child {
+            margin-left: auto;
         }
 
         .notification-pagination .pagination {
-            justify-content: center;
+            display: flex;
+            justify-content: flex-end;
             gap: 4px;
-            margin: 0;
+            margin: 0 0 0 auto;
         }
 
         .notification-pagination .page-item {
@@ -286,8 +347,6 @@
             background: #f8fafc;
         }
 
-        /* Mencegah SVG pagination membesar */
-
         .notification-pagination svg {
             width: 16px !important;
             height: 16px !important;
@@ -303,34 +362,54 @@
             margin-top: 12px;
         }
 
+        
         /* ALERT */
 
         .alert {
             font-size: 12px;
             border-radius: 9px;
         }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 768px) {
+
+            .page-container {
+                padding: 0 16px;
+                margin-top: 25px;
+            }
+
+            .notification-card {
+                padding: 15px;
+            }
+
+            .notification-card.unread {
+                padding-left: 12px;
+            }
+
+            .notification-heading {
+                flex-wrap: wrap;
+            }
+
+            .notification-status {
+                margin-top: 3px;
+            }
+
+        }
     </style>
 </head>
 
 <body>
 
-{{-- NAVBAR --}}
-
+<!-- NAVBAR -->
 <nav class="navbar">
-    <div class="container">
+    <div class="container d-flex justify-content-between align-items-center">
 
-        <a href="{{ route('home') }}"
-           class="navbar-brand text-decoration-none">
-
-            <span class="brand-icon">
-                <i class="bi bi-basket2-fill"></i>
-            </span>
-
-            SportZone
-
+        <a href="{{ route('home') }}" class="brand">
+            SPORT<span>ZONE</span>
         </a>
 
-        <a href="{{ route('home') }}" class="btn-back">
+        <a href="{{ route('home') }}" class="back-link">
             <i class="bi bi-arrow-left me-1"></i>
             Kembali ke Toko
         </a>
@@ -339,12 +418,10 @@
 </nav>
 
 
-{{-- MAIN CONTENT --}}
-
+<!-- MAIN CONTENT -->
 <div class="page-container">
 
-    {{-- HEADER --}}
-
+    <!-- HEADER -->
     <div class="page-header">
 
         <div>
@@ -360,25 +437,27 @@
     </div>
 
 
-    {{-- FLASH MESSAGE --}}
-
+    <!-- FLASH MESSAGE -->
     @if(session('success'))
+
         <div class="alert alert-success py-2">
             <i class="bi bi-check-circle me-1"></i>
             {{ session('success') }}
         </div>
+
     @endif
 
     @if(session('error'))
+
         <div class="alert alert-danger py-2">
             <i class="bi bi-exclamation-circle me-1"></i>
             {{ session('error') }}
         </div>
+
     @endif
 
 
-    {{-- NOTIFICATION SUMMARY --}}
-
+    <!-- NOTIFICATION SUMMARY -->
     <div class="notification-summary">
 
         <div>
@@ -414,61 +493,66 @@
     </div>
 
 
-    {{-- NOTIFICATION LIST --}}
+    <!-- NOTIFICATION LIST -->
+    <div class="notification-list">
 
-    @forelse($notifications as $item)
+        @forelse($notifications as $item)
 
-        <a href="{{ route('notifications.read', $item->id) }}"
-           class="text-decoration-none text-dark">
+            <a href="{{ route('notifications.read', $item->id) }}"
+               class="notification-link">
 
-            <div class="notification-card {{ $item->read_at === null ? 'unread' : '' }}">
+                <div class="notification-card {{ $item->read_at === null ? 'unread' : '' }}">
 
-                <div class="d-flex gap-3 align-items-start">
+                    <div class="notification-content">
 
-                    {{-- ICON --}}
+                        <!-- ICON -->
+                        <div class="notification-icon text-{{ $item->warna }}">
+                            <i class="bi {{ $item->ikon }}"></i>
+                        </div>
 
-                    <div class="notification-icon text-{{ $item->warna }}">
-                        <i class="bi {{ $item->ikon }}"></i>
-                    </div>
 
+                        <!-- CONTENT -->
+                        <div class="notification-body">
 
-                    {{-- CONTENT --}}
+                            <div class="notification-heading">
 
-                    <div class="flex-grow-1">
+                                <div class="notification-title">
+                                    {{ $item->judul }}
+                                </div>
 
-                        <div class="d-flex justify-content-between align-items-center gap-3">
+                                @if($item->read_at === null)
 
-                            <div class="notification-title">
-                                {{ $item->judul }}
+                                    <span class="badge bg-primary notification-status">
+                                        Belum dibaca
+                                    </span>
+
+                                @else
+
+                                    <span class="badge bg-light text-secondary border notification-status">
+                                        Sudah dibaca
+                                    </span>
+
+                                @endif
+
                             </div>
 
-                            @if($item->read_at === null)
 
-                                <span class="badge bg-primary notification-status">
-                                    Belum dibaca
-                                </span>
-
-                            @else
-
-                                <span class="badge bg-light text-secondary border notification-status">
-                                    Sudah dibaca
-                                </span>
-
-                            @endif
-
-                        </div>
+                            <div class="notification-message">
+                                {{ $item->pesan }}
+                            </div>
 
 
-                        <div class="notification-message mt-2">
-                            {{ $item->pesan }}
-                        </div>
+                            <div class="notification-footer">
 
+                                <div class="notification-time">
 
-                        <div class="notification-time mt-3">
+                                    <i class="bi bi-clock"></i>
 
-                            <i class="bi bi-clock me-1"></i>
+                                    {{ \Carbon\Carbon::parse($item->created_at)->diffForHumans() }}
 
-                            {{ \Carbon\Carbon::parse($item->created_at)->diffForHumans() }}
+                                </div>
+
+                            </div>
 
                         </div>
 
@@ -476,35 +560,33 @@
 
                 </div>
 
+            </a>
+
+        @empty
+
+            <!-- EMPTY STATE -->
+            <div class="empty-state">
+
+                <div class="empty-icon">
+                    <i class="bi bi-bell-slash"></i>
+                </div>
+
+                <h6 class="empty-title">
+                    Belum Ada Notifikasi
+                </h6>
+
+                <p class="empty-description">
+                    Notifikasi terbaru dari SportZone akan muncul di halaman ini.
+                </p>
+
             </div>
 
-        </a>
+        @endforelse
 
-    @empty
-
-        {{-- EMPTY NOTIFICATION --}}
-
-        <div class="empty-state">
-
-            <div class="empty-icon">
-                <i class="bi bi-bell-slash"></i>
-            </div>
-
-            <h6 class="empty-title">
-                Belum Ada Notifikasi
-            </h6>
-
-            <p class="empty-description">
-                Notifikasi terbaru dari SportZone akan muncul di halaman ini.
-            </p>
-
-        </div>
-
-    @endforelse
+    </div>
 
 
-    {{-- PAGINATION --}}
-
+    <!-- PAGINATION -->
     @if($notifications->hasPages())
 
         <div class="notification-pagination">
