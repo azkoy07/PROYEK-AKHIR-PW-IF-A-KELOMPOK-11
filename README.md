@@ -364,9 +364,9 @@ Pengembangan tersebut merupakan rencana lanjutan dan bukan bagian dari klaim fit
 
 | No. | Nama | NIM |
 |:---:|---|:---:|
-| 1 | Kahfi Hilmy Al Ghathfan | 123250221 |
-| 2 | Azka Satria Nugroho | 123250214 |
-| 3 | Fachrezza Devin R.P. | 123250209 |
+| 1 | Kahfi Hilmy Al Ghathfan | 123250221 | @hirujirachi
+| 2 | Azka Satria Nugroho | 123250214 | @azkoy07
+| 3 | Fachrezza Devin R.P. | 123250209 | @fachrezzadevin07
 
 ## 📍 Status Proyek
 
