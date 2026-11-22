@@ -77,6 +77,52 @@ Halaman administrator untuk memantau ringkasan aktivitas toko, statistik, dan me
 
 SportZone memiliki dua bagian utama berdasarkan jenis pengguna.
 
+## 🔄 Alur Penggunaan Aplikasi
+
+SportZone memiliki alur penggunaan yang berbeda untuk pelanggan dan administrator.
+
+### 🛍️ Alur Customer
+
+1. Pelanggan membuka halaman SportZone.
+2. Pelanggan melakukan registrasi atau login.
+3. Pelanggan menjelajahi katalog dan memilih produk.
+4. Pelanggan melihat detail produk dan menentukan variasi serta jumlah pembelian.
+5. Pelanggan menambahkan produk ke keranjang atau menggunakan fitur pembelian langsung.
+6. Pelanggan memilih atau menambahkan alamat pengiriman.
+7. Pelanggan melakukan checkout dan menyelesaikan proses pemesanan.
+8. Pelanggan mengunggah bukti pembayaran.
+9. Pelanggan menunggu proses verifikasi pembayaran oleh administrator.
+10. Pelanggan dapat melihat status pesanan melalui riwayat pesanan dan notifikasi.
+
+### ⚙️ Alur Administrator
+
+1. Administrator melakukan login menggunakan akun admin.
+2. Administrator mengakses dashboard untuk melihat aktivitas toko.
+3. Administrator mengelola produk, kategori, variasi, dan stok.
+4. Administrator memeriksa pesanan yang masuk.
+5. Administrator memeriksa bukti pembayaran dari pelanggan.
+6. Administrator melakukan konfirmasi atau penolakan pembayaran sesuai hasil pemeriksaan.
+7. Administrator mengelola data pelanggan, voucher, dan notifikasi.
+8. Administrator melihat laporan penjualan untuk memantau transaksi.
+
+## 🧪 Pengujian Aplikasi
+
+Pengujian dilakukan untuk memastikan fitur-fitur utama SportZone dapat berjalan sesuai dengan fungsi yang diharapkan.
+
+| No. | Fitur yang Diuji | Skenario Pengujian | Hasil yang Diharapkan |
+|:---:|---|---|---|
+| 1 | Registrasi | Pelanggan mengisi formulir pendaftaran. | Akun pelanggan berhasil dibuat. |
+| 2 | Login | Pengguna memasukkan email dan password. | Pengguna berhasil masuk sesuai hak akses. |
+| 3 | Katalog Produk | Pengguna membuka halaman katalog. | Daftar produk ditampilkan. |
+| 4 | Keranjang | Pelanggan menambahkan produk ke keranjang. | Produk masuk ke keranjang. |
+| 5 | Checkout | Pelanggan melakukan proses checkout. | Pesanan berhasil dibuat. |
+| 6 | Pembayaran | Pelanggan mengunggah bukti pembayaran. | Bukti pembayaran tersimpan. |
+| 7 | Verifikasi Pembayaran | Admin memeriksa bukti pembayaran. | Status pembayaran diperbarui sesuai keputusan admin. |
+| 8 | Manajemen Produk | Admin menambah atau mengubah produk. | Data produk berhasil dikelola. |
+| 9 | Riwayat Pesanan | Pelanggan membuka riwayat pesanan. | Informasi pesanan ditampilkan. |
+
+**Catatan:** Tabel ini merupakan skenario pengujian. Hasil aktual setiap pengujian perlu diperiksa dan disesuaikan dengan hasil uji aplikasi.
+
 ### 🛍️ Customer
 
 | Fitur | Deskripsi |
