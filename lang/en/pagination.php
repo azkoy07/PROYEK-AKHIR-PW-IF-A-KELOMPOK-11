@@ -1,5 +1,6 @@
 <?php
 
+//pagination
 return [
 
     'previous' => 'Sebelumnya',

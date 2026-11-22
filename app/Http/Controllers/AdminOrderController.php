@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class AdminOrderController extends Controller
 {
-    // Menampilkan semua pesanan
+    // menampilkan semua pesanan
     public function index()
     {
         $orders = DB::table('orders')
@@ -23,7 +23,7 @@ class AdminOrderController extends Controller
         return view('admin.orders.index', compact('orders'));
     }
 
-    // Menampilkan detail pesanan
+    //menampilkan detail pesanan produk
     public function show($id)
     {
         $order = DB::table('orders')

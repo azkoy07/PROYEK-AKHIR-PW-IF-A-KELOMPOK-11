@@ -63,7 +63,7 @@ class HomeController extends Controller
             ");
 
         // ==========================================
-        // 3. PENCARIAN
+        // 3. PENCARIAN BY nama OR merek
         // ==========================================
         if ($request->filled('search')) {
             $search = $request->search;
@@ -82,7 +82,7 @@ class HomeController extends Controller
         }
 
         // ==========================================
-        // 5. SORTING
+        // 5. SORTING BY price_low, price_high, popular
         // ==========================================
         switch ($request->sort) {
             case 'price_low':

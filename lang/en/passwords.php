@@ -10,6 +10,7 @@ return [
     | The following language lines are the default lines which match reasons
     | that are given by the password broker for a password update attempt
     | outcome such as failure due to an invalid password / reset token.
+    | Comment: You are free to change them to anything you want to customize your views to better match your application.
     |
     */
 

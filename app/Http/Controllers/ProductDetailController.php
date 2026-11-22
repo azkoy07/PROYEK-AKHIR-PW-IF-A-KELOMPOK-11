@@ -29,7 +29,7 @@ class ProductDetailController extends Controller
             abort(404);
         }
 
-        // Mengambil gambar utama produk
+        // Mengambil gambar utama produk.
         $image = DB::table('product_images')
             ->where('product_id', $id)
             ->where('is_utama', 1)
